@@ -1,0 +1,93 @@
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import PreCallBrief from '@/components/PreCallBrief';
+import DealsPage from '@/components/DealsPage';
+import DealDetailPage from '@/components/DealDetailPage';
+import PastMeetingsPage from '@/components/PastMeetingsPage';
+import UpcomingMeetingsPage from '@/components/UpcomingMeetingsPage';
+import AppSidebar from '@/components/AppSidebar';
+import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import { provenDemoData } from '@/proven-demo-data';
+import { dealsData } from '@/deals-demo-data';
+import { dealDetailDemoData } from '@/deal-detail-demo-data';
+import { pastMeetingsData } from '@/past-meetings-data';
+import { upcomingMeetingsData } from '@/upcoming-meetings-data';
+
+const meetingBriefData: Record<string, typeof provenDemoData> = {
+  'um-001': provenDemoData,
+};
+
+function DealDetailRoute() {
+  const { dealId } = useParams<{ dealId: string }>();
+  const deal = dealId ? dealDetailDemoData[dealId] : undefined;
+
+  // If no specific detail data, build a fallback from the deals list
+  if (!deal && dealId) {
+    const baseDeal = dealsData.find((d) => d.id === dealId);
+    if (baseDeal) {
+      return (
+        <DealDetailPage
+          data={{
+            name: baseDeal.name,
+            icon_color: baseDeal.icon_color,
+            stage_name: baseDeal.stage_name,
+            momentum: baseDeal.momentum,
+            status: baseDeal.status,
+            last_meeting: baseDeal.last_meeting,
+            next_meeting: baseDeal.next_meeting,
+            owner_name: baseDeal.owner_name,
+            company_name: baseDeal.company_name,
+            company_icon_color: baseDeal.company_icon_color,
+            company_logo_url: baseDeal.company_logo_url,
+            overview: {
+              momentum_summary: 'Display momentum summary here.',
+              last_meeting: { title: 'No meeting notes available yet.', bullets: [] },
+              positive_signals: [],
+              risk_factors: [],
+              next_steps: [],
+            },
+            opportunity_summary: {
+              headline: `${baseDeal.company_name}`,
+              what_they_want: [],
+              how_we_help: [],
+              why_now: [],
+              budget_and_roi: [],
+            },
+            key_stakeholders: [],
+          }}
+        />
+      );
+    }
+  }
+
+  if (!deal) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-muted-foreground">
+        Deal not found.
+      </div>
+    );
+  }
+
+  return <DealDetailPage data={deal} />;
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <Routes>
+            <Route path="/" element={<Navigate to="/deals" replace />} />
+            <Route path="/deals" element={<DealsPage deals={dealsData} />} />
+            <Route path="/deals/:dealId" element={<DealDetailRoute />} />
+            <Route path="/meetings" element={<UpcomingMeetingsPage meetings={upcomingMeetingsData} briefData={meetingBriefData} />} />
+            <Route path="/meetings/um-001" element={<PreCallBrief data={provenDemoData} />} />
+            <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} />} />
+          </Routes>
+        </SidebarInset>
+      </SidebarProvider>
+    </BrowserRouter>
+  );
+}
+
+export default App;

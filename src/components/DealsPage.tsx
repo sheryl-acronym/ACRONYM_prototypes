@@ -1,0 +1,543 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Deal, DealStage, Momentum } from '@/types';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Diamond,
+  PlusCircle,
+  ChevronsUpDown,
+  ArrowUp,
+  ArrowDown,
+  Calendar,
+  User,
+  SlidersHorizontal,
+  LayoutGrid,
+  Square,
+  MessageSquare,
+  Building2,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  X,
+} from 'lucide-react';
+
+interface DealsPageProps {
+  deals: Deal[];
+}
+
+const stageConfig: Record<DealStage, { bg: string; text: string; border: string }> = {
+  'First meeting scheduled': { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
+  'Discovery & Qualification': { bg: 'bg-violet-50', text: 'text-violet-900', border: 'border-violet-200' },
+  'Demo': { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200' },
+  'Proposal / Negotiation': { bg: 'bg-sky-50', text: 'text-sky-900', border: 'border-sky-200' },
+  'Closed Won': { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
+  'Closed Lost': { bg: 'bg-red-50', text: 'text-red-900', border: 'border-red-200' },
+};
+
+const momentumConfig: Record<Momentum, { bg: string; text: string; border: string; dot: string }> = {
+  Strong: { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200', dot: 'bg-green-200' },
+  Stalled: { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200', dot: 'bg-amber-200' },
+  'At risk': { bg: 'bg-red-50', text: 'text-red-900', border: 'border-red-200', dot: 'bg-red-200' },
+  Closed: { bg: 'bg-gray-50', text: 'text-gray-800', border: 'border-gray-200', dot: 'bg-gray-200' },
+  Active: { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200', dot: 'bg-blue-200' },
+};
+
+function formatShortDate(dateStr: string | null): string | null {
+  if (!dateStr) return null;
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function StageCell({ stage }: { stage: DealStage }) {
+  const config = stageConfig[stage];
+
+  return (
+    <Badge
+      variant="outline"
+      className={`${config.bg} ${config.text} ${config.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
+    >
+      {stage}
+    </Badge>
+  );
+}
+
+function MomentumCell({ momentum }: { momentum: Momentum }) {
+  const config = momentumConfig[momentum];
+  return (
+    <Badge
+      variant="outline"
+      className={`${config.bg} ${config.text} ${config.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
+    >
+      {momentum}
+    </Badge>
+  );
+}
+
+type SortField = 'stage_name' | 'name' | 'momentum' | 'last_meeting' | 'next_meeting' | 'owner_name' | 'company_name';
+type SortDir = 'asc' | 'desc';
+
+const allStages: DealStage[] = [
+  'First meeting scheduled',
+  'Discovery & Qualification',
+  'Demo',
+  'Proposal / Negotiation',
+  'Closed Won',
+  'Closed Lost',
+];
+
+const allMomentums: Momentum[] = ['Strong', 'Active', 'Stalled', 'At risk', 'Closed'];
+
+function SortableHeader({
+  label,
+  icon: Icon,
+  field,
+  sortField,
+  sortDir,
+  onSort,
+}: {
+  label: string;
+  icon: React.ElementType;
+  field: SortField;
+  sortField: SortField;
+  sortDir: SortDir;
+  onSort: (field: SortField) => void;
+}) {
+  const isActive = sortField === field;
+  return (
+    <button
+      onClick={() => onSort(field)}
+      className={`inline-flex items-center gap-1 text-xs font-medium transition-colors ${
+        isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+      }`}
+    >
+      <Icon className="h-3 w-3" />
+      {label}
+      {isActive ? (
+        sortDir === 'asc' ? (
+          <ArrowUp className="h-3 w-3" />
+        ) : (
+          <ArrowDown className="h-3 w-3" />
+        )
+      ) : (
+        <ChevronsUpDown className="h-3 w-3 text-muted-foreground/40" />
+      )}
+    </button>
+  );
+}
+
+export const DealsPage: React.FC<DealsPageProps> = ({ deals }) => {
+  const navigate = useNavigate();
+  const [search, setSearch] = React.useState('');
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [stageFilters, setStageFilters] = React.useState<Set<DealStage>>(new Set());
+  const [momentumFilters, setMomentumFilters] = React.useState<Set<Momentum>>(new Set());
+  const [sortField, setSortField] = React.useState<SortField>('last_meeting');
+  const [sortDir, setSortDir] = React.useState<SortDir>('desc');
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortField(field);
+      setSortDir(field === 'last_meeting' || field === 'next_meeting' ? 'desc' : 'asc');
+    }
+  };
+
+  const toggleStageFilter = (stage: DealStage) => {
+    setStageFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(stage)) next.delete(stage);
+      else next.add(stage);
+      return next;
+    });
+  };
+
+  const toggleMomentumFilter = (m: Momentum) => {
+    setMomentumFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(m)) next.delete(m);
+      else next.add(m);
+      return next;
+    });
+  };
+
+  const filtered = React.useMemo(() => {
+    let list = [...deals];
+
+    // Text search
+    if (search) {
+      const q = search.toLowerCase();
+      list = list.filter(
+        (d) =>
+          d.name.toLowerCase().includes(q) ||
+          d.company_name.toLowerCase().includes(q) ||
+          d.stage_name.toLowerCase().includes(q) ||
+          d.owner_name.toLowerCase().includes(q)
+      );
+    }
+
+    // Stage filter
+    if (stageFilters.size > 0) {
+      list = list.filter((d) => stageFilters.has(d.stage_name));
+    }
+
+    // Momentum filter
+    if (momentumFilters.size > 0) {
+      list = list.filter((d) => momentumFilters.has(d.momentum));
+    }
+
+    // Sort
+    list.sort((a, b) => {
+      const dir = sortDir === 'asc' ? 1 : -1;
+      const aVal = a[sortField];
+      const bVal = b[sortField];
+
+      if (aVal == null && bVal == null) return 0;
+      if (aVal == null) return 1;
+      if (bVal == null) return -1;
+
+      if (sortField === 'last_meeting' || sortField === 'next_meeting') {
+        return (new Date(aVal).getTime() - new Date(bVal).getTime()) * dir;
+      }
+
+      return String(aVal).localeCompare(String(bVal)) * dir;
+    });
+
+    return list;
+  }, [deals, search, stageFilters, momentumFilters, sortField, sortDir]);
+
+  const totalPages = Math.ceil(filtered.length / rowsPerPage);
+  const paginatedDeals = filtered.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+
+  // Reset to first page when filters change
+  React.useEffect(() => {
+    setPage(0);
+  }, [search, stageFilters, momentumFilters]);
+
+  return (
+    <div className="flex-1 bg-white min-h-screen flex flex-col">
+      {/* Page header */}
+      <div className="px-8 pt-8 pb-0">
+        <div className="flex items-center gap-2.5 mb-6">
+          <Diamond className="h-5 w-5 text-foreground" />
+          <h1 className="text-2xl font-bold text-foreground">Deals</h1>
+        </div>
+
+        {/* Filter bar */}
+        <div className="flex items-center gap-2 mb-6">
+          <Input
+            placeholder="Filter deals..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="h-8 w-56 text-sm"
+          />
+
+          {/* Deal stage filter */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className={`gap-1.5 h-8 text-sm font-normal ${stageFilters.size > 0 ? 'border-foreground/30' : ''}`}
+              >
+                {stageFilters.size > 0 ? (
+                  <span
+                    className="h-3.5 w-3.5 flex items-center justify-center rounded-sm bg-foreground text-background cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setStageFilters(new Set());
+                    }}
+                  >
+                    <X className="h-2.5 w-2.5" />
+                  </span>
+                ) : (
+                  <PlusCircle className="h-3.5 w-3.5" />
+                )}
+                Deal stage
+                {stageFilters.size > 0 && (
+                  <>
+                    <span className="mx-0.5 h-4 w-px bg-border" />
+                    <Badge variant="secondary" className="rounded-sm px-1.5 py-0 text-xs font-normal">
+                      {stageFilters.size}
+                    </Badge>
+                  </>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-56 p-2" align="start">
+              <div className="space-y-1">
+                {allStages.map((stage) => (
+                  <label
+                    key={stage}
+                    className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent cursor-pointer"
+                  >
+                    <Checkbox
+                      checked={stageFilters.has(stage)}
+                      onCheckedChange={() => toggleStageFilter(stage)}
+                    />
+                    <StageCell stage={stage} />
+                  </label>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          {/* Momentum filter */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className={`gap-1.5 h-8 text-sm font-normal ${momentumFilters.size > 0 ? 'border-foreground/30' : ''}`}
+              >
+                {momentumFilters.size > 0 ? (
+                  <span
+                    className="h-3.5 w-3.5 flex items-center justify-center rounded-sm bg-foreground text-background cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMomentumFilters(new Set());
+                    }}
+                  >
+                    <X className="h-2.5 w-2.5" />
+                  </span>
+                ) : (
+                  <PlusCircle className="h-3.5 w-3.5" />
+                )}
+                Momentum
+                {momentumFilters.size > 0 && (
+                  <>
+                    <span className="mx-0.5 h-4 w-px bg-border" />
+                    <Badge variant="secondary" className="rounded-sm px-1.5 py-0 text-xs font-normal">
+                      {momentumFilters.size}
+                    </Badge>
+                  </>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-48 p-2" align="start">
+              <div className="space-y-1">
+                {allMomentums.map((m) => (
+                  <label
+                    key={m}
+                    className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent cursor-pointer"
+                  >
+                    <Checkbox
+                      checked={momentumFilters.has(m)}
+                      onCheckedChange={() => toggleMomentumFilter(m)}
+                    />
+                    <MomentumCell momentum={m} />
+                  </label>
+                ))}
+              </div>
+            </PopoverContent>
+          </Popover>
+
+          <div className="flex-1" />
+          <Button variant="outline" size="sm" className="gap-1.5 h-8 text-sm font-normal">
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            View
+          </Button>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="px-8 flex-1">
+        <div className="border border-slate-200 rounded-lg overflow-hidden">
+          <Table className="flex-1">
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead>
+                <SortableHeader label="Deal stage" icon={LayoutGrid} field="stage_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+              </TableHead>
+              <TableHead>
+                <SortableHeader label="Deal name" icon={Diamond} field="name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+              </TableHead>
+              <TableHead>
+                <SortableHeader label="Momentum" icon={Square} field="momentum" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+              </TableHead>
+              <TableHead>
+                <SortableHeader label="Last meeting" icon={MessageSquare} field="last_meeting" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+              </TableHead>
+              <TableHead>
+                <SortableHeader label="Next meeting" icon={Calendar} field="next_meeting" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+              </TableHead>
+              <TableHead>
+                <SortableHeader label="Owner" icon={User} field="owner_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+              </TableHead>
+              <TableHead>
+                <SortableHeader label="Company" icon={Building2} field="company_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {paginatedDeals.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="h-32 text-center text-muted-foreground">
+                  No deals found.
+                </TableCell>
+              </TableRow>
+            ) : (
+              paginatedDeals.map((deal) => (
+                <TableRow key={deal.id} className="cursor-pointer" onClick={() => navigate(`/deals/${deal.id}`)}>
+                  <TableCell>
+                    <StageCell stage={deal.stage_name} />
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <span className={`w-4 h-4 rounded-full flex-shrink-0 ${momentumConfig[deal.momentum].dot}`} />
+                      <span className="text-sm">{deal.name}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <MomentumCell momentum={deal.momentum} />
+                  </TableCell>
+                  <TableCell>
+                    {deal.last_meeting ? (
+                      <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
+                        <Calendar className="h-3 w-3" />
+                        {formatShortDate(deal.last_meeting)}
+                      </Badge>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">-</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {deal.next_meeting ? (
+                      <span className="text-sm text-muted-foreground">
+                        {formatShortDate(deal.next_meeting)}
+                      </span>
+                    ) : (
+                      <span className="text-sm text-muted-foreground">No meeting scheduled</span>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
+                      <User className="h-3 w-3" />
+                      {deal.owner_name}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {deal.company_logo_url ? (
+                        <img
+                          src={deal.company_logo_url}
+                          alt={deal.company_name}
+                          className="w-4 h-4 rounded object-contain flex-shrink-0 border border-border/50"
+                          onError={(e) => {
+                            const target = e.currentTarget;
+                            target.style.display = 'none';
+                            target.nextElementSibling?.classList.remove('hidden');
+                          }}
+                        />
+                      ) : null}
+                      <span
+                        className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center text-[10px] leading-none text-muted-foreground ${deal.company_logo_url ? 'hidden' : ''}`}
+                        style={{ fontFamily: 'Oxanium, sans-serif', fontWeight: 800 }}
+                      >
+                        {deal.company_name.charAt(0).toUpperCase()}.
+                      </span>
+                      <span className="text-sm">{deal.company_name}</span>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+        </div>
+      </div>
+
+      {/* Pagination */}
+      <div className="px-8 py-4 flex items-center justify-between border-t">
+        <div className="text-sm text-muted-foreground">
+          0 of {filtered.length} row(s) selected.
+        </div>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Rows per page</span>
+            <Select
+              value={String(rowsPerPage)}
+              onValueChange={(val) => {
+                setRowsPerPage(Number(val));
+                setPage(0);
+              }}
+            >
+              <SelectTrigger className="h-8 w-16 text-sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="25">25</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <span className="text-sm text-muted-foreground">
+            Page {page + 1} of {totalPages || 1}
+          </span>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setPage(0)}
+              disabled={page === 0}
+            >
+              <ChevronsLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setPage(page - 1)}
+              disabled={page === 0}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setPage(page + 1)}
+              disabled={page >= totalPages - 1}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setPage(totalPages - 1)}
+              disabled={page >= totalPages - 1}
+            >
+              <ChevronsRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DealsPage;
