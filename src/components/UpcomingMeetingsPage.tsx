@@ -13,6 +13,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import {
   Calendar,
   PlusCircle,
   ChevronsUpDown,
@@ -22,6 +31,7 @@ import {
   Maximize2,
   MoreHorizontal,
   Upload,
+  PanelLeft,
 } from 'lucide-react';
 import PreCallBrief from '@/components/PreCallBrief';
 
@@ -163,16 +173,46 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
   );
 
   return (
-    <div className="flex flex-1 min-h-screen relative">
+    <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
       {/* Main table area */}
-      <div className="flex-1 bg-white min-h-screen flex flex-col">
+      <div className="flex-1 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
+        {/* Full-width header */}
+        <div className="flex-shrink-0 h-[50px] flex items-center px-3 gap-2">
+          <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
+            <PanelLeft className="h-4 w-4" />
+          </SidebarTrigger>
+          <div className="flex-1 flex items-center">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate('/meetings');
+                    }}
+                  >
+                    Meetings
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Upcoming</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </div>
+        <div className="px-3">
+          <div className="border-t border-slate-200"></div>
+        </div>
         {/* Page header */}
         <div className="px-8 pt-8 pb-0">
+          {/* Title */}
           <div className="flex items-center gap-2.5 mb-6">
             <Calendar className="h-5 w-5 text-foreground" />
-            <h1 className="text-2xl font-bold text-foreground">Upcoming Meetings</h1>
+            <h1 className="text-2xl font-bold text-foreground">Upcoming</h1>
           </div>
-
           {/* Filter bar */}
           <div className="flex items-center gap-2 mb-1">
             <Input
@@ -198,7 +238,7 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
         </div>
 
         {/* Table */}
-        <div className="px-8 pb-8">
+        <div className="px-8 pb-8 flex-1 overflow-y-auto">
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">

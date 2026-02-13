@@ -1,7 +1,9 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import PreCallBrief from '@/components/PreCallBrief';
 import DealsPage from '@/components/DealsPage';
 import DealDetailPage from '@/components/DealDetailPage';
+import DealDetailPageV2 from '@/components/DealDetailPageV2';
 import PastMeetingsPage from '@/components/PastMeetingsPage';
 import UpcomingMeetingsPage from '@/components/UpcomingMeetingsPage';
 import AppSidebar from '@/components/AppSidebar';
@@ -18,43 +20,49 @@ const meetingBriefData: Record<string, typeof provenDemoData> = {
 
 function DealDetailRoute() {
   const { dealId } = useParams<{ dealId: string }>();
+  const [version, setVersion] = React.useState<'v1' | 'v2'>('v1');
   const deal = dealId ? dealDetailDemoData[dealId] : undefined;
+
+  const handleVersionChange = React.useCallback((newVersion: 'v1' | 'v2') => {
+    setVersion(newVersion);
+  }, []);
 
   // If no specific detail data, build a fallback from the deals list
   if (!deal && dealId) {
     const baseDeal = dealsData.find((d) => d.id === dealId);
     if (baseDeal) {
-      return (
-        <DealDetailPage
-          data={{
-            name: baseDeal.name,
-            icon_color: baseDeal.icon_color,
-            stage_name: baseDeal.stage_name,
-            momentum: baseDeal.momentum,
-            status: baseDeal.status,
-            last_meeting: baseDeal.last_meeting,
-            next_meeting: baseDeal.next_meeting,
-            owner_name: baseDeal.owner_name,
-            company_name: baseDeal.company_name,
-            company_icon_color: baseDeal.company_icon_color,
-            company_logo_url: baseDeal.company_logo_url,
-            overview: {
-              momentum_summary: 'Display momentum summary here.',
-              last_meeting: { title: 'No meeting notes available yet.', bullets: [] },
-              positive_signals: [],
-              risk_factors: [],
-              next_steps: [],
-            },
-            opportunity_summary: {
-              headline: `${baseDeal.company_name}`,
-              what_they_want: [],
-              how_we_help: [],
-              why_now: [],
-              budget_and_roi: [],
-            },
-            key_stakeholders: [],
-          }}
-        />
+      const fallbackData = {
+        name: baseDeal.name,
+        icon_color: baseDeal.icon_color,
+        stage_name: baseDeal.stage_name,
+        momentum: baseDeal.momentum,
+        status: baseDeal.status,
+        last_meeting: baseDeal.last_meeting,
+        next_meeting: baseDeal.next_meeting,
+        owner_name: baseDeal.owner_name,
+        company_name: baseDeal.company_name,
+        company_icon_color: baseDeal.company_icon_color,
+        company_logo_url: baseDeal.company_logo_url,
+        overview: {
+          momentum_summary: 'Display momentum summary here.',
+          last_meeting: { title: 'No meeting notes available yet.', bullets: [] },
+          positive_signals: [],
+          risk_factors: [],
+          next_steps: [],
+        },
+        opportunity_summary: {
+          headline: `${baseDeal.company_name}`,
+          what_they_want: [],
+          how_we_help: [],
+          why_now: [],
+          budget_and_roi: [],
+        },
+        key_stakeholders: [],
+      };
+      return version === 'v1' ? (
+        <DealDetailPage data={fallbackData} onVersionChange={handleVersionChange} />
+      ) : (
+        <DealDetailPageV2 data={fallbackData} onVersionChange={handleVersionChange} />
       );
     }
   }
@@ -67,7 +75,11 @@ function DealDetailRoute() {
     );
   }
 
-  return <DealDetailPage data={deal} />;
+  return version === 'v1' ? (
+    <DealDetailPage data={deal} onVersionChange={handleVersionChange} />
+  ) : (
+    <DealDetailPageV2 data={deal} onVersionChange={handleVersionChange} />
+  );
 }
 
 function App() {

@@ -4,25 +4,25 @@ import {
   DealDetailData,
   DealStage,
   Momentum,
+  ReasoningWithVerbatims,
+  Verbatim,
 } from '@/types';
 import {
   Building2,
   Calendar,
   ChevronsRight,
-  Diamond,
   FileText,
   Maximize2,
   MoreHorizontal,
   Upload,
   User,
-  Square,
   Sparkles,
   ThumbsUp,
   ThumbsDown,
-  GripVertical,
   Copy,
   Trash2,
   BookOpen,
+  Plus,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -46,19 +46,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-interface DealDetailPageProps {
+interface DealDetailPageV2Props {
   data: DealDetailData;
   onVersionChange?: (version: 'v1' | 'v2') => void;
 }
-
-const stageConfig: Record<DealStage, { bg: string; text: string; border: string }> = {
-  'First meeting scheduled': { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
-  'Discovery & Qualification': { bg: 'bg-violet-50', text: 'text-violet-900', border: 'border-violet-200' },
-  'Demo': { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200' },
-  'Proposal / Negotiation': { bg: 'bg-sky-50', text: 'text-sky-900', border: 'border-sky-200' },
-  'Closed Won': { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
-  'Closed Lost': { bg: 'bg-red-50', text: 'text-red-900', border: 'border-red-200' },
-};
 
 const momentumConfig: Record<Momentum, { bg: string; text: string; border: string }> = {
   Strong: { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
@@ -93,17 +84,6 @@ function useIsNarrow(breakpoint: number) {
 }
 
 // --- Transcript data & types ---
-
-interface Verbatim {
-  quote: string;
-  timestamp: string;
-  speaker: string;
-}
-
-interface ReasoningWithVerbatims {
-  text: string;
-  verbatims?: Verbatim[];
-}
 
 interface TranscriptLine {
   timestamp: string;
@@ -252,7 +232,7 @@ const ReasoningPopover: React.FC<ReasoningPopoverProps> = ({ reasoning }) => {
           <span className="text-xs font-semibold text-foreground">AI Reasoning</span>
         </div>
         <p className="text-xs text-muted-foreground leading-relaxed">{reasoning.text}</p>
-        {reasoning.verbatims?.map((v, vi) => (
+        {reasoning.verbatims?.map((v: Verbatim, vi: number) => (
           <VerbatimCallout key={vi} verbatim={v} />
         ))}
         <div className="flex items-center gap-2 mt-3 pt-2 border-t border-slate-200">
@@ -294,9 +274,11 @@ const VerbatimCallout: React.FC<{ verbatim: Verbatim }> = ({ verbatim }) => {
       className="w-full text-left mt-2 border-l-2 border-slate-300 pl-3 py-1.5 hover:border-amber-400 hover:bg-amber-50/50 transition-colors rounded-r cursor-pointer group/verbatim"
     >
       <p className="text-xs text-foreground/70 leading-relaxed italic">{verbatim.quote}</p>
-      <span className="text-[10px] text-muted-foreground mt-1 inline-block group-hover/verbatim:text-amber-600 transition-colors">
-        {verbatim.speaker} &middot; {verbatim.timestamp}
-      </span>
+      {verbatim.speaker || verbatim.timestamp ? (
+        <span className="text-[10px] text-muted-foreground mt-1 inline-block group-hover/verbatim:text-amber-600 transition-colors">
+          {verbatim.speaker}{verbatim.speaker && verbatim.timestamp ? ' · ' : ''}{verbatim.timestamp}
+        </span>
+      ) : null}
     </button>
   );
 };
@@ -328,7 +310,7 @@ const TopBar: React.FC<{ dealName: string; onVersionChange?: (version: 'v1' | 'v
       </div>
       <div className="flex items-center gap-1">
         {onVersionChange && (
-          <Select defaultValue="v1" onValueChange={(v) => onVersionChange(v as 'v1' | 'v2')}>
+          <Select defaultValue="v2" onValueChange={(v) => onVersionChange(v as 'v1' | 'v2')}>
             <SelectTrigger className="w-auto h-8 text-xs px-2.5">
               <SelectValue />
             </SelectTrigger>
@@ -352,81 +334,75 @@ const TopBar: React.FC<{ dealName: string; onVersionChange?: (version: 'v1' | 'v
 const DealHeader: React.FC<{
   dealName: string;
   dealIconColor: string;
-}> = ({ dealName, dealIconColor }) => (
-  <div className="mb-6">
-    <div className="flex items-center gap-3">
-      <span className={`w-7 h-7 rounded-full flex-shrink-0 ${dealIconColor}`} />
-      <h1 className="text-2xl font-bold text-foreground">{dealName}</h1>
-    </div>
-  </div>
-);
+  onNameChange?: (newName: string) => void;
+}> = ({ dealName, dealIconColor, onNameChange }) => {
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [editedName, setEditedName] = React.useState(dealName);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
-  const stageStyle = stageConfig[data.stage_name];
-  const momentumStyle = momentumConfig[data.momentum];
+  React.useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [isEditing]);
+
+  const handleSave = () => {
+    if (editedName.trim()) {
+      onNameChange?.(editedName.trim());
+      setIsEditing(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSave();
+    } else if (e.key === 'Escape') {
+      setEditedName(dealName);
+      setIsEditing(false);
+    }
+  };
+
+  const [logoError, setLogoError] = React.useState(false);
 
   return (
+    <div className="mb-6">
+      <div className="flex items-center gap-3">
+        <img
+          src="/proven.png"
+          alt="Company logo"
+          className="w-7 h-7 rounded object-contain flex-shrink-0"
+          onError={() => setLogoError(true)}
+        />
+        {logoError && (
+          <span className={`w-7 h-7 rounded-full flex-shrink-0 ${dealIconColor}`} />
+        )}
+        {isEditing ? (
+          <input
+            ref={inputRef}
+            type="text"
+            value={editedName}
+            onChange={(e) => setEditedName(e.target.value)}
+            onBlur={handleSave}
+            onKeyDown={handleKeyDown}
+            className="text-2xl font-bold text-foreground bg-transparent border-b-2 border-foreground outline-none px-0.5"
+          />
+        ) : (
+          <h1
+            onClick={() => onNameChange && setIsEditing(true)}
+            className={`text-2xl font-bold text-foreground ${onNameChange ? 'cursor-text hover:text-foreground/80 transition-colors' : ''}`}
+          >
+            {dealName}
+          </h1>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
+  return (
     <div className="space-y-0">
-      {/* Deal stage */}
-      <div className="flex items-center py-2.5">
-        <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
-          <Diamond className="h-4 w-4" />
-          Deal stage
-        </span>
-        <Badge
-          variant="outline"
-          className={`${stageStyle.bg} ${stageStyle.text} ${stageStyle.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
-        >
-          {data.stage_name}
-        </Badge>
-      </div>
-
-      {/* Momentum */}
-      <div className="flex items-center py-2.5">
-        <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
-          <Square className="h-4 w-4" />
-          Momentum
-        </span>
-        <Badge
-          variant="outline"
-          className={`${momentumStyle.bg} ${momentumStyle.text} ${momentumStyle.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
-        >
-          {data.momentum}
-        </Badge>
-      </div>
-
-      {/* Last meeting */}
-      <div className="flex items-center py-2.5">
-        <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
-          <Calendar className="h-4 w-4" />
-          Last meeting
-        </span>
-        {data.last_meeting ? (
-          <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-            <Calendar className="h-3 w-3" />
-            {formatShortDate(data.last_meeting)}
-          </Badge>
-        ) : (
-          <span className="text-sm text-muted-foreground">-</span>
-        )}
-      </div>
-
-      {/* Next meeting */}
-      <div className="flex items-center py-2.5">
-        <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
-          <Calendar className="h-4 w-4" />
-          Next meeting
-        </span>
-        {data.next_meeting ? (
-          <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-            <Calendar className="h-3 w-3" />
-            {formatShortDate(data.next_meeting)}
-          </Badge>
-        ) : (
-          <span className="text-sm text-muted-foreground">No meeting scheduled</span>
-        )}
-      </div>
-
       {/* Owner */}
       <div className="flex items-center py-2.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
@@ -448,23 +424,18 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
           Company
         </span>
         <div className="flex items-center gap-2 text-sm text-foreground">
-          {data.company_logo_url ? (
-            <>
-              <img
-                src={data.company_logo_url}
-                alt={data.company_name}
-                className="h-5 w-5 rounded object-contain"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  target.style.display = 'none';
-                  target.nextElementSibling?.classList.remove('hidden');
-                }}
-              />
-              <span className={`w-5 h-5 rounded hidden ${data.company_icon_color || 'bg-gray-300'}`} />
-            </>
-          ) : (
-            <span className={`w-5 h-5 rounded ${data.company_icon_color || 'bg-gray-300'}`} />
-          )}
+          <img
+            src="/proven.png"
+            alt={data.company_name}
+            className="h-5 w-5 rounded object-contain"
+            onError={(e) => {
+              const target = e.currentTarget;
+              target.style.display = 'none';
+              const fallback = target.nextElementSibling;
+              if (fallback) fallback.classList.remove('hidden');
+            }}
+          />
+          <span className={`w-5 h-5 rounded hidden ${data.company_icon_color || 'bg-gray-300'}`} />
           {data.company_name}
           {data.customer_profile && (
             <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 ml-1">
@@ -529,27 +500,96 @@ const lastMeetingReasonings: Record<number, ReasoningWithVerbatims> = {
 const LastMeetingSection: React.FC<{
   title: string;
   bullets: string[];
-}> = ({ title, bullets }) => (
-  <div className="py-4">
-    <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
-      Your last meeting
-    </h2>
-    <p className="text-sm text-foreground mb-3">{title}</p>
-    <ul className="space-y-2">
-      {bullets.map((b, i) => (
-        <li key={i} className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${lastMeetingReasonings[i] ? 'hover:bg-slate-100/50' : ''}`}>
-          <span className="text-slate-400 leading-none select-none mt-0.5">&bull;</span>
-          <span className="flex-1">{b}</span>
-          {lastMeetingReasonings[i] && (
-            <span className="flex-shrink-0 opacity-0 group-hover/bullet:opacity-100 transition-opacity">
-              <ReasoningPopover reasoning={lastMeetingReasonings[i]} />
-            </span>
+  lastMeetingDate?: string | null;
+}> = ({ title, bullets, lastMeetingDate }) => {
+  const [items, setItems] = React.useState(bullets);
+  const [editingIndex, setEditingIndex] = React.useState<number | null>(null);
+  const [editText, setEditText] = React.useState('');
+
+  const addNewBullet = () => {
+    const newIndex = items.length;
+    setItems([...items, '']);
+    setEditingIndex(newIndex);
+    setEditText('');
+  };
+
+  const startEdit = (index: number) => {
+    setEditingIndex(index);
+    setEditText(items[index]);
+  };
+
+  const saveEdit = (index: number) => {
+    const updated = [...items];
+    updated[index] = editText;
+    setItems(updated);
+    setEditingIndex(null);
+  };
+
+  const cancelEdit = () => {
+    setEditingIndex(null);
+  };
+
+  return (
+    <div className="py-4">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60">
+          Last meeting overview
+        </h2>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={addNewBullet}
+            className="p-0.5 rounded hover:bg-slate-100 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Plus className="h-3.5 w-3.5" />
+          </button>
+          {lastMeetingDate && (
+            <button className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-slate-200 bg-white hover:bg-slate-50 transition-colors text-xs text-muted-foreground hover:text-foreground">
+              <Calendar className="h-3.5 w-3.5" />
+              <span>{formatShortDate(lastMeetingDate)}</span>
+            </button>
           )}
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+        </div>
+      </div>
+      <p className="text-sm text-foreground mb-3">{title}</p>
+      <ul className="space-y-1">
+        {items.map((b, i) => (
+          <li key={i} className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${lastMeetingReasonings[i] || !b ? 'hover:bg-slate-100/50' : ''}`}>
+            <span className="text-slate-400 leading-none select-none mt-0.5">&bull;</span>
+            {editingIndex === i ? (
+              <input
+                type="text"
+                value={editText}
+                onChange={(e) => setEditText(e.target.value)}
+                onBlur={() => saveEdit(i)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    saveEdit(i);
+                  } else if (e.key === 'Escape') {
+                    cancelEdit();
+                  }
+                }}
+                className="flex-1 text-sm h-auto py-0.5 px-2 border-transparent bg-muted/40 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 outline-none rounded"
+                placeholder="Add note..."
+                autoFocus
+              />
+            ) : (
+              <>
+                <span className={`flex-1 cursor-text rounded px-1 -mx-1 py-0.5 transition-colors ${!b ? 'hover:bg-muted/50 text-muted-foreground/50' : 'hover:bg-muted/50'}`} onClick={() => startEdit(i)}>
+                  {b || 'Click to add note...'}
+                </span>
+                {lastMeetingReasonings[i] && (
+                  <span className="flex-shrink-0 opacity-0 group-hover/bullet:opacity-100 transition-opacity">
+                    <ReasoningPopover reasoning={lastMeetingReasonings[i]} />
+                  </span>
+                )}
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 const positiveSignalReasonings: Record<number, ReasoningWithVerbatims> = {
   0: {
@@ -582,26 +622,100 @@ const positiveSignalReasonings: Record<number, ReasoningWithVerbatims> = {
 const PositiveSignalsSection: React.FC<{
   signals: { label: string; description: string }[];
 }> = ({ signals }) => {
-  const [items] = React.useState(signals);
+  const [items, setItems] = React.useState(signals);
+  const [editingIndex, setEditingIndex] = React.useState<number | null>(null);
+  const [editLabel, setEditLabel] = React.useState('');
+  const [editDescription, setEditDescription] = React.useState('');
+
+  const addNewSignal = () => {
+    const newIndex = items.length;
+    setItems([...items, { label: 'New signal', description: 'Add description...' }]);
+    setEditingIndex(newIndex);
+    setEditLabel('New signal');
+    setEditDescription('Add description...');
+  };
+
+  const startEdit = (index: number) => {
+    setEditingIndex(index);
+    setEditLabel(items[index].label);
+    setEditDescription(items[index].description);
+  };
+
+  const saveEdit = (index: number) => {
+    const updated = [...items];
+    updated[index] = { label: editLabel, description: editDescription };
+    setItems(updated);
+    setEditingIndex(null);
+  };
+
+  const cancelEdit = () => {
+    setEditingIndex(null);
+  };
 
   return (
     <div className="py-4">
-      <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
-        Positive signals
-      </h2>
-      <ul className="space-y-2">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60">
+          Positive signals
+        </h2>
+        <button
+          onClick={addNewSignal}
+          className="p-0.5 rounded hover:bg-slate-100 text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Plus className="h-3.5 w-3.5" />
+        </button>
+      </div>
+      <ul className="space-y-1">
         {items.map((s, i) => (
           <li key={i} className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${positiveSignalReasonings[i] ? 'hover:bg-slate-100/50' : ''}`}>
             <span className="text-slate-400 leading-none select-none mt-0.5">&bull;</span>
-            <span className="flex-1">
-              <span className="font-semibold text-foreground">{s.label}</span>
-              {' - '}
-              {s.description}
-            </span>
-            {positiveSignalReasonings[i] && (
-              <span className="flex-shrink-0 opacity-0 group-hover/bullet:opacity-100 transition-opacity">
-                <ReasoningPopover reasoning={positiveSignalReasonings[i]} />
+            {editingIndex === i ? (
+              <span className="flex-1 flex flex-col gap-1">
+                <input
+                  type="text"
+                  value={editLabel}
+                  onChange={(e) => setEditLabel(e.target.value)}
+                  onBlur={() => saveEdit(i)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      saveEdit(i);
+                    } else if (e.key === 'Escape') {
+                      cancelEdit();
+                    }
+                  }}
+                  className="text-sm font-semibold h-auto py-0.5 px-2 border-transparent bg-muted/40 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 outline-none rounded"
+                  placeholder="Label"
+                  autoFocus
+                />
+                <input
+                  type="text"
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  onBlur={() => saveEdit(i)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      saveEdit(i);
+                    } else if (e.key === 'Escape') {
+                      cancelEdit();
+                    }
+                  }}
+                  className="text-sm h-auto py-0.5 px-2 border-transparent bg-muted/40 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 outline-none rounded"
+                  placeholder="Description"
+                />
               </span>
+            ) : (
+              <>
+                <span className="flex-1 cursor-text rounded px-1 -mx-1 py-0.5 hover:bg-muted/50 transition-colors" onClick={() => startEdit(i)}>
+                  <span className="font-semibold text-foreground">{s.label}</span>
+                  {' - '}
+                  {s.description}
+                </span>
+                {positiveSignalReasonings[i] && (
+                  <span className="flex-shrink-0 opacity-0 group-hover/bullet:opacity-100 transition-opacity">
+                    <ReasoningPopover reasoning={positiveSignalReasonings[i]} />
+                  </span>
+                )}
+              </>
             )}
           </li>
         ))}
@@ -641,26 +755,100 @@ const riskFactorReasonings: Record<number, ReasoningWithVerbatims> = {
 const RiskFactorsSection: React.FC<{
   risks: { label: string; description: string }[];
 }> = ({ risks }) => {
-  const [items] = React.useState(risks);
+  const [items, setItems] = React.useState(risks);
+  const [editingIndex, setEditingIndex] = React.useState<number | null>(null);
+  const [editLabel, setEditLabel] = React.useState('');
+  const [editDescription, setEditDescription] = React.useState('');
+
+  const addNewRisk = () => {
+    const newIndex = items.length;
+    setItems([...items, { label: 'New risk', description: 'Add description...' }]);
+    setEditingIndex(newIndex);
+    setEditLabel('New risk');
+    setEditDescription('Add description...');
+  };
+
+  const startEdit = (index: number) => {
+    setEditingIndex(index);
+    setEditLabel(items[index].label);
+    setEditDescription(items[index].description);
+  };
+
+  const saveEdit = (index: number) => {
+    const updated = [...items];
+    updated[index] = { label: editLabel, description: editDescription };
+    setItems(updated);
+    setEditingIndex(null);
+  };
+
+  const cancelEdit = () => {
+    setEditingIndex(null);
+  };
 
   return (
     <div className="py-4">
-      <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
-        Risk factors
-      </h2>
-      <ul className="space-y-2">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60">
+          Risk factors
+        </h2>
+        <button
+          onClick={addNewRisk}
+          className="p-0.5 rounded hover:bg-slate-100 text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Plus className="h-3.5 w-3.5" />
+        </button>
+      </div>
+      <ul className="space-y-1">
         {items.map((r, i) => (
           <li key={i} className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${riskFactorReasonings[i] ? 'hover:bg-slate-100/50' : ''}`}>
             <span className="text-slate-400 leading-none select-none mt-0.5">&bull;</span>
-            <span className="flex-1">
-              <span className="font-semibold text-foreground">{r.label}</span>
-              {' - '}
-              {r.description}
-            </span>
-            {riskFactorReasonings[i] && (
-              <span className="flex-shrink-0 opacity-0 group-hover/bullet:opacity-100 transition-opacity">
-                <ReasoningPopover reasoning={riskFactorReasonings[i]} />
+            {editingIndex === i ? (
+              <span className="flex-1 flex flex-col gap-1">
+                <input
+                  type="text"
+                  value={editLabel}
+                  onChange={(e) => setEditLabel(e.target.value)}
+                  onBlur={() => saveEdit(i)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      saveEdit(i);
+                    } else if (e.key === 'Escape') {
+                      cancelEdit();
+                    }
+                  }}
+                  className="text-sm font-semibold h-auto py-0.5 px-2 border-transparent bg-muted/40 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 outline-none rounded"
+                  placeholder="Label"
+                  autoFocus
+                />
+                <input
+                  type="text"
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  onBlur={() => saveEdit(i)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      saveEdit(i);
+                    } else if (e.key === 'Escape') {
+                      cancelEdit();
+                    }
+                  }}
+                  className="text-sm h-auto py-0.5 px-2 border-transparent bg-muted/40 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 outline-none rounded"
+                  placeholder="Description"
+                />
               </span>
+            ) : (
+              <>
+                <span className="flex-1 cursor-text rounded px-1 -mx-1 py-0.5 hover:bg-muted/50 transition-colors" onClick={() => startEdit(i)}>
+                  <span className="font-semibold text-foreground">{r.label}</span>
+                  {' - '}
+                  {r.description}
+                </span>
+                {riskFactorReasonings[i] && (
+                  <span className="flex-shrink-0 opacity-0 group-hover/bullet:opacity-100 transition-opacity">
+                    <ReasoningPopover reasoning={riskFactorReasonings[i]} />
+                  </span>
+                )}
+              </>
             )}
           </li>
         ))}
@@ -671,7 +859,8 @@ const RiskFactorsSection: React.FC<{
 
 const NextStepsSection: React.FC<{
   steps: { text: string; due_date: string; assignee: string; completed: boolean; reasoning?: ReasoningWithVerbatims }[];
-}> = ({ steps }) => {
+  title?: string;
+}> = ({ steps, title = 'Next steps' }) => {
   const [items, setItems] = React.useState(steps);
   const [draggedIndex, setDraggedIndex] = React.useState<number | null>(null);
 
@@ -696,7 +885,7 @@ const NextStepsSection: React.FC<{
   return (
     <div className="py-4">
       <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
-        Next steps
+        {title}
       </h2>
       <div className="space-y-2">
         {items.map((step, i) => (
@@ -857,12 +1046,12 @@ const KeyStakeholdersSection: React.FC<{
                 .toUpperCase()}
             </span>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex flex-col gap-1.5">
                 <span className="text-sm font-semibold text-foreground">{s.name}</span>
                 {s.buyer_persona && (
-                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 flex items-center gap-1.5">
-                    <BookOpen className="h-3 w-3" />
-                    {s.buyer_persona}
+                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 flex items-center gap-1.5 max-w-full">
+                    <BookOpen className="h-3 w-3 flex-shrink-0" />
+                    <span className="truncate">{s.buyer_persona}</span>
                   </Badge>
                 )}
               </div>
@@ -945,6 +1134,119 @@ const statusIcon = (status: 'complete' | 'partial' | 'missing'): string => {
   }
 };
 
+const DealStageProgress: React.FC<{ currentStage: DealStage }> = ({ currentStage }) => {
+  const stages: Array<{ stage: DealStage; label: string; color: string; textColor: string }> = [
+    { stage: 'First meeting scheduled', label: '1st Call', color: 'bg-blue-100 border-blue-300', textColor: 'text-blue-900' },
+    { stage: 'Discovery & Qualification', label: 'Discovery', color: 'bg-violet-100 border-violet-300', textColor: 'text-violet-900' },
+    { stage: 'Demo', label: 'Demo', color: 'bg-amber-100 border-amber-300', textColor: 'text-amber-900' },
+    { stage: 'Proposal / Negotiation', label: 'Proposal', color: 'bg-sky-100 border-sky-300', textColor: 'text-sky-900' },
+    { stage: 'Closed Won', label: 'Closed', color: 'bg-green-100 border-green-300', textColor: 'text-green-900' },
+  ];
+
+  const currentIndex = stages.findIndex((s) => s.stage === currentStage);
+
+  return (
+    <div className="py-4">
+      <div className="flex items-center h-10 rounded-lg overflow-hidden border">
+        {stages.map((item, index) => {
+          const isCompleted = index < currentIndex;
+          const isActive = index === currentIndex;
+          const isBeforeLastStage = index === stages.length - 2;
+
+          return (
+            <div key={item.stage} className="flex-1 h-full flex">
+              <div
+                className={`flex-1 h-full flex items-center justify-center transition-all ${
+                  isActive || isCompleted
+                    ? item.color
+                    : 'bg-gray-100'
+                }`}
+                style={{
+                  opacity: isCompleted || isActive ? 1 : 0.6,
+                }}
+              >
+                <span className={`text-xs font-semibold text-center px-1 ${
+                  isActive || isCompleted
+                    ? item.textColor
+                    : 'text-gray-600'
+                }`}>
+                  {item.label}
+                </span>
+              </div>
+              {isBeforeLastStage && (
+                <div className="w-px bg-white/40"></div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const MeetingCard: React.FC<{ label: string; date: string | null }> = ({ label, date }) => {
+  const formattedDate = date ? formatShortDate(date) : null;
+
+  return (
+    <div className="flex-1 rounded-lg border border-slate-200 bg-white p-4">
+      <div className="flex items-start gap-3">
+        <Calendar className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+        <div className="flex-1 min-w-0">
+          <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-1">
+            {label}
+          </h3>
+          {formattedDate ? (
+            <p className="text-sm font-medium text-foreground">{formattedDate}</p>
+          ) : (
+            <p className="text-sm text-muted-foreground">Not scheduled</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MeetingsRow: React.FC<{ lastMeeting: string | null; nextMeeting: string | null }> = ({
+  lastMeeting,
+  nextMeeting,
+}) => {
+  return (
+    <div className="py-4 flex gap-4">
+      <MeetingCard label="Last meeting" date={lastMeeting} />
+      <MeetingCard label="Next meeting" date={nextMeeting} />
+    </div>
+  );
+};
+
+const CollapsedMeddicsTable: React.FC<{
+  meddic?: DealDetailData['meddic'];
+}> = ({ meddic }) => {
+  if (!meddic) {
+    return null;
+  }
+
+  return (
+    <div className="overflow-x-auto border border-slate-200 rounded-lg">
+      <table className="w-full text-xs">
+        <thead className="bg-slate-50">
+          <tr>
+            <th className="text-left px-2 py-2 font-medium text-foreground">Component</th>
+            <th className="text-center px-2 py-2 font-medium text-foreground w-8">Status</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y">
+          {meddic.components.map((comp, i) => (
+            <tr key={i} className="hover:bg-slate-50 transition-colors">
+              <td className="px-2 py-2 text-foreground text-xs">{comp.name}</td>
+              <td className="px-2 py-2 text-center">{statusIcon(comp.status)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 const MeddicsSection: React.FC<{
   meddic?: DealDetailData['meddic'];
 }> = ({ meddic }) => {
@@ -1021,10 +1323,15 @@ const MeddicsSection: React.FC<{
   );
 };
 
-export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionChange }) => {
+export const DealDetailPageV2: React.FC<DealDetailPageV2Props> = ({ data, onVersionChange }) => {
+  const [dealName, setDealName] = React.useState(data.name);
   const [transcriptOpen, setTranscriptOpen] = React.useState(false);
   const [highlightQuote, setHighlightQuote] = React.useState<string | null>(null);
   const isNarrow = useIsNarrow(OVERLAY_BREAKPOINT);
+
+  const handleDealNameChange = React.useCallback((newName: string) => {
+    setDealName(newName);
+  }, []);
 
   const openTranscript = React.useCallback((quote: string) => {
     setHighlightQuote(quote);
@@ -1053,81 +1360,105 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
         <div className="flex flex-1 overflow-hidden">
           <div className="flex-1 bg-white overflow-y-auto">
             <div className="max-w-[1040px] mx-auto px-8 py-4 pb-32 w-full">
-            <DealHeader dealName={data.name} dealIconColor={data.icon_color} />
+            <DealHeader dealName={dealName} dealIconColor={data.icon_color} onNameChange={handleDealNameChange} />
             <MetadataRows data={data} />
 
             <Separator className="my-4" />
 
+            <DealStageProgress currentStage={data.stage_name} />
+
+            <CurrentStateSection summary={data.overview.momentum_summary} momentum={data.momentum} />
+
+            <MeetingsRow lastMeeting={data.last_meeting} nextMeeting={data.next_meeting} />
+
+            <div className="grid grid-cols-3 gap-6 mt-4">
+              <div className="col-span-2">
             <Tabs defaultValue="overview">
-              <TabsList className="bg-transparent p-0 h-auto border-b border-slate-200 w-full justify-start rounded-none gap-0">
+              <TabsList className="bg-transparent p-0 h-auto border-b border-slate-200 w-full justify-around rounded-none gap-0">
                 <TabsTrigger
                   value="overview"
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors px-4 pb-2.5 pt-2 text-sm font-medium"
+                  className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors pb-2.5 pt-2 text-sm font-medium"
                 >
                   Overview
                 </TabsTrigger>
                 <TabsTrigger
                   value="intel"
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors px-4 pb-2.5 pt-2 text-sm font-medium"
+                  className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors pb-2.5 pt-2 text-sm font-medium"
                 >
                   Intel
                 </TabsTrigger>
                 <TabsTrigger
                   value="meddic"
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors px-4 pb-2.5 pt-2 text-sm font-medium"
+                  className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors pb-2.5 pt-2 text-sm font-medium"
                 >
                   MEDDIC
-                </TabsTrigger>
-                <TabsTrigger
-                  value="stakeholders"
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors px-4 pb-2.5 pt-2 text-sm font-medium"
-                >
-                  Stakeholders
-                </TabsTrigger>
-                <TabsTrigger
-                  value="meetings"
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors px-4 pb-2.5 pt-2 text-sm font-medium"
-                >
-                  Meetings
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview">
-                <CurrentStateSection summary={data.overview.momentum_summary} momentum={data.momentum} />
                 <LastMeetingSection
                   title={data.overview.last_meeting.title}
                   bullets={data.overview.last_meeting.bullets}
+                  lastMeetingDate={data.last_meeting}
                 />
-                <PositiveSignalsSection signals={data.overview.positive_signals} />
-                <RiskFactorsSection risks={data.overview.risk_factors} />
-                <NextStepsSection steps={data.overview.next_steps} />
-
-                <Separator className="my-4" />
-
-                <OpportunitySummarySection data={data.opportunity_summary} />
-                <KeyStakeholdersSection stakeholders={data.key_stakeholders} />
+                <div className="pt-4 space-y-6">
+                  <PositiveSignalsSection signals={data.overview.positive_signals} />
+                  <RiskFactorsSection risks={data.overview.risk_factors} />
+                </div>
+                <div className="space-y-3">
+                  <NextStepsSection
+                    title="Our next steps"
+                    steps={data.overview.next_steps.filter(s => s.assignee.includes('Flex'))}
+                  />
+                  <NextStepsSection
+                    title="Their next steps"
+                    steps={data.overview.next_steps.filter(s => s.assignee.includes('PROVEN'))}
+                  />
+                </div>
               </TabsContent>
 
               <TabsContent value="intel">
+                <OpportunitySummarySection data={data.opportunity_summary} />
+                <Separator className="my-4" />
                 <IntelSection intel={data.intel} />
               </TabsContent>
 
               <TabsContent value="meddic">
                 <MeddicsSection meddic={data.meddic} />
               </TabsContent>
-
-              <TabsContent value="stakeholders">
-                <div className="py-12 text-center text-sm text-muted-foreground">
-                  Stakeholders content coming soon.
-                </div>
-              </TabsContent>
-
-              <TabsContent value="meetings">
-                <div className="py-12 text-center text-sm text-muted-foreground">
-                  Meetings content coming soon.
-                </div>
-              </TabsContent>
             </Tabs>
+              </div>
+
+              {/* Right column - MEDDIC & Meetings */}
+              <div className="border-l border-slate-200 pl-6 space-y-6">
+                <div>
+                  <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
+                    MEDDIC Status
+                  </h2>
+                  <CollapsedMeddicsTable meddic={data.meddic} />
+                </div>
+
+                <div>
+                  <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-4">
+                    Meetings
+                  </h2>
+                  <div className="space-y-2">
+                    <div className="rounded-lg border border-slate-200 bg-white p-3">
+                      <p className="text-xs text-foreground font-medium mb-1">PROVEN Skincare &lt;&gt; Flex</p>
+                      <p className="text-xs text-muted-foreground">Jan 15, 2026 at 1:00 PM</p>
+                    </div>
+                    <div className="rounded-lg border border-slate-200 bg-white p-3">
+                      <p className="text-xs text-foreground font-medium mb-1">PROVEN Skincare &lt;&gt; Flex</p>
+                      <p className="text-xs text-muted-foreground">Jan 23, 2026 at 12:30 PM</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <KeyStakeholdersSection stakeholders={data.key_stakeholders} />
+                </div>
+              </div>
+            </div>
             </div>
           </div>
 
@@ -1172,4 +1503,4 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
   );
 };
 
-export default DealDetailPage;
+export default DealDetailPageV2;

@@ -1,5 +1,20 @@
 # ACRONYM Prototypes
 
+## UI Components
+
+**Always use ShadCN components** from `@/components/ui/` instead of building custom components. ShadCN provides a consistent, accessible, and well-tested component library that ensures visual and behavioral consistency across the app.
+
+Common ShadCN components available:
+- `Badge` — for labels, tags, and status indicators
+- `Button` — for all button interactions
+- `Tabs` — for tab navigation
+- `Popover` — for tooltips and contextual menus
+- `Separator` — for visual dividers
+- `Checkbox` — for boolean inputs
+- `Breadcrumb` — for navigation hierarchy
+
+When building new features, check `src/components/ui/` first before creating custom UI solutions.
+
 ## Schema Compliance
 
 All types, mock data, and component code must conform to the Supabase schema defined in `src/db/schema.ts`.

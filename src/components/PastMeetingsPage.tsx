@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PastMeeting, Momentum } from '@/types';
 import {
   Table,
@@ -12,6 +13,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import {
   Calendar,
   PlusCircle,
   ChevronsUpDown,
@@ -20,6 +30,7 @@ import {
   Snowflake,
   Loader2,
   AlertCircle,
+  PanelLeft,
 } from 'lucide-react';
 
 interface PastMeetingsPageProps {
@@ -64,6 +75,7 @@ function SortableHeader({ label }: { label: string }) {
 }
 
 export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) => {
+  const navigate = useNavigate();
   const [search, setSearch] = React.useState('');
 
   const filtered = React.useMemo(() => {
@@ -84,14 +96,45 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
   );
 
   return (
-    <div className="flex-1 bg-white min-h-screen">
+    <div className="flex-1 bg-sidebar h-screen flex flex-col p-3 overflow-hidden">
+      <div className="bg-white rounded-lg shadow-md flex flex-col flex-1 overflow-hidden">
+      {/* Full-width header */}
+      <div className="flex-shrink-0 h-[50px] flex items-center px-3 gap-2">
+        <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
+          <PanelLeft className="h-4 w-4" />
+        </SidebarTrigger>
+        <div className="flex-1 flex items-center">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/meetings');
+                  }}
+                >
+                  Meetings
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Past Meetings</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      </div>
+      <div className="px-3">
+        <div className="border-t border-slate-200"></div>
+      </div>
       {/* Page header */}
       <div className="px-8 pt-8 pb-0">
+        {/* Title */}
         <div className="flex items-center gap-2.5 mb-6">
           <Calendar className="h-5 w-5 text-foreground" />
           <h1 className="text-2xl font-bold text-foreground">Past Meetings</h1>
         </div>
-
         {/* Filter bar */}
         <div className="flex items-center gap-2 mb-1">
           <Input
@@ -117,7 +160,7 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
       </div>
 
       {/* Table */}
-      <div className="px-8 pb-8">
+      <div className="px-8 pb-8 flex-1 overflow-y-auto">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
@@ -203,6 +246,7 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
             )}
           </TableBody>
         </Table>
+      </div>
       </div>
     </div>
   );

@@ -13,9 +13,9 @@ export const dealDetailDemoData: Record<string, DealDetailData> = {
     company_name: 'PROVEN Skincare',
     company_icon_color: 'bg-violet-200',
     company_logo_url: 'https://logo.clearbit.com/provenskincare.com',
-    customer_profile: 'Customer Profile Name',
+    customer_profile: 'Mid-Market E-Commerce',
     overview: {
-      momentum_summary: '🔵 Active - Deal is active with high quality discovery. Russell confirmed product eligibility and provided critical $15M ARR data to model the ROI, though margin concerns regarding fees need to be resolved in next week\'s pricing review.',
+      momentum_summary: 'Deal is active with high quality discovery. Russell confirmed product eligibility and provided critical $15M ARR data to model the ROI, though margin concerns regarding fees need to be resolved in next week\'s pricing review.',
       last_meeting: {
         title: 'Demo and pricing review with Russell Harris (Head of Product/Tech), Theresa Bischof (Brand), and Yuliia Pyrohova (Tech)',
         bullets: [
@@ -200,6 +200,409 @@ export const dealDetailDemoData: Record<string, DealDetailData> = {
               { quote: 'I need to prove to the team that this lift justifies the complexity', timestamp: '00:22:15' },
             ],
           },
+        },
+      ],
+    },
+    intel: {
+      sections: [
+        {
+          title: 'Business Context',
+          items: [
+            {
+              text: 'Revenue: $15M ARR ($1.25M/mo), processing ~10,000 monthly orders.',
+              reasoning: {
+                text: 'This scale indicates a mature e-commerce operation with significant volume. At ~1.5K orders/mo, the unit economics of HSA/FSA integration are meaningful.',
+                verbatims: [
+                  { quote: 'We do about $1.25M a month in revenue, processing roughly 10,000 orders', timestamp: '00:03:22' },
+                ],
+              },
+            },
+            {
+              text: 'Model: High focus on subscription recurring revenue (Skio) to drive CLTV.',
+              reasoning: {
+                text: 'Subscriptions are critical to their unit economics. Any friction in the subscription payment flow directly impacts lifetime value and retention.',
+                verbatims: [
+                  { quote: 'Our entire growth strategy depends on improving subscription retention and LTV', timestamp: '00:06:15' },
+                ],
+              },
+            },
+            {
+              text: 'Metrics: $108 blended AOV; recurring customers higher at $131 AOV.',
+              reasoning: {
+                text: 'The 21% AOV premium for recurring customers shows the value of their subscription model. HSA/FSA could unlock new subscription tiers.',
+                verbatims: [
+                  { quote: 'Our blended AOV is $108, but subscribers average $131—that\'s where the real margin is', timestamp: '00:07:30' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          title: 'Technical Environment',
+          items: [
+            {
+              text: 'Platform: Shopify + Skio for subscriptions.',
+              reasoning: {
+                text: 'Shopify is a standard ecommerce platform with mature API integrations. Skio is a specialized subscription platform that may have limitations for alternative payment methods.',
+                verbatims: [
+                  { quote: 'We run on Shopify with Skio for our subscription engine', timestamp: '00:09:45' },
+                ],
+              },
+            },
+            {
+              text: 'Critical Constraint: Cannot process direct HSA/FSA payments for Skio orders; must use post-purchase reimbursement flow.',
+              reasoning: {
+                text: 'This is the deal blocker. Russell sees this as a "potential deal killer" because it breaks the subscription UX and creates customer friction.',
+                verbatims: [
+                  { quote: 'Skio can\'t process HSA/FSA directly on subscriptions—that\'s a deal killer for us', timestamp: '00:12:05' },
+                ],
+              },
+            },
+            {
+              text: 'Architecture: "Hidden SKU" personalized products map via "Family of Products" logic (verified).',
+              reasoning: {
+                text: 'We\'ve confirmed their technical architecture can support our integration. This removes a major implementation risk.',
+                verbatims: [
+                  { quote: 'Our personalization engine creates thousands of SKUs, but the Family of Products mapping should work with your system', timestamp: '00:15:40' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          title: 'Competitive Landscape',
+          items: [
+            {
+              text: 'Status Quo: Shopify Payments (Standard Credit/Debit).',
+              reasoning: {
+                text: 'They currently have a working payment system. The bar for switching is high—we need to prove clear ROI.',
+                verbatims: [
+                  { quote: 'Right now we just use standard Shopify Payments for everything', timestamp: '00:04:30' },
+                ],
+              },
+            },
+            {
+              text: 'Competitor: "Do Nothing" is the primary threat due to the friction introduced to the subscription flow.',
+              reasoning: {
+                text: 'The reimbursement workaround creates enough friction that they may decide to forego HSA/FSA entirely rather than degrade subscription experience.',
+                verbatims: [
+                  { quote: 'If there\'s too much friction, we\'ll just skip HSA/FSA and focus on what we\'re already doing', timestamp: '00:20:10' },
+                ],
+              },
+            },
+            {
+              text: 'No direct HSA/FSA competitors mentioned.',
+              reasoning: {
+                text: 'This is a greenfield opportunity. Russell hasn\'t mentioned evaluating alternative HSA/FSA processors, suggesting they\'re evaluating us on our merits.',
+                verbatims: [
+                  { quote: 'You\'re the first HSA/FSA provider we\'ve seriously looked at', timestamp: '00:02:50' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          title: 'Timeline & Urgency',
+          items: [
+            {
+              text: 'Immediate evaluation: Internal team review scheduled for Tuesday.',
+              reasoning: {
+                text: 'This is a near-term decision point. Russell is personally driving the internal review, indicating executive priority.',
+                verbatims: [
+                  { quote: 'We\'re scheduling an internal alignment meeting for Tuesday to make a decision', timestamp: '00:28:15' },
+                ],
+              },
+            },
+            {
+              text: 'Driver: Russell\'s internal optimization roadmap; no external compelling event (e.g., fiscal year end).',
+              reasoning: {
+                text: 'This is self-initiated optimization, not crisis-driven. It\'s a lower-urgency deal that could slip if the math doesn\'t work.',
+                verbatims: [
+                  { quote: 'This is part of our Q1 optimization roadmap, not a must-have', timestamp: '00:26:45' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          title: 'Commercial Terms',
+          items: [
+            {
+              text: 'Proposal: 4.5% + $0.30 transaction fee + $8.00 per Letter of Medical Necessity (LMN).',
+              reasoning: {
+                text: 'Enterprise pricing reflects their $15M ARR scale. At 10k orders/mo, this is ~$0.80/order in fixed fees alone.',
+                verbatims: [
+                  { quote: 'So you\'re looking at 4.5% plus $0.30 per transaction and $8 per LMN', timestamp: '00:17:22' },
+                ],
+              },
+            },
+            {
+              text: 'LMN Terms: Valid for 12 months, covering reorders.',
+              reasoning: {
+                text: 'This is favorable for recurring customers on subscriptions—one LMN covers all future orders in the 12-month window.',
+                verbatims: [
+                  { quote: 'One LMN good for a year across all orders is actually pretty clean for subscriptions', timestamp: '00:18:05' },
+                ],
+              },
+            },
+            {
+              text: 'Requirement: Net margin impact must be positive after fees.',
+              reasoning: {
+                text: 'Russell is explicit: fees must be offset by conversion lift. This is non-negotiable for their margin targets.',
+                verbatims: [
+                  { quote: 'We need to see net margin improvement, not just revenue', timestamp: '00:19:50' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          title: 'Decision Dynamics',
+          items: [
+            {
+              text: 'Economic Buyer: Russell Harris (Head of Product/Tech) is driving the decision and financial modeling.',
+              reasoning: {
+                text: 'Russell is the decision-maker and will personally validate the ROI. This is a technical founder who thinks in unit economics.',
+                verbatims: [
+                  { quote: 'I\'ll need to validate this through our unit economics model before we move forward', timestamp: '00:21:30' },
+                ],
+              },
+            },
+            {
+              text: 'Stakeholders: Theresa Bischof (Brand) and Yuliia Pyrohova (Tech) involved in vetting.',
+              reasoning: {
+                text: 'Their involvement signals serious intent. Theresa is prepping customer-facing copy, and Yuliia is vetting technical feasibility.',
+                verbatims: [
+                  { quote: 'Theresa will need to review how this works from a brand perspective, and Yuliia will validate the technical integration', timestamp: '00:23:10' },
+                ],
+              },
+            },
+            {
+              text: 'Process: Russell acts as the gatekeeper; if the math works, they likely proceed.',
+              reasoning: {
+                text: 'This is a bottleneck decision. If Russell validates the ROI model positively, the other stakeholders will likely follow.',
+                verbatims: [
+                  { quote: 'If I can make the numbers work, we\'ll move forward quickly', timestamp: '00:27:45' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          title: 'Relationship Intelligence',
+          items: [
+            {
+              text: 'Champion Style: Russell is direct, skeptical, and analytical ("do the math").',
+              reasoning: {
+                text: 'Russell wants to "run this through our unit economics model" personally. He\'s not going to be sold on vision—only numbers.',
+                verbatims: [
+                  { quote: 'I want to run this through our unit economics model myself', timestamp: '00:12:38' },
+                ],
+              },
+            },
+            {
+              text: 'Sentiment: Russell is "bummed" by the subscription limitation but remains engaged to see if the acquisition lift compensates for it.',
+              reasoning: {
+                text: 'Despite the friction concern, Russell hasn\'t walked away. He\'s willing to move forward if the math works. The deal is salvageable.',
+                verbatims: [
+                  { quote: 'I\'m bummed about the subscription friction, but if the conversion lift is real, we might make it work', timestamp: '00:25:15' },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+    meddic: {
+      components: [
+        {
+          name: 'Metrics',
+          status: 'complete',
+          information: '~$1.25M/mo revenue, 4.5% fee + $8 LMN',
+          details: [
+            {
+              text: 'Revenue Base: ~$1.25M monthly revenue',
+              reasoning: {
+                text: 'Russell Harris provided specific financial metrics to model the ROI. This is a significant volume that makes the transaction fees economically meaningful.',
+                verbatims: [
+                  { quote: 'We do about $1.25M a month in revenue, processing roughly 10,000 orders', timestamp: '00:03:22' },
+                ],
+              },
+            },
+            {
+              text: 'Pricing: 4.5% + $0.30 transaction + $8 LMN',
+              reasoning: {
+                text: 'Russell is actively calculating the break-even point between these fees and the projected conversion lift. The deal hinges entirely on whether his internal modeling validates the 6.38x ROI projection.',
+                verbatims: [
+                  { quote: 'So you\'re looking at 4.5% plus $0.30 per transaction and $8 per LMN', timestamp: '00:17:22' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          name: 'Economic Buyer',
+          status: 'complete',
+          information: 'Russell Harris (Head of Product/Tech)',
+          details: [
+            {
+              text: 'Russell Harris confirmed as decision-maker driving the evaluation',
+              reasoning: {
+                text: 'He invited the team, explicitly stated he will "do the math" to make the decision, and is personally building the ROI model.',
+                verbatims: [
+                  { quote: 'If you can send me the specifics around costs... I would like to compare costs to expected conversion', timestamp: '00:21:30' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          name: 'Decision Process',
+          status: 'partial',
+          information: 'Internal review Tuesday; signature steps unknown',
+          details: [
+            {
+              text: 'Known: Russell Harris will review ROI model and hold internal team discussion on Tuesday',
+              reasoning: {
+                text: 'This is the critical near-term decision point. Russell is personally driving the internal alignment.',
+                verbatims: [
+                  { quote: 'We\'re scheduling an internal alignment meeting for Tuesday to make a decision', timestamp: '00:28:15' },
+                ],
+              },
+            },
+            {
+              text: 'Gap: Unknown if legal or finance (CFO) needs to sign off on contract after Russell approves',
+              reasoning: {
+                text: 'We have visibility to the decision-maker but not full visibility into the approval workflow beyond Russell\'s sign-off.',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Decision Criteria',
+          status: 'complete',
+          information: 'Net Margin > Fees; Subscription UX friction',
+          details: [
+            {
+              text: 'Financial: Incremental revenue must exceed transaction and medical letter fees',
+              reasoning: {
+                text: 'Russell is explicit that fees must be offset by conversion lift. This is non-negotiable for their margin targets.',
+                verbatims: [
+                  { quote: 'We need to see net margin improvement, not just revenue', timestamp: '00:19:50' },
+                ],
+              },
+            },
+            {
+              text: 'User Experience: Reimbursement flow friction for Skio subscriptions is a new critical negative criterion',
+              reasoning: {
+                text: 'PROVEN must decide if the post-purchase reimbursement workaround is an acceptable compromise for their subscription customers.',
+                verbatims: [
+                  { quote: 'The subscription friction is a complete killer for our LTV strategy', timestamp: '00:19:15' },
+                ],
+              },
+            },
+            {
+              text: 'Architecture: Must support "Hidden SKU" logic (Verified)',
+              reasoning: {
+                text: 'Technical validation removed this as a blocker. Their personalized product architecture is compatible with our integration.',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Decision Maker',
+          status: 'complete',
+          information: 'Russell Harris (implied authority)',
+          details: [
+            {
+              text: 'Russell Harris appears to have authority to say yes or no based on technical and economic fit',
+              reasoning: {
+                text: 'As Head of Product/Tech and founder-level role, Russell has the authority to make this decision. His team defers to his analysis.',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Identify Pain',
+          status: 'complete',
+          information: 'Conversion lift; "cannibalization" vs new growth',
+          details: [
+            {
+              text: 'Primary Pain: Need to increase conversion rates and AOV',
+              reasoning: {
+                text: 'HSA/FSA spending is an untapped revenue channel for premium skincare. Russell explicitly sees this as a lever for growth.',
+                verbatims: [
+                  { quote: 'We want to tap into the HSA/FSA market to drive higher AOV', timestamp: '00:05:12' },
+                ],
+              },
+            },
+            {
+              text: 'Secondary Pain: Concern about cannibalizing full-price sales without net-new volume',
+              reasoning: {
+                text: 'Russell is worried that HSA/FSA will shift existing customers from full-price to discounted path, rather than attracting truly new volume.',
+                verbatims: [
+                  { quote: 'We need to see real conversion lift numbers to justify the fees to our finance team', timestamp: '00:14:20' },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          name: 'Champion',
+          status: 'partial',
+          information: 'Russell Harris (Self-championing)',
+          details: [
+            {
+              text: 'Russell is self-championing: drove the meeting, brought the team, investigating the opportunity',
+              reasoning: {
+                text: 'Russell is the primary driver. However, he is also the primary skeptic regarding the subscription limitation.',
+              },
+            },
+            {
+              text: 'Gap: Flex lacks internal advocate who can "sell" the reimbursement workaround if Russell has doubts',
+              reasoning: {
+                text: 'Theresa and Yuliia are evaluating but not championing. If Russell decides the subscription friction is too much, there\'s no internal counterargument prepared.',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Competition',
+          status: 'complete',
+          information: 'Status Quo (Shopify Payments)',
+          details: [
+            {
+              text: 'Status Quo: Shopify Payments (Standard Credit/Debit)',
+              reasoning: {
+                text: 'They currently have a working payment system. The primary competition is "do nothing" rather than another vendor.',
+                verbatims: [
+                  { quote: 'Right now we just use standard Shopify Payments for everything', timestamp: '00:04:30' },
+                ],
+              },
+            },
+            {
+              text: 'Barrier: Low cost of status quo vs premium cost of HSA/FSA integration',
+              reasoning: {
+                text: 'No other HSA/FSA vendors mentioned. Competition is inertia and the simplicity of their current setup.',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Compelling Event',
+          status: 'missing',
+          information: 'None identified',
+          details: [
+            {
+              text: 'No external deadline mentioned (e.g., fiscal year end, open enrollment)',
+              reasoning: {
+                text: 'Timeline is self-imposed by Russell\'s optimization roadmap. This is lower urgency and could slip if the math doesn\'t work out.',
+                verbatims: [
+                  { quote: 'This is part of our Q1 optimization roadmap, not a must-have', timestamp: '00:26:45' },
+                ],
+              },
+            },
+          ],
         },
       ],
     },

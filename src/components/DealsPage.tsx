@@ -39,7 +39,15 @@ import {
   ChevronsLeft,
   ChevronsRight,
   X,
+  PanelLeft,
 } from 'lucide-react';
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbPage,
+} from '@/components/ui/breadcrumb';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 
 interface DealsPageProps {
   deals: Deal[];
@@ -236,16 +244,33 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals }) => {
   }, [search, stageFilters, momentumFilters]);
 
   return (
-    <div className="flex-1 bg-white min-h-screen flex flex-col">
-      {/* Page header */}
-      <div className="px-8 pt-8 pb-0">
-        <div className="flex items-center gap-2.5 mb-6">
-          <Diamond className="h-5 w-5 text-foreground" />
-          <h1 className="text-2xl font-bold text-foreground">Deals</h1>
+    <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
+      {/* Main table area */}
+      <div className="flex-1 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
+        {/* Full-width header - sticky */}
+        <div className="z-20 bg-white h-[50px] flex items-center px-3 gap-2 border-b border-slate-200 flex-shrink-0">
+          <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
+            <PanelLeft className="h-4 w-4" />
+          </SidebarTrigger>
+          <div className="flex-1 flex items-center">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Deals</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
         </div>
-
-        {/* Filter bar */}
-        <div className="flex items-center gap-2 mb-6">
+        {/* Page header */}
+        <div className="px-8 pt-8 pb-0">
+          {/* Title */}
+          <div className="flex items-center gap-2.5 mb-6">
+            <Diamond className="h-5 w-5 text-foreground" />
+            <h1 className="text-2xl font-bold text-foreground">Deals</h1>
+          </div>
+          {/* Filter bar */}
+          <div className="flex items-center gap-2 mb-6">
           <Input
             placeholder="Filter deals..."
             value={search}
@@ -359,11 +384,11 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals }) => {
             View
           </Button>
         </div>
-      </div>
+        </div>
 
-      {/* Table */}
-      <div className="px-8 flex-1">
-        <div className="border border-slate-200 rounded-lg overflow-hidden">
+        {/* Table */}
+        <div className="px-8 flex-1 overflow-y-auto flex flex-col">
+        <div className="border border-slate-200 rounded-lg overflow-hidden flex-shrink-0">
           <Table className="flex-1">
           <TableHeader>
             <TableRow className="hover:bg-transparent">
@@ -534,6 +559,7 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals }) => {
               <ChevronsRight className="h-4 w-4" />
             </Button>
           </div>
+        </div>
         </div>
       </div>
     </div>

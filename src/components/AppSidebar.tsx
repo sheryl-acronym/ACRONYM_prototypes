@@ -22,7 +22,7 @@ import {
   CollapsibleContent,
 } from '@/components/ui/collapsible';
 import {
-  Diamond,
+  Box,
   Calendar,
   BookOpen,
   ChevronDown,
@@ -40,12 +40,9 @@ export default function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-row items-center justify-between px-4 pt-5 pb-4">
-        <span className="text-lg tracking-tight group-data-[collapsible=icon]:hidden" style={{ fontFamily: "'Oxanium', sans-serif", fontWeight: 800 }}>
+        <span className="text-2xl tracking-tight group-data-[collapsible=icon]:hidden" style={{ fontFamily: "'Oxanium', sans-serif", fontWeight: 800 }}>
           ACRONYM.
         </span>
-        <SidebarTrigger className="h-6 w-6">
-          <PanelLeft className="h-4 w-4" />
-        </SidebarTrigger>
       </SidebarHeader>
 
       <SidebarContent>
@@ -55,9 +52,7 @@ export default function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton tooltip="Flex" className="h-auto py-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-900 text-white text-xs font-bold flex-shrink-0">
-                    F.
-                  </span>
+                  <img src="/flexlogo.png" alt="Flex" className="h-8 w-8 rounded-md flex-shrink-0 object-contain" />
                   <span className="flex flex-col leading-tight">
                     <span className="text-sm font-semibold">Flex</span>
                     <span className="text-xs text-muted-foreground">withflex.com</span>
@@ -80,7 +75,7 @@ export default function AppSidebar() {
                   className="h-9"
                 >
                   <Link to="/deals">
-                    <Diamond className="h-4 w-4" />
+                    <Box className="h-4 w-4" />
                     <span>Deals</span>
                   </Link>
                 </SidebarMenuButton>
@@ -139,17 +134,7 @@ export default function AppSidebar() {
                     <SidebarMenuSub className="gap-0 py-1 ml-4 pl-3">
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton className="h-8">
-                          <span>FAQs</span>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton className="h-8">
-                          <span>Objections</span>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton className="h-8">
-                          <span>Discovery Questions</span>
+                          <span>Positioning</span>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
@@ -160,6 +145,21 @@ export default function AppSidebar() {
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton className="h-8">
                           <span>Buyer Personas</span>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton className="h-8">
+                          <span>Discovery Questions</span>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton className="h-8">
+                          <span>FAQs</span>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton className="h-8">
+                          <span>Objections</span>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     </SidebarMenuSub>

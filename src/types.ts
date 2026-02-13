@@ -103,6 +103,7 @@ export interface Deal {
 export interface Verbatim {
   quote: string;
   timestamp?: string;
+  speaker?: string;
 }
 
 export interface ReasoningWithVerbatims {
@@ -160,6 +161,20 @@ export interface DealDetailData {
     how_we_help: (string | { text: string; reasoning?: ReasoningWithVerbatims })[];
     why_now: (string | { text: string; reasoning?: ReasoningWithVerbatims })[];
     budget_and_roi: (string | { text: string; reasoning?: ReasoningWithVerbatims })[];
+  };
+  intel?: {
+    sections: {
+      title: string;
+      items: (string | { text: string; reasoning?: ReasoningWithVerbatims })[];
+    }[];
+  };
+  meddic?: {
+    components: {
+      name: string;
+      status: 'complete' | 'partial' | 'missing';
+      information: string;
+      details?: (string | { text: string; reasoning?: ReasoningWithVerbatims })[];
+    }[];
   };
   key_stakeholders: KeyStakeholder[];
 }
