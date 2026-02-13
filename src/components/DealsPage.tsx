@@ -22,14 +22,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Diamond,
+  Box,
   PlusCircle,
   ChevronsUpDown,
   ArrowUp,
   ArrowDown,
   Calendar,
   User,
-  SlidersHorizontal,
   LayoutGrid,
   Square,
   MessageSquare,
@@ -40,6 +39,8 @@ import {
   ChevronsRight,
   X,
   PanelLeft,
+  Table as TableIcon,
+  Columns,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -153,6 +154,113 @@ function SortableHeader({
   );
 }
 
+function DealCard({ deal, onClick }: { deal: Deal; onClick: () => void }) {
+  const config = momentumConfig[deal.momentum];
+  return (
+    <div
+      className="bg-white border border-slate-200 rounded-md p-3 cursor-pointer hover:shadow-md transition-shadow"
+      onClick={onClick}
+    >
+      <div className="flex items-start gap-2 mb-2">
+        <span className={`w-3 h-3 rounded-full flex-shrink-0 mt-0.5 ${config.dot}`} />
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-medium text-foreground mb-1 line-clamp-2">{deal.name}</div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            {deal.company_logo_url ? (
+              <img
+                src={deal.company_logo_url}
+                alt={deal.company_name}
+                className="w-3.5 h-3.5 rounded object-contain flex-shrink-0 border border-border/50"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.style.display = 'none';
+                  target.nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+            ) : null}
+            <span
+              className={`w-3.5 h-3.5 rounded flex-shrink-0 flex items-center justify-center text-[8px] leading-none text-muted-foreground ${deal.company_logo_url ? 'hidden' : ''}`}
+              style={{ fontFamily: 'Oxanium, sans-serif', fontWeight: 800 }}
+            >
+              {deal.company_name.charAt(0).toUpperCase()}.
+            </span>
+            <span className="truncate">{deal.company_name}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-1.5">
+        <MomentumCell momentum={deal.momentum} />
+
+        {deal.next_meeting && (
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Calendar className="h-3 w-3 flex-shrink-0" />
+            <span className="truncate">{formatShortDate(deal.next_meeting)}</span>
+          </div>
+        )}
+
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <User className="h-3 w-3 flex-shrink-0" />
+          <span className="truncate">{deal.owner_name}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function KanbanBoardView({ deals, onDealClick }: { deals: Deal[]; onDealClick: (dealId: string) => void }) {
+  const dealsByStage = React.useMemo(() => {
+    const grouped: Record<DealStage, Deal[]> = {
+      'First meeting scheduled': [],
+      'Discovery & Qualification': [],
+      'Demo': [],
+      'Proposal / Negotiation': [],
+      'Closed Won': [],
+      'Closed Lost': [],
+    };
+
+    deals.forEach((deal) => {
+      grouped[deal.stage_name].push(deal);
+    });
+
+    return grouped;
+  }, [deals]);
+
+  return (
+    <div className="flex gap-4 h-full pb-4">
+      {allStages.map((stage) => {
+        const stageDeals = dealsByStage[stage];
+        const config = stageConfig[stage];
+
+        return (
+          <div key={stage} className="w-[340px] flex-shrink-0 flex flex-col">
+            <div className={`${config.bg} ${config.border} border rounded-t-lg px-3 py-2 flex items-center justify-between`}>
+              <div className="flex items-center gap-2">
+                <span className={`text-sm font-medium ${config.text}`}>{stage}</span>
+                <Badge variant="secondary" className="rounded-sm px-1.5 py-0 text-xs font-normal">
+                  {stageDeals.length}
+                </Badge>
+              </div>
+            </div>
+
+            <div className="flex-1 bg-slate-50 border-x border-b border-slate-200 rounded-b-lg p-2 overflow-y-auto space-y-2">
+              {stageDeals.length === 0 ? (
+                <div className="text-center text-sm text-muted-foreground py-8">
+                  No deals
+                </div>
+              ) : (
+                stageDeals.map((deal) => (
+                  <DealCard key={deal.id} deal={deal} onClick={() => onDealClick(deal.id)} />
+                ))
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export const DealsPage: React.FC<DealsPageProps> = ({ deals }) => {
   const navigate = useNavigate();
   const [search, setSearch] = React.useState('');
@@ -162,6 +270,7 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals }) => {
   const [momentumFilters, setMomentumFilters] = React.useState<Set<Momentum>>(new Set());
   const [sortField, setSortField] = React.useState<SortField>('last_meeting');
   const [sortDir, setSortDir] = React.useState<SortDir>('desc');
+  const [viewMode, setViewMode] = React.useState<'table' | 'board'>('table');
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -246,7 +355,7 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals }) => {
   return (
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
       {/* Main table area */}
-      <div className="flex-1 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
+      <div className="flex-1 min-w-0 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
         {/* Full-width header - sticky */}
         <div className="z-20 bg-white h-[50px] flex items-center px-3 gap-2 border-b border-slate-200 flex-shrink-0">
           <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
@@ -263,10 +372,10 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals }) => {
           </div>
         </div>
         {/* Page header */}
-        <div className="px-8 pt-8 pb-0">
+        <div className="px-8 pt-8 pb-0 flex-shrink-0">
           {/* Title */}
           <div className="flex items-center gap-2.5 mb-6">
-            <Diamond className="h-5 w-5 text-foreground" />
+            <Box className="h-5 w-5 text-foreground" />
             <h1 className="text-2xl font-bold text-foreground">Deals</h1>
           </div>
           {/* Filter bar */}
@@ -379,188 +488,218 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals }) => {
           </Popover>
 
           <div className="flex-1" />
-          <Button variant="outline" size="sm" className="gap-1.5 h-8 text-sm font-normal">
-            <SlidersHorizontal className="h-3.5 w-3.5" />
-            View
-          </Button>
-        </div>
-        </div>
-
-        {/* Table */}
-        <div className="px-8 flex-1 overflow-y-auto flex flex-col">
-        <div className="border border-slate-200 rounded-lg overflow-hidden flex-shrink-0">
-          <Table className="flex-1">
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <TableHead>
-                <SortableHeader label="Deal stage" icon={LayoutGrid} field="stage_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
-              </TableHead>
-              <TableHead>
-                <SortableHeader label="Deal name" icon={Diamond} field="name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
-              </TableHead>
-              <TableHead>
-                <SortableHeader label="Momentum" icon={Square} field="momentum" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
-              </TableHead>
-              <TableHead>
-                <SortableHeader label="Last meeting" icon={MessageSquare} field="last_meeting" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
-              </TableHead>
-              <TableHead>
-                <SortableHeader label="Next meeting" icon={Calendar} field="next_meeting" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
-              </TableHead>
-              <TableHead>
-                <SortableHeader label="Owner" icon={User} field="owner_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
-              </TableHead>
-              <TableHead>
-                <SortableHeader label="Company" icon={Building2} field="company_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {paginatedDeals.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={7} className="h-32 text-center text-muted-foreground">
-                  No deals found.
-                </TableCell>
-              </TableRow>
-            ) : (
-              paginatedDeals.map((deal) => (
-                <TableRow key={deal.id} className="cursor-pointer" onClick={() => navigate(`/deals/${deal.id}`)}>
-                  <TableCell>
-                    <StageCell stage={deal.stage_name} />
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <span className={`w-4 h-4 rounded-full flex-shrink-0 ${momentumConfig[deal.momentum].dot}`} />
-                      <span className="text-sm">{deal.name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <MomentumCell momentum={deal.momentum} />
-                  </TableCell>
-                  <TableCell>
-                    {deal.last_meeting ? (
-                      <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        {formatShortDate(deal.last_meeting)}
-                      </Badge>
-                    ) : (
-                      <span className="text-sm text-muted-foreground">-</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {deal.next_meeting ? (
-                      <span className="text-sm text-muted-foreground">
-                        {formatShortDate(deal.next_meeting)}
-                      </span>
-                    ) : (
-                      <span className="text-sm text-muted-foreground">No meeting scheduled</span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-                      <User className="h-3 w-3" />
-                      {deal.owner_name}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      {deal.company_logo_url ? (
-                        <img
-                          src={deal.company_logo_url}
-                          alt={deal.company_name}
-                          className="w-4 h-4 rounded object-contain flex-shrink-0 border border-border/50"
-                          onError={(e) => {
-                            const target = e.currentTarget;
-                            target.style.display = 'none';
-                            target.nextElementSibling?.classList.remove('hidden');
-                          }}
-                        />
-                      ) : null}
-                      <span
-                        className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center text-[10px] leading-none text-muted-foreground ${deal.company_logo_url ? 'hidden' : ''}`}
-                        style={{ fontFamily: 'Oxanium, sans-serif', fontWeight: 800 }}
-                      >
-                        {deal.company_name.charAt(0).toUpperCase()}.
-                      </span>
-                      <span className="text-sm">{deal.company_name}</span>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-        </div>
-      </div>
-
-      {/* Pagination */}
-      <div className="px-8 py-4 flex items-center justify-between border-t">
-        <div className="text-sm text-muted-foreground">
-          0 of {filtered.length} row(s) selected.
-        </div>
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Rows per page</span>
-            <Select
-              value={String(rowsPerPage)}
-              onValueChange={(val) => {
-                setRowsPerPage(Number(val));
-                setPage(0);
-              }}
-            >
-              <SelectTrigger className="h-8 w-16 text-sm">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="25">25</SelectItem>
-                <SelectItem value="50">50</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <span className="text-sm text-muted-foreground">
-            Page {page + 1} of {totalPages || 1}
-          </span>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 border rounded-md p-0.5">
             <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setPage(0)}
-              disabled={page === 0}
+              variant={viewMode === 'table' ? 'secondary' : 'ghost'}
+              size="sm"
+              className="gap-1.5 h-7 text-xs font-normal"
+              onClick={() => setViewMode('table')}
             >
-              <ChevronsLeft className="h-4 w-4" />
+              <TableIcon className="h-3.5 w-3.5" />
+              Table view
             </Button>
             <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setPage(page - 1)}
-              disabled={page === 0}
+              variant={viewMode === 'board' ? 'secondary' : 'ghost'}
+              size="sm"
+              className="gap-1.5 h-7 text-xs font-normal"
+              onClick={() => setViewMode('board')}
             >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setPage(page + 1)}
-              disabled={page >= totalPages - 1}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setPage(totalPages - 1)}
-              disabled={page >= totalPages - 1}
-            >
-              <ChevronsRight className="h-4 w-4" />
+              <Columns className="h-3.5 w-3.5" />
+              By deal stage
             </Button>
           </div>
         </div>
         </div>
+
+        {/* Content area - Table or Board view */}
+        {viewMode === 'table' ? (
+          <>
+            {/* Table */}
+            <div className="px-8 flex-1 overflow-y-auto flex flex-col">
+              <div className="border border-slate-200 rounded-lg overflow-hidden flex-shrink-0">
+                <Table className="flex-1">
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead>
+                        <SortableHeader label="Deal stage" icon={LayoutGrid} field="stage_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                      </TableHead>
+                      <TableHead>
+                        <SortableHeader label="Deal name" icon={Box} field="name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                      </TableHead>
+                      <TableHead>
+                        <SortableHeader label="Momentum" icon={Square} field="momentum" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                      </TableHead>
+                      <TableHead>
+                        <SortableHeader label="Last meeting" icon={MessageSquare} field="last_meeting" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                      </TableHead>
+                      <TableHead>
+                        <SortableHeader label="Next meeting" icon={Calendar} field="next_meeting" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                      </TableHead>
+                      <TableHead>
+                        <SortableHeader label="Owner" icon={User} field="owner_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                      </TableHead>
+                      <TableHead>
+                        <SortableHeader label="Company" icon={Building2} field="company_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedDeals.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={7} className="h-32 text-center text-muted-foreground">
+                          No deals found.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      paginatedDeals.map((deal) => (
+                        <TableRow key={deal.id} className="cursor-pointer" onClick={() => navigate(`/deals/${deal.id}`)}>
+                          <TableCell>
+                            <StageCell stage={deal.stage_name} />
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <span className={`w-4 h-4 rounded-full flex-shrink-0 ${momentumConfig[deal.momentum].dot}`} />
+                              <span className="text-sm">{deal.name}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <MomentumCell momentum={deal.momentum} />
+                          </TableCell>
+                          <TableCell>
+                            {deal.last_meeting ? (
+                              <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
+                                <Calendar className="h-3 w-3" />
+                                {formatShortDate(deal.last_meeting)}
+                              </Badge>
+                            ) : (
+                              <span className="text-sm text-muted-foreground">-</span>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {deal.next_meeting ? (
+                              <span className="text-sm text-muted-foreground">
+                                {formatShortDate(deal.next_meeting)}
+                              </span>
+                            ) : (
+                              <span className="text-sm text-muted-foreground">No meeting scheduled</span>
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
+                              <User className="h-3 w-3" />
+                              {deal.owner_name}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              {deal.company_logo_url ? (
+                                <img
+                                  src={deal.company_logo_url}
+                                  alt={deal.company_name}
+                                  className="w-4 h-4 rounded object-contain flex-shrink-0 border border-border/50"
+                                  onError={(e) => {
+                                    const target = e.currentTarget;
+                                    target.style.display = 'none';
+                                    target.nextElementSibling?.classList.remove('hidden');
+                                  }}
+                                />
+                              ) : null}
+                              <span
+                                className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center text-[10px] leading-none text-muted-foreground ${deal.company_logo_url ? 'hidden' : ''}`}
+                                style={{ fontFamily: 'Oxanium, sans-serif', fontWeight: 800 }}
+                              >
+                                {deal.company_name.charAt(0).toUpperCase()}.
+                              </span>
+                              <span className="text-sm">{deal.company_name}</span>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
+
+            {/* Pagination */}
+            <div className="px-8 py-4 flex items-center justify-between border-t">
+              <div className="text-sm text-muted-foreground">
+                0 of {filtered.length} row(s) selected.
+              </div>
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">Rows per page</span>
+                  <Select
+                    value={String(rowsPerPage)}
+                    onValueChange={(val) => {
+                      setRowsPerPage(Number(val));
+                      setPage(0);
+                    }}
+                  >
+                    <SelectTrigger className="h-8 w-16 text-sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="10">10</SelectItem>
+                      <SelectItem value="25">25</SelectItem>
+                      <SelectItem value="50">50</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <span className="text-sm text-muted-foreground">
+                  Page {page + 1} of {totalPages || 1}
+                </span>
+                <div className="flex items-center gap-1">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => setPage(0)}
+                    disabled={page === 0}
+                  >
+                    <ChevronsLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => setPage(page - 1)}
+                    disabled={page === 0}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => setPage(page + 1)}
+                    disabled={page >= totalPages - 1}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => setPage(totalPages - 1)}
+                    disabled={page >= totalPages - 1}
+                  >
+                    <ChevronsRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* Board view */}
+            <div className="flex-1 min-h-0 overflow-hidden">
+              <div className="h-full overflow-auto px-8">
+                <KanbanBoardView deals={filtered} onDealClick={(dealId) => navigate(`/deals/${dealId}`)} />
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

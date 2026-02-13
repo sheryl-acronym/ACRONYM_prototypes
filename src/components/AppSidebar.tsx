@@ -174,15 +174,29 @@ export default function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Contacts" className="h-9">
-                  <User className="h-4 w-4" />
-                  <span>Contacts</span>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === '/companies'}
+                  tooltip="Companies"
+                  className="h-9"
+                >
+                  <Link to="/companies">
+                    <Building2 className="h-4 w-4" />
+                    <span>Companies</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Companies" className="h-9">
-                  <Building2 className="h-4 w-4" />
-                  <span>Companies</span>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === '/contacts'}
+                  tooltip="Contacts"
+                  className="h-9"
+                >
+                  <Link to="/contacts">
+                    <User className="h-4 w-4" />
+                    <span>Contacts</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>

@@ -6,6 +6,8 @@ import DealDetailPage from '@/components/DealDetailPage';
 import DealDetailPageV2 from '@/components/DealDetailPageV2';
 import PastMeetingsPage from '@/components/PastMeetingsPage';
 import UpcomingMeetingsPage from '@/components/UpcomingMeetingsPage';
+import CompaniesPage from '@/components/CompaniesPage';
+import ContactsPage from '@/components/ContactsPage';
 import AppSidebar from '@/components/AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { provenDemoData } from '@/proven-demo-data';
@@ -13,6 +15,8 @@ import { dealsData } from '@/deals-demo-data';
 import { dealDetailDemoData } from '@/deal-detail-demo-data';
 import { pastMeetingsData } from '@/past-meetings-data';
 import { upcomingMeetingsData } from '@/upcoming-meetings-data';
+import { companiesData } from '@/companies-demo-data';
+import { contactsData } from '@/contacts-demo-data';
 
 const meetingBriefData: Record<string, typeof provenDemoData> = {
   'um-001': provenDemoData,
@@ -95,6 +99,8 @@ function App() {
             <Route path="/meetings" element={<UpcomingMeetingsPage meetings={upcomingMeetingsData} briefData={meetingBriefData} />} />
             <Route path="/meetings/um-001" element={<PreCallBrief data={provenDemoData} />} />
             <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} />} />
+            <Route path="/companies" element={<CompaniesPage companies={companiesData} />} />
+            <Route path="/contacts" element={<ContactsPage contacts={contactsData} />} />
           </Routes>
         </SidebarInset>
       </SidebarProvider>

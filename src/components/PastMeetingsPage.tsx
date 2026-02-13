@@ -22,6 +22,12 @@ import {
 } from '@/components/ui/breadcrumb';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import {
   Calendar,
   PlusCircle,
   ChevronsUpDown,
@@ -96,8 +102,9 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
   );
 
   return (
-    <div className="flex-1 bg-sidebar h-screen flex flex-col p-3 overflow-hidden">
-      <div className="bg-white rounded-lg shadow-md flex flex-col flex-1 overflow-hidden">
+    <TooltipProvider>
+      <div className="flex-1 bg-sidebar h-screen flex flex-col p-3 overflow-hidden">
+        <div className="bg-white rounded-lg shadow-md flex flex-col flex-1 overflow-hidden">
       {/* Full-width header */}
       <div className="flex-shrink-0 h-[50px] flex items-center px-3 gap-2">
         <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
@@ -160,25 +167,26 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
       </div>
 
       {/* Table */}
-      <div className="px-8 pb-8 flex-1 overflow-y-auto">
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <TableHead>
-                <SortableHeader label="Deal" />
-              </TableHead>
-              <TableHead>
-                <SortableHeader label="Meeting" />
-              </TableHead>
-              <TableHead>
-                <SortableHeader label="Company" />
-              </TableHead>
-              <TableHead>
-                <SortableHeader label="Attendees" />
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+      <div className="px-8 pt-8 pb-8 flex-1 overflow-y-auto flex flex-col">
+        <div className="border border-slate-200 rounded-lg overflow-hidden flex-shrink-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead>
+                  <SortableHeader label="Deal" />
+                </TableHead>
+                <TableHead>
+                  <SortableHeader label="Meeting" />
+                </TableHead>
+                <TableHead>
+                  <SortableHeader label="Company" />
+                </TableHead>
+                <TableHead>
+                  <SortableHeader label="Attendees" />
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
             {sortedDateKeys.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={4} className="h-32 text-center text-muted-foreground">
@@ -201,7 +209,14 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                     <TableRow key={meeting.id} className="cursor-pointer">
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <span className={`w-4 h-4 rounded-full flex-shrink-0 ${momentumDot[meeting.momentum]}`} />
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className={`w-4 h-4 rounded-full flex-shrink-0 ${momentumDot[meeting.momentum]} cursor-help`} />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{meeting.momentum}</p>
+                            </TooltipContent>
+                          </Tooltip>
                           <span className="text-sm">{meeting.deal_name}</span>
                         </div>
                       </TableCell>
@@ -245,10 +260,12 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
               ))
             )}
           </TableBody>
-        </Table>
+          </Table>
+        </div>
       </div>
       </div>
-    </div>
+      </div>
+    </TooltipProvider>
   );
 };
 

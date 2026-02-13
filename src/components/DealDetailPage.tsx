@@ -1040,14 +1040,11 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
   return (
     <TranscriptPanelContext.Provider value={contextValue}>
       <div className="flex flex-1 min-h-screen relative flex-col">
-        {/* Full-width header */}
-        <div className="flex-shrink-0 h-[50px] flex items-center px-3">
+        {/* Full-width header - sticky */}
+        <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-slate-200">
           <div className="flex-1 flex items-center">
             <TopBar dealName={data.name} onVersionChange={onVersionChange} />
           </div>
-        </div>
-        <div className="px-3">
-          <div className="border-t border-slate-200"></div>
         </div>
         {/* Main content area */}
         <div className="flex flex-1 overflow-hidden">

@@ -22,6 +22,12 @@ import {
 } from '@/components/ui/breadcrumb';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import {
   Calendar,
   PlusCircle,
   ChevronsUpDown,
@@ -173,11 +179,12 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
   );
 
   return (
-    <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
-      {/* Main table area */}
-      <div className="flex-1 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
-        {/* Full-width header */}
-        <div className="flex-shrink-0 h-[50px] flex items-center px-3 gap-2">
+    <TooltipProvider>
+      <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
+        {/* Main table area */}
+        <div className="flex-1 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
+        {/* Full-width header - sticky */}
+        <div className="z-20 bg-white h-[50px] flex items-center px-3 gap-2 border-b border-slate-200 flex-shrink-0">
           <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
             <PanelLeft className="h-4 w-4" />
           </SidebarTrigger>
@@ -202,9 +209,6 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-        </div>
-        <div className="px-3">
-          <div className="border-t border-slate-200"></div>
         </div>
         {/* Page header */}
         <div className="px-8 pt-8 pb-0">
@@ -238,25 +242,26 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
         </div>
 
         {/* Table */}
-        <div className="px-8 pb-8 flex-1 overflow-y-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="hover:bg-transparent">
-                <TableHead>
-                  <SortableHeader label="Deal" />
-                </TableHead>
-                <TableHead>
-                  <SortableHeader label="Meeting" />
-                </TableHead>
-                <TableHead>
-                  <SortableHeader label="Company" />
-                </TableHead>
-                <TableHead>
-                  <SortableHeader label="Attendees" />
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+        <div className="px-8 pt-8 pb-8 flex-1 overflow-y-auto flex flex-col">
+          <div className="border border-slate-200 rounded-lg overflow-hidden flex-shrink-0">
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead>
+                    <SortableHeader label="Deal" />
+                  </TableHead>
+                  <TableHead>
+                    <SortableHeader label="Meeting" />
+                  </TableHead>
+                  <TableHead>
+                    <SortableHeader label="Company" />
+                  </TableHead>
+                  <TableHead>
+                    <SortableHeader label="Attendees" />
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
               {sortedDateKeys.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={4} className="h-32 text-center text-muted-foreground">
@@ -290,7 +295,14 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
                         >
                           <TableCell>
                             <div className="flex items-center gap-2">
-                              <span className={`w-4 h-4 rounded-full flex-shrink-0 ${momentumDot[meeting.momentum]}`} />
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className={`w-4 h-4 rounded-full flex-shrink-0 ${momentumDot[meeting.momentum]} cursor-help`} />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>{meeting.momentum}</p>
+                                </TooltipContent>
+                              </Tooltip>
                               <span className="text-sm">{meeting.deal_name}</span>
                             </div>
                           </TableCell>
@@ -347,7 +359,8 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
                 ))
               )}
             </TableBody>
-          </Table>
+            </Table>
+          </div>
         </div>
       </div>
 
@@ -372,7 +385,8 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
           </div>
         </>
       )}
-    </div>
+      </div>
+    </TooltipProvider>
   );
 };
 
