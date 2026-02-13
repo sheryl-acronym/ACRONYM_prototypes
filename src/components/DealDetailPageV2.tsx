@@ -21,7 +21,6 @@ import {
   ThumbsDown,
   Copy,
   Trash2,
-  BookOpen,
   Plus,
   CheckCircle2,
 } from 'lucide-react';
@@ -1029,9 +1028,6 @@ const KeyStakeholdersSection: React.FC<{
   stakeholders: DealDetailData['key_stakeholders'];
 }> = ({ stakeholders }) => (
   <div className="py-4">
-    <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
-      Key Stakeholders
-    </h2>
     <div className="space-y-3">
       {stakeholders.map((s, i) => (
         <div key={i} className="rounded-lg border bg-card p-4">

@@ -102,7 +102,7 @@ export interface Deal {
 
 export interface Verbatim {
   quote: string;
-  timestamp?: string;
+  timestamp: string;
   speaker?: string;
 }
 

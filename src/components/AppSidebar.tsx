@@ -14,7 +14,6 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton,
   SidebarSeparator,
-  SidebarTrigger,
 } from '@/components/ui/sidebar';
 import {
   Collapsible,
@@ -31,7 +30,6 @@ import {
   Building2,
   Settings,
   ChevronsUpDown,
-  PanelLeft,
 } from 'lucide-react';
 
 export default function AppSidebar() {

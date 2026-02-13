@@ -4,6 +4,8 @@ import {
   DealDetailData,
   DealStage,
   Momentum,
+  Verbatim,
+  ReasoningWithVerbatims,
 } from '@/types';
 import {
   Building2,
@@ -19,10 +21,8 @@ import {
   Sparkles,
   ThumbsUp,
   ThumbsDown,
-  GripVertical,
   Copy,
   Trash2,
-  BookOpen,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -94,16 +94,6 @@ function useIsNarrow(breakpoint: number) {
 
 // --- Transcript data & types ---
 
-interface Verbatim {
-  quote: string;
-  timestamp: string;
-  speaker: string;
-}
-
-interface ReasoningWithVerbatims {
-  text: string;
-  verbatims?: Verbatim[];
-}
 
 interface TranscriptLine {
   timestamp: string;
@@ -295,7 +285,7 @@ const VerbatimCallout: React.FC<{ verbatim: Verbatim }> = ({ verbatim }) => {
     >
       <p className="text-xs text-foreground/70 leading-relaxed italic">{verbatim.quote}</p>
       <span className="text-[10px] text-muted-foreground mt-1 inline-block group-hover/verbatim:text-amber-600 transition-colors">
-        {verbatim.speaker} &middot; {verbatim.timestamp}
+        {verbatim.speaker && `${verbatim.speaker} &middot; `}{verbatim.timestamp}
       </span>
     </button>
   );
@@ -839,9 +829,6 @@ const KeyStakeholdersSection: React.FC<{
   stakeholders: DealDetailData['key_stakeholders'];
 }> = ({ stakeholders }) => (
   <div className="py-4">
-    <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
-      Key Stakeholders
-    </h2>
     <div className="space-y-3">
       {stakeholders.map((s, i) => (
         <div key={i} className="rounded-lg border bg-card p-4">
@@ -1112,14 +1099,14 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
         {/* Main content area */}
         <div className="flex flex-1 overflow-hidden">
           <div className="flex-1 bg-white overflow-y-auto">
-            <div className="max-w-[1040px] mx-auto px-8 py-4 pb-24 w-full">
+            <div className="max-w-[1040px] mx-auto px-8 pt-8 pb-24 w-full">
             <DealHeader dealName={data.name} dealIconColor={data.icon_color} />
             <MetadataRows data={data} />
 
             <Separator className="my-4" />
 
             <Tabs defaultValue="overview">
-              <TabsList className="bg-transparent p-0 h-auto border-b border-slate-200 w-full justify-start rounded-none gap-0">
+              <TabsList className="bg-transparent p-0 h-auto border-b border-slate-200 w-full justify-around rounded-none gap-0">
                 <TabsTrigger
                   value="overview"
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors px-4 pb-2.5 pt-2 text-sm font-medium"
