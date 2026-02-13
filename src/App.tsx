@@ -8,6 +8,7 @@ import PastMeetingsPage from '@/components/PastMeetingsPage';
 import UpcomingMeetingsPage from '@/components/UpcomingMeetingsPage';
 import CompaniesPage from '@/components/CompaniesPage';
 import ContactsPage from '@/components/ContactsPage';
+import PlaybookPositioningPage from '@/components/PlaybookPositioningPage';
 import AppSidebar from '@/components/AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { provenDemoData } from '@/proven-demo-data';
@@ -101,6 +102,7 @@ function App() {
             <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} />} />
             <Route path="/companies" element={<CompaniesPage companies={companiesData} />} />
             <Route path="/contacts" element={<ContactsPage contacts={contactsData} />} />
+            <Route path="/playbook/positioning" element={<PlaybookPositioningPage />} />
           </Routes>
         </SidebarInset>
       </SidebarProvider>

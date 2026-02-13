@@ -133,8 +133,10 @@ export default function AppSidebar() {
                   <CollapsibleContent>
                     <SidebarMenuSub className="gap-0 py-1 ml-4 pl-3">
                       <SidebarMenuSubItem>
-                        <SidebarMenuSubButton className="h-8">
-                          <span>Positioning</span>
+                        <SidebarMenuSubButton asChild className="h-8" isActive={location.pathname === '/playbook/positioning'}>
+                          <Link to="/playbook/positioning">
+                            <span>Positioning</span>
+                          </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
