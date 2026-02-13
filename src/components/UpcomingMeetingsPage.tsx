@@ -182,7 +182,7 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
     <TooltipProvider>
       <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
         {/* Main table area */}
-        <div className="flex-1 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
+        <div className="flex-1 min-w-0 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
         {/* Full-width header - sticky */}
         <div className="z-20 bg-white h-[50px] flex items-center px-3 gap-2 border-b border-slate-200 flex-shrink-0">
           <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
@@ -210,8 +210,9 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
             </Breadcrumb>
           </div>
         </div>
+
         {/* Page header */}
-        <div className="px-8 pt-8 pb-0">
+        <div className="px-8 pt-8 pb-0 flex-shrink-0">
           {/* Title */}
           <div className="flex items-center gap-2.5 mb-6">
             <Calendar className="h-5 w-5 text-foreground" />

@@ -845,8 +845,8 @@ const KeyStakeholdersSection: React.FC<{
     <div className="space-y-3">
       {stakeholders.map((s, i) => (
         <div key={i} className="rounded-lg border bg-card p-4">
-          {/* Header row: avatar, name, buyer persona, role */}
-          <div className="flex items-center gap-3 mb-3">
+          {/* Header row: avatar, name, role in buying process, and risk badge */}
+          <div className="flex items-start gap-3 mb-3">
             <span
               className={`flex h-8 w-8 items-center justify-center rounded-full text-white text-xs font-semibold flex-shrink-0 ${s.avatar_color || 'bg-gray-400'}`}
             >
@@ -857,29 +857,92 @@ const KeyStakeholdersSection: React.FC<{
                 .toUpperCase()}
             </span>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex flex-col gap-1.5">
                 <span className="text-sm font-semibold text-foreground">{s.name}</span>
-                {s.buyer_persona && (
-                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 flex items-center gap-1.5">
-                    <BookOpen className="h-3 w-3" />
-                    {s.buyer_persona}
-                  </Badge>
-                )}
+                <div className="flex flex-wrap gap-1.5">
+                  {s.role_in_buying_process && (
+                    <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                      {s.role_in_buying_process}
+                    </Badge>
+                  )}
+                  {s.tags && s.tags.map((tag, ti) => (
+                    <Badge key={ti} variant="secondary" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
               </div>
             </div>
+            {s.risk && (
+              <Badge variant="outline" className={`rounded-md font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${
+                s.risk.level === 'HIGH' ? 'bg-red-50 text-red-900 border-red-200' :
+                s.risk.level === 'MEDIUM' ? 'bg-amber-50 text-amber-900 border-amber-200' :
+                'bg-green-50 text-green-900 border-green-200'
+              }`}>
+                {s.risk.level} Risk
+              </Badge>
+            )}
           </div>
 
-          {/* Role in buying process */}
-          {s.role_in_buying_process && (
-            <div className="rounded-md bg-muted/40 px-3 py-2">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Role in buying process</span>
-              <div className="mt-2 flex items-center gap-2 flex-wrap">
-                <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5">
-                  {s.role_in_buying_process}
-                </Badge>
+          {/* Additional context sections - two column layout */}
+          <div className="space-y-3">
+            {s.role_and_engagement && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Role</h4>
+                </div>
+                <div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{s.role_and_engagement}</p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+
+            {s.buyer_persona && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Buyer Persona</h4>
+                </div>
+                <div>
+                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                    {s.buyer_persona}
+                  </Badge>
+                </div>
+              </div>
+            )}
+
+            {s.authority && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Authority</h4>
+                </div>
+                <div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{s.authority}</p>
+                </div>
+              </div>
+            )}
+
+            {s.key_concerns && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Key concerns</h4>
+                </div>
+                <div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{s.key_concerns}</p>
+                </div>
+              </div>
+            )}
+
+            {s.risk && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Risk</h4>
+                </div>
+                <div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{s.risk.description}</p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       ))}
     </div>
@@ -1049,7 +1112,7 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
         {/* Main content area */}
         <div className="flex flex-1 overflow-hidden">
           <div className="flex-1 bg-white overflow-y-auto">
-            <div className="max-w-[1040px] mx-auto px-8 py-4 pb-32 w-full">
+            <div className="max-w-[1040px] mx-auto px-8 py-4 pb-24 w-full">
             <DealHeader dealName={data.name} dealIconColor={data.icon_color} />
             <MetadataRows data={data} />
 
@@ -1102,7 +1165,58 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
                 <Separator className="my-4" />
 
                 <OpportunitySummarySection data={data.opportunity_summary} />
-                <KeyStakeholdersSection stakeholders={data.key_stakeholders} />
+
+                <Separator className="my-4" />
+
+                <div className="py-4">
+                  <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
+                    Key Stakeholders
+                  </h2>
+                  <div className="space-y-3">
+                    {data.key_stakeholders && data.key_stakeholders[0] && (
+                      <div className="rounded-lg border bg-card p-4">
+                        {/* Header row only - no details below */}
+                        <div className="flex items-start gap-3">
+                          <span
+                            className={`flex h-8 w-8 items-center justify-center rounded-full text-white text-xs font-semibold flex-shrink-0 ${data.key_stakeholders[0].avatar_color || 'bg-gray-400'}`}
+                          >
+                            {data.key_stakeholders[0].name
+                              .split(' ')
+                              .map((n) => n[0])
+                              .join('')
+                              .toUpperCase()}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-col gap-1.5">
+                              <span className="text-sm font-semibold text-foreground">{data.key_stakeholders[0].name}</span>
+                              <div className="flex flex-wrap gap-1.5">
+                                {data.key_stakeholders[0].role_in_buying_process && (
+                                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                                    {data.key_stakeholders[0].role_in_buying_process}
+                                  </Badge>
+                                )}
+                                {data.key_stakeholders[0].tags && data.key_stakeholders[0].tags.map((tag, ti) => (
+                                  <Badge key={ti} variant="secondary" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                                    {tag}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          {data.key_stakeholders[0].risk && (
+                            <Badge variant="outline" className={`rounded-md font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${
+                              data.key_stakeholders[0].risk.level === 'HIGH' ? 'bg-red-50 text-red-900 border-red-200' :
+                              data.key_stakeholders[0].risk.level === 'MEDIUM' ? 'bg-amber-50 text-amber-900 border-amber-200' :
+                              'bg-green-50 text-green-900 border-green-200'
+                            }`}>
+                              {data.key_stakeholders[0].risk.level} Risk
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </TabsContent>
 
               <TabsContent value="intel">
@@ -1114,9 +1228,7 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
               </TabsContent>
 
               <TabsContent value="stakeholders">
-                <div className="py-12 text-center text-sm text-muted-foreground">
-                  Stakeholders content coming soon.
-                </div>
+                <KeyStakeholdersSection stakeholders={data.key_stakeholders} />
               </TabsContent>
 
               <TabsContent value="meetings">

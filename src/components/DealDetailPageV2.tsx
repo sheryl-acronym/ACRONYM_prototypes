@@ -23,6 +23,7 @@ import {
   Trash2,
   BookOpen,
   Plus,
+  CheckCircle2,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -1034,8 +1035,8 @@ const KeyStakeholdersSection: React.FC<{
     <div className="space-y-3">
       {stakeholders.map((s, i) => (
         <div key={i} className="rounded-lg border bg-card p-4">
-          {/* Header row: avatar, name, buyer persona, role */}
-          <div className="flex items-center gap-3 mb-3">
+          {/* Header row: avatar, name, role in buying process, and risk badge */}
+          <div className="flex items-start gap-3 mb-3">
             <span
               className={`flex h-8 w-8 items-center justify-center rounded-full text-white text-xs font-semibold flex-shrink-0 ${s.avatar_color || 'bg-gray-400'}`}
             >
@@ -1048,27 +1049,90 @@ const KeyStakeholdersSection: React.FC<{
             <div className="flex-1 min-w-0">
               <div className="flex flex-col gap-1.5">
                 <span className="text-sm font-semibold text-foreground">{s.name}</span>
-                {s.buyer_persona && (
-                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 flex items-center gap-1.5 max-w-full">
-                    <BookOpen className="h-3 w-3 flex-shrink-0" />
-                    <span className="truncate">{s.buyer_persona}</span>
-                  </Badge>
-                )}
+                <div className="flex flex-wrap gap-1.5">
+                  {s.role_in_buying_process && (
+                    <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                      {s.role_in_buying_process}
+                    </Badge>
+                  )}
+                  {s.tags && s.tags.map((tag, ti) => (
+                    <Badge key={ti} variant="secondary" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
               </div>
             </div>
+            {s.risk && (
+              <Badge variant="outline" className={`rounded-md font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${
+                s.risk.level === 'HIGH' ? 'bg-red-50 text-red-900 border-red-200' :
+                s.risk.level === 'MEDIUM' ? 'bg-amber-50 text-amber-900 border-amber-200' :
+                'bg-green-50 text-green-900 border-green-200'
+              }`}>
+                {s.risk.level} Risk
+              </Badge>
+            )}
           </div>
 
-          {/* Role in buying process */}
-          {s.role_in_buying_process && (
-            <div className="rounded-md bg-muted/40 px-3 py-2">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Role in buying process</span>
-              <div className="mt-2 flex items-center gap-2 flex-wrap">
-                <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5">
-                  {s.role_in_buying_process}
-                </Badge>
+          {/* Additional context sections - two column layout */}
+          <div className="space-y-3">
+            {s.role_and_engagement && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Role</h4>
+                </div>
+                <div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{s.role_and_engagement}</p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+
+            {s.buyer_persona && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Buyer Persona</h4>
+                </div>
+                <div>
+                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                    {s.buyer_persona}
+                  </Badge>
+                </div>
+              </div>
+            )}
+
+            {s.authority && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Authority</h4>
+                </div>
+                <div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{s.authority}</p>
+                </div>
+              </div>
+            )}
+
+            {s.key_concerns && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Key concerns</h4>
+                </div>
+                <div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{s.key_concerns}</p>
+                </div>
+              </div>
+            )}
+
+            {s.risk && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Risk</h4>
+                </div>
+                <div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{s.risk.description}</p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       ))}
     </div>
@@ -1135,47 +1199,57 @@ const statusIcon = (status: 'complete' | 'partial' | 'missing'): string => {
 };
 
 const DealStageProgress: React.FC<{ currentStage: DealStage }> = ({ currentStage }) => {
-  const stages: Array<{ stage: DealStage; label: string; color: string; textColor: string }> = [
-    { stage: 'First meeting scheduled', label: '1st Call', color: 'bg-blue-100 border-blue-300', textColor: 'text-blue-900' },
-    { stage: 'Discovery & Qualification', label: 'Discovery', color: 'bg-violet-100 border-violet-300', textColor: 'text-violet-900' },
-    { stage: 'Demo', label: 'Demo', color: 'bg-amber-100 border-amber-300', textColor: 'text-amber-900' },
-    { stage: 'Proposal / Negotiation', label: 'Proposal', color: 'bg-sky-100 border-sky-300', textColor: 'text-sky-900' },
-    { stage: 'Closed Won', label: 'Closed', color: 'bg-green-100 border-green-300', textColor: 'text-green-900' },
+  const stages: Array<{ stage: DealStage; label: string; bgColor: string; textColor: string; bgLight: string }> = [
+    { stage: 'First meeting scheduled', label: '1st Call', bgColor: 'bg-blue-500', textColor: 'text-blue-900', bgLight: 'bg-blue-100' },
+    { stage: 'Discovery & Qualification', label: 'Discovery', bgColor: 'bg-violet-500', textColor: 'text-violet-900', bgLight: 'bg-violet-100' },
+    { stage: 'Demo', label: 'Demo', bgColor: 'bg-amber-500', textColor: 'text-amber-900', bgLight: 'bg-amber-100' },
+    { stage: 'Proposal / Negotiation', label: 'Proposal', bgColor: 'bg-sky-500', textColor: 'text-sky-900', bgLight: 'bg-sky-100' },
+    { stage: 'Closed Won', label: 'Closed', bgColor: 'bg-green-500', textColor: 'text-green-900', bgLight: 'bg-green-100' },
   ];
 
   const currentIndex = stages.findIndex((s) => s.stage === currentStage);
 
   return (
     <div className="py-4">
-      <div className="flex items-center h-10 rounded-lg overflow-hidden border">
+      <div className="flex items-center gap-0 h-12">
         {stages.map((item, index) => {
           const isCompleted = index < currentIndex;
           const isActive = index === currentIndex;
-          const isBeforeLastStage = index === stages.length - 2;
+          const isFuture = index > currentIndex;
 
           return (
-            <div key={item.stage} className="flex-1 h-full flex">
+            <div key={item.stage} className="relative flex-1">
               <div
-                className={`flex-1 h-full flex items-center justify-center transition-all ${
-                  isActive || isCompleted
-                    ? item.color
+                className={`h-12 px-4 flex items-center justify-center gap-2 transition-all ${
+                  isCompleted
+                    ? item.bgLight
+                    : isActive
+                    ? item.bgLight
                     : 'bg-gray-100'
                 }`}
                 style={{
-                  opacity: isCompleted || isActive ? 1 : 0.6,
+                  transform: 'skewX(-15deg)',
+                  opacity: isFuture ? 0.6 : 1,
+                  marginRight: index < stages.length - 1 ? '-12px' : 0,
+                  position: 'relative',
+                  zIndex: stages.length - index,
                 }}
               >
-                <span className={`text-xs font-semibold text-center px-1 ${
-                  isActive || isCompleted
-                    ? item.textColor
-                    : 'text-gray-600'
-                }`}>
-                  {item.label}
-                </span>
+                <div style={{ transform: 'skewX(15deg)' }} className="flex items-center justify-center gap-1.5 whitespace-nowrap">
+                  {isCompleted && (
+                    <CheckCircle2 className={`h-4 w-4 flex-shrink-0 ${item.textColor}`} />
+                  )}
+                  <span
+                    className={`text-xs font-semibold ${
+                      isFuture
+                        ? 'text-gray-600'
+                        : item.textColor
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                </div>
               </div>
-              {isBeforeLastStage && (
-                <div className="w-px bg-white/40"></div>
-              )}
             </div>
           );
         })}
@@ -1356,9 +1430,18 @@ export const DealDetailPageV2: React.FC<DealDetailPageV2Props> = ({ data, onVers
         {/* Main content area */}
         <div className="flex flex-1 overflow-hidden">
           <div className="flex-1 bg-white overflow-y-auto">
-            <div className="max-w-[1040px] mx-auto px-8 py-4 pb-32 w-full">
-            <DealHeader dealName={dealName} dealIconColor={data.icon_color} onNameChange={handleDealNameChange} />
-            <MetadataRows data={data} />
+            <div className="max-w-[1040px] mx-auto px-8 py-4 pb-24 w-full">
+            <div className="grid grid-cols-2 gap-6 mb-2">
+              <div>
+                <DealHeader dealName={dealName} dealIconColor={data.icon_color} onNameChange={handleDealNameChange} />
+                <div className="mt-2">
+                  <MetadataRows data={data} />
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <MeetingsRow lastMeeting={data.last_meeting} nextMeeting={data.next_meeting} />
+              </div>
+            </div>
 
             <Separator className="my-4" />
 
@@ -1366,10 +1449,8 @@ export const DealDetailPageV2: React.FC<DealDetailPageV2Props> = ({ data, onVers
 
             <CurrentStateSection summary={data.overview.momentum_summary} momentum={data.momentum} />
 
-            <MeetingsRow lastMeeting={data.last_meeting} nextMeeting={data.next_meeting} />
-
-            <div className="grid grid-cols-3 gap-6 mt-4">
-              <div className="col-span-2">
+            <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="col-span-2 min-w-0">
             <Tabs defaultValue="overview">
               <TabsList className="bg-transparent p-0 h-auto border-b border-slate-200 w-full justify-around rounded-none gap-0">
                 <TabsTrigger
@@ -1389,6 +1470,12 @@ export const DealDetailPageV2: React.FC<DealDetailPageV2Props> = ({ data, onVers
                   className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors pb-2.5 pt-2 text-sm font-medium"
                 >
                   MEDDIC
+                </TabsTrigger>
+                <TabsTrigger
+                  value="stakeholders"
+                  className="flex-1 rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors pb-2.5 pt-2 text-sm font-medium"
+                >
+                  Stakeholders
                 </TabsTrigger>
               </TabsList>
 
@@ -1423,11 +1510,15 @@ export const DealDetailPageV2: React.FC<DealDetailPageV2Props> = ({ data, onVers
               <TabsContent value="meddic">
                 <MeddicsSection meddic={data.meddic} />
               </TabsContent>
+
+              <TabsContent value="stakeholders">
+                <KeyStakeholdersSection stakeholders={data.key_stakeholders} />
+              </TabsContent>
             </Tabs>
               </div>
 
               {/* Right column - MEDDIC & Meetings */}
-              <div className="border-l border-slate-200 pl-6 space-y-6">
+              <div className="border-l border-slate-200 pl-4 space-y-6 min-w-0">
                 <div>
                   <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
                     MEDDIC Status
@@ -1452,7 +1543,53 @@ export const DealDetailPageV2: React.FC<DealDetailPageV2Props> = ({ data, onVers
                 </div>
 
                 <div>
-                  <KeyStakeholdersSection stakeholders={data.key_stakeholders} />
+                  <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
+                    Key Stakeholders
+                  </h2>
+                  <div className="space-y-3">
+                    {data.key_stakeholders && data.key_stakeholders[0] && (
+                      <div className="rounded-lg border bg-card p-4">
+                        {/* Header row only - no details below */}
+                        <div className="flex items-start gap-3">
+                          <span
+                            className={`flex h-8 w-8 items-center justify-center rounded-full text-white text-xs font-semibold flex-shrink-0 ${data.key_stakeholders[0].avatar_color || 'bg-gray-400'}`}
+                          >
+                            {data.key_stakeholders[0].name
+                              .split(' ')
+                              .map((n) => n[0])
+                              .join('')
+                              .toUpperCase()}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-col gap-1.5">
+                              <span className="text-sm font-semibold text-foreground">{data.key_stakeholders[0].name}</span>
+                              <div className="flex flex-wrap gap-1.5">
+                                {data.key_stakeholders[0].role_in_buying_process && (
+                                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                                    {data.key_stakeholders[0].role_in_buying_process}
+                                  </Badge>
+                                )}
+                                {data.key_stakeholders[0].tags && data.key_stakeholders[0].tags.map((tag, ti) => (
+                                  <Badge key={ti} variant="secondary" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                                    {tag}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          {data.key_stakeholders[0].risk && (
+                            <Badge variant="outline" className={`rounded-md font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${
+                              data.key_stakeholders[0].risk.level === 'HIGH' ? 'bg-red-50 text-red-900 border-red-200' :
+                              data.key_stakeholders[0].risk.level === 'MEDIUM' ? 'bg-amber-50 text-amber-900 border-amber-200' :
+                              'bg-green-50 text-green-900 border-green-200'
+                            }`}>
+                              {data.key_stakeholders[0].risk.level} Risk
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

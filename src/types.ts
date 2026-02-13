@@ -124,6 +124,14 @@ export interface KeyStakeholder {
   avatar_color?: string;
   buyer_persona?: string;
   role_in_buying_process?: string;
+  tags?: string[];
+  role_and_engagement?: string;
+  authority?: string;
+  key_concerns?: string;
+  risk?: {
+    level: 'LOW' | 'MEDIUM' | 'HIGH';
+    description: string;
+  };
 }
 
 export interface DealDetailData {

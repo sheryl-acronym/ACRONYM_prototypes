@@ -274,35 +274,16 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
         <Users className="h-4 w-4" />
         Participants
       </span>
-      <div className="flex flex-col gap-2">
-        {metadata.our_team.length > 0 && (
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs text-muted-foreground/60 uppercase tracking-wide w-16 flex-shrink-0">Our team</span>
-            {metadata.our_team.map((p, i) => (
-              <span
-                key={i}
-                className="inline-flex items-center gap-1.5 rounded-md border bg-transparent pl-1 pr-3 py-0.5 text-sm text-foreground"
-              >
-                <span className={`h-5 w-5 rounded-full flex-shrink-0 ${p.avatar_color || 'bg-gray-300'}`} />
-                {p.email || p.name}
-              </span>
-            ))}
-          </div>
-        )}
-        {metadata.their_team.length > 0 && (
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs text-muted-foreground/60 uppercase tracking-wide w-16 flex-shrink-0">Their team</span>
-            {metadata.their_team.map((p, i) => (
-              <span
-                key={i}
-                className="inline-flex items-center gap-1.5 rounded-md border bg-transparent pl-1 pr-3 py-0.5 text-sm text-foreground"
-              >
-                <span className={`h-5 w-5 rounded-full flex-shrink-0 ${p.avatar_color || 'bg-gray-300'}`} />
-                {p.email || p.name}
-              </span>
-            ))}
-          </div>
-        )}
+      <div className="flex items-center gap-2 flex-wrap">
+        {[...metadata.our_team, ...metadata.their_team].map((p, i) => (
+          <span
+            key={i}
+            className="inline-flex items-center gap-1.5 rounded-md border bg-transparent pl-1 pr-3 py-0.5 text-sm text-foreground"
+          >
+            <span className={`h-5 w-5 rounded-full flex-shrink-0 ${p.avatar_color || 'bg-gray-300'}`} />
+            {p.email || p.name}
+          </span>
+        ))}
       </div>
     </div>
   </div>
@@ -513,7 +494,7 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
   return (
     <div className="flex flex-col min-h-screen bg-white overflow-hidden">
       {!hideTopBar && (
-        <div className="flex-shrink-0">
+        <div className="sticky top-0 z-20 bg-white border-b border-slate-200 flex-shrink-0">
           <div className="pl-8 pr-8 py-3">
             <TopBar breadcrumb={data.breadcrumb} />
           </div>
