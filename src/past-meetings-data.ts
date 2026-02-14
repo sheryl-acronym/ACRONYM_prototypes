@@ -11,7 +11,10 @@ export const pastMeetingsData: PastMeeting[] = [
     duration: '30m',
     company_name: 'Cal AI',
     company_icon_color: 'bg-blue-200',
-    attendees: [{ name: 'Jacob Francis' }, { name: 'Eugene Kim' }],
+    attendees: [
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales' },
+      { name: 'Eugene Kim', email: 'eugene@calai.io', role: 'Co-founder' },
+    ],
   },
   {
     id: 'pm-002',
@@ -23,7 +26,10 @@ export const pastMeetingsData: PastMeeting[] = [
     duration: '30m',
     company_name: 'Cal AI',
     company_icon_color: 'bg-blue-200',
-    attendees: [{ name: 'Morgan Clark' }, { name: 'Benny Cole' }],
+    attendees: [
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager' },
+      { name: 'Benny Cole', email: 'benny@calai.io', role: 'Head of Operations' },
+    ],
   },
   {
     id: 'pm-003',
@@ -34,7 +40,10 @@ export const pastMeetingsData: PastMeeting[] = [
     duration: '30m',
     company_name: 'WW',
     company_icon_color: 'bg-indigo-200',
-    attendees: [{ name: 'Nick Holland' }, { name: 'Rachel Simmons' }],
+    attendees: [
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development' },
+      { name: 'Rachel Simmons', email: 'r.simmons@ww.com', role: 'Partnership Manager' },
+    ],
   },
   {
     id: 'pm-004',
@@ -46,7 +55,10 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Glossier',
     company_icon_color: 'bg-pink-300',
     company_logo_url: 'https://logo.clearbit.com/glossier.com',
-    attendees: [{ name: 'Morgan Clark' }, { name: 'Diana Voss' }],
+    attendees: [
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager' },
+      { name: 'Diana Voss', email: 'diana.voss@glossier.com', role: 'Operations Lead' },
+    ],
   },
   // Thu 5 Feb
   {
@@ -59,7 +71,10 @@ export const pastMeetingsData: PastMeeting[] = [
     duration: '30m',
     company_name: 'Nourish',
     company_icon_color: 'bg-lime-200',
-    attendees: [{ name: 'Jacob Francis' }, { name: 'Amir Patel' }],
+    attendees: [
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales' },
+      { name: 'Amir Patel', email: 'apatel@nourish.com', role: 'Chief Product Officer' },
+    ],
   },
   {
     id: 'pm-006',
@@ -71,7 +86,10 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Hims & Hers',
     company_icon_color: 'bg-rose-200',
     company_logo_url: 'https://logo.clearbit.com/forhims.com',
-    attendees: [{ name: 'Nick Holland' }, { name: 'Priya Mehta' }],
+    attendees: [
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development' },
+      { name: 'Priya Mehta', email: 'p.mehta@forhims.com', role: 'Sr. Product Manager' },
+    ],
   },
   {
     id: 'pm-007',
@@ -82,7 +100,10 @@ export const pastMeetingsData: PastMeeting[] = [
     duration: '30m',
     company_name: 'Ro',
     company_icon_color: 'bg-sky-200',
-    attendees: [{ name: 'Morgan Clark' }, { name: 'David Kwon' }],
+    attendees: [
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager' },
+      { name: 'David Kwon', email: 'd.kwon@ro.com', role: 'Director of Benefits' },
+    ],
   },
   // Wed 4 Feb
   {
@@ -95,7 +116,10 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Allbirds',
     company_icon_color: 'bg-lime-200',
     company_logo_url: 'https://logo.clearbit.com/allbirds.com',
-    attendees: [{ name: 'Jacob Francis' }, { name: 'Liam Okafor' }],
+    attendees: [
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales' },
+      { name: 'Liam Okafor', email: 'l.okafor@allbirds.com', role: 'Director of Procurement' },
+    ],
   },
   {
     id: 'pm-009',
@@ -107,7 +131,10 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Bombas',
     company_icon_color: 'bg-orange-200',
     company_logo_url: 'https://logo.clearbit.com/bombas.com',
-    attendees: [{ name: 'Nick Holland' }, { name: 'Sophie Grant' }],
+    attendees: [
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development' },
+      { name: 'Sophie Grant', email: 's.grant@bombas.com', role: 'Contract Manager' },
+    ],
   },
   // Tue 3 Feb
   {
@@ -120,7 +147,10 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Peloton',
     company_icon_color: 'bg-red-200',
     company_logo_url: 'https://logo.clearbit.com/onepeloton.com',
-    attendees: [{ name: 'Jacob Francis' }, { name: 'Carlos Reyes' }],
+    attendees: [
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales' },
+      { name: 'Carlos Reyes', email: 'c.reyes@peloton.com', role: 'Engineering Manager' },
+    ],
   },
   {
     id: 'pm-011',
@@ -132,7 +162,10 @@ export const pastMeetingsData: PastMeeting[] = [
     duration: '30m',
     company_name: 'Alma',
     company_icon_color: 'bg-pink-200',
-    attendees: [{ name: 'Morgan Clark' }, { name: 'Hannah Torres' }],
+    attendees: [
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager' },
+      { name: 'Hannah Torres', email: 'h.torres@alma.com', role: 'Partnerships Lead' },
+    ],
   },
   {
     id: 'pm-012',
@@ -144,7 +177,10 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Warby Parker',
     company_icon_color: 'bg-blue-200',
     company_logo_url: 'https://logo.clearbit.com/warbyparker.com',
-    attendees: [{ name: 'Nick Holland' }, { name: 'Andrea Chen' }],
+    attendees: [
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development' },
+      { name: 'Andrea Chen', email: 'a.chen@warbyparker.com', role: 'Finance Manager' },
+    ],
   },
   // Mon 2 Feb
   {
@@ -157,7 +193,10 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Oura',
     company_icon_color: 'bg-zinc-200',
     company_logo_url: 'https://logo.clearbit.com/ouraring.com',
-    attendees: [{ name: 'Morgan Clark' }, { name: 'Tomoko Sato' }],
+    attendees: [
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager' },
+      { name: 'Tomoko Sato', email: 't.sato@ouraring.com', role: 'Solutions Architect' },
+    ],
   },
   {
     id: 'pm-014',
@@ -168,6 +207,9 @@ export const pastMeetingsData: PastMeeting[] = [
     duration: '45m',
     company_name: 'Truepill',
     company_icon_color: 'bg-purple-200',
-    attendees: [{ name: 'Jacob Francis' }, { name: 'Marcus Webb' }],
+    attendees: [
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales' },
+      { name: 'Marcus Webb', email: 'm.webb@truepill.com', role: 'VP Engineering' },
+    ],
   },
 ];

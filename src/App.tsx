@@ -8,6 +8,7 @@ import PastMeetingsPage from '@/components/PastMeetingsPage';
 import UpcomingMeetingsPage from '@/components/UpcomingMeetingsPage';
 import CompaniesPage from '@/components/CompaniesPage';
 import ContactsPage from '@/components/ContactsPage';
+import CustomerProfilesPage from '@/components/CustomerProfilesPage';
 import PlaybookPositioningPage from '@/components/PlaybookPositioningPage';
 import AppSidebar from '@/components/AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
@@ -18,6 +19,7 @@ import { pastMeetingsData } from '@/past-meetings-data';
 import { upcomingMeetingsData } from '@/upcoming-meetings-data';
 import { companiesData } from '@/companies-demo-data';
 import { contactsData } from '@/contacts-demo-data';
+import { customerProfilesData } from '@/customer-profiles-demo-data';
 
 const meetingBriefData: Record<string, typeof provenDemoData> = {
   'um-001': provenDemoData,
@@ -25,10 +27,20 @@ const meetingBriefData: Record<string, typeof provenDemoData> = {
 
 function DealDetailRoute() {
   const { dealId } = useParams<{ dealId: string }>();
-  const [version, setVersion] = React.useState<'v1' | 'v2'>('v1');
-  const deal = dealId ? dealDetailDemoData[dealId] : undefined;
+  const [version, setVersion] = React.useState<'v1' | 'v2' | '1st-call' | 'post-call-1'>('v1');
 
-  const handleVersionChange = React.useCallback((newVersion: 'v1' | 'v2') => {
+  const deal = React.useMemo(() => {
+    if (!dealId) return undefined;
+    if (version === '1st-call') {
+      return dealDetailDemoData[`${dealId}-v3`];
+    }
+    if (version === 'post-call-1') {
+      return dealDetailDemoData[`${dealId}-v2-post-call`];
+    }
+    return dealDetailDemoData[dealId];
+  }, [dealId, version]);
+
+  const handleVersionChange = React.useCallback((newVersion: 'v1' | 'v2' | '1st-call' | 'post-call-1') => {
     setVersion(newVersion);
   }, []);
 
@@ -66,9 +78,11 @@ function DealDetailRoute() {
       };
       return version === 'v1' ? (
         <DealDetailPage data={fallbackData} onVersionChange={handleVersionChange} />
-      ) : (
+      ) : version === 'v2' ? (
         <DealDetailPageV2 data={fallbackData} onVersionChange={handleVersionChange} />
-      );
+      ) : version === '1st-call' || version === 'post-call-1' ? (
+        <DealDetailPage data={fallbackData} onVersionChange={handleVersionChange} />
+      ) : null;
     }
   }
 
@@ -82,9 +96,11 @@ function DealDetailRoute() {
 
   return version === 'v1' ? (
     <DealDetailPage data={deal} onVersionChange={handleVersionChange} />
-  ) : (
+  ) : version === 'v2' ? (
     <DealDetailPageV2 data={deal} onVersionChange={handleVersionChange} />
-  );
+  ) : version === '1st-call' || version === 'post-call-1' ? (
+    <DealDetailPage data={deal} onVersionChange={handleVersionChange} />
+  ) : null;
 }
 
 function App() {
@@ -102,6 +118,7 @@ function App() {
             <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} />} />
             <Route path="/companies" element={<CompaniesPage companies={companiesData} />} />
             <Route path="/contacts" element={<ContactsPage contacts={contactsData} />} />
+            <Route path="/customer-profiles" element={<CustomerProfilesPage profiles={customerProfilesData} />} />
             <Route path="/playbook/positioning" element={<PlaybookPositioningPage />} />
           </Routes>
         </SidebarInset>

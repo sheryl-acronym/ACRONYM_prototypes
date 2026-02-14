@@ -70,7 +70,7 @@ export interface PastMeeting {
   company_name: string;
   company_icon_color: string;
   company_logo_url?: string;
-  attendees: { name: string }[];
+  attendees: { name: string; email?: string; role?: string }[];
 }
 
 export type DealStage =
@@ -122,16 +122,29 @@ export interface NextStep {
 export interface KeyStakeholder {
   name: string;
   avatar_color?: string;
+  job_title?: string;
   buyer_persona?: string;
   role_in_buying_process?: string;
   tags?: string[];
   role_and_engagement?: string;
   authority?: string;
   key_concerns?: string;
+  communication_style?: string;
+  personal_markers?: string;
   risk?: {
     level: 'LOW' | 'MEDIUM' | 'HIGH';
     description: string;
   };
+}
+
+export interface Meeting {
+  id: string;
+  name: string;
+  start_time: string;
+  duration: string;
+  attendees: { name: string }[];
+  status?: 'scheduled' | 'completed' | 'cancelled';
+  momentum?: Momentum;
 }
 
 export interface DealDetailData {
@@ -162,6 +175,7 @@ export interface DealDetailData {
       description: string;
     }[];
     next_steps: NextStep[];
+    ace_predicted_close_confidence?: 'Low' | 'Medium' | 'High';
   };
   opportunity_summary: {
     headline: string;
@@ -185,4 +199,5 @@ export interface DealDetailData {
     }[];
   };
   key_stakeholders: KeyStakeholder[];
+  meetings?: Meeting[];
 }

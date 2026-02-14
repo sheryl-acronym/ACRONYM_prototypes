@@ -1,6 +1,126 @@
 import { DealDetailData } from '@/types';
 
 export const dealDetailDemoData: Record<string, DealDetailData> = {
+  'deal-005-v3': {
+    name: 'Deal with proven.com',
+    icon_color: 'bg-blue-200',
+    stage_name: 'First meeting scheduled',
+    status: 'in_progress',
+    momentum: 'Strong',
+    last_meeting: null,
+    next_meeting: '2026-01-16',
+    owner_name: 'Jacob Francis',
+    company_name: 'PROVEN Skincare',
+    company_icon_color: 'bg-violet-200',
+    company_logo_url: 'https://logo.clearbit.com/provenskincare.com',
+    customer_profile: 'Mid-Market E-Commerce',
+    overview: {
+      momentum_summary: '',
+      last_meeting: {
+        title: '',
+        bullets: [],
+      },
+      positive_signals: [],
+      risk_factors: [],
+      next_steps: [],
+      ace_predicted_close_confidence: undefined,
+    },
+    opportunity_summary: {
+      headline: 'Proven Skincare: AI-powered personalized care manufacturer, >$35M run rate, massive data moat (19M assessments).',
+      what_they_want: [
+        'Strategies to increase Average Order Value (AOV) and conversion rates to support new profitability targets.',
+        'Automated compliance solutions to unlock HSA/FSA spending for skincare products without operational overhead.',
+        'Seamless payment infrastructure to handle high transaction volumes across their expanding brand portfolio.',
+      ],
+      how_we_help: [],
+      why_now: [
+        'Strategic pivot from IPO growth to financial sustainability creates urgency for high-margin revenue optimization.',
+        'Expansion into retail (Sephora) and new verticals (fragrance) increases complexity, likely driving a need to maximize DTC channel efficiency.',
+      ],
+      budget_and_roi: [],
+    },
+    intel: undefined,
+    meddic: {
+      components: [
+        {
+          name: 'Metrics',
+          status: 'missing',
+          information: 'To be discovered',
+        },
+        {
+          name: 'Economic Buyer',
+          status: 'missing',
+          information: 'To be discovered',
+        },
+        {
+          name: 'Decision Process',
+          status: 'missing',
+          information: 'To be discovered',
+        },
+        {
+          name: 'Decision Criteria',
+          status: 'missing',
+          information: 'To be discovered',
+        },
+        {
+          name: 'Decision Maker',
+          status: 'missing',
+          information: 'To be discovered',
+        },
+        {
+          name: 'Identify Pain',
+          status: 'missing',
+          information: 'To be discovered',
+        },
+        {
+          name: 'Champion',
+          status: 'missing',
+          information: 'To be discovered',
+        },
+        {
+          name: 'Competition',
+          status: 'missing',
+          information: 'To be discovered',
+        },
+        {
+          name: 'Compelling Event',
+          status: 'missing',
+          information: 'To be discovered',
+        },
+      ],
+    },
+    key_stakeholders: [
+      {
+        name: 'Russell Harris',
+        avatar_color: 'bg-orange-400',
+        job_title: 'Head of Product/Tech',
+        role_in_buying_process: 'Prospect',
+        tags: ['Decision Maker'],
+        role_and_engagement: 'Initial point of contact who responded positively to outreach.',
+        authority: 'Likely has authority over payment infrastructure decisions as Head of Product/Tech.',
+        key_concerns: 'Unknown - to be explored in discovery call',
+        communication_style: 'Unknown - first interaction expected',
+        personal_markers: 'Engaged quickly on initial outreach',
+        risk: {
+          level: 'LOW',
+          description: 'Early stage, no risks identified yet',
+        },
+      },
+    ],
+    meetings: [
+      {
+        id: 'call-scheduled-001',
+        name: 'Discovery Call - Payment Infrastructure & HSA/FSA Opportunity',
+        start_time: '2026-02-20T14:00:00',
+        duration: '45m',
+        attendees: [
+          { name: 'Russell Harris' },
+          { name: 'Jacob Francis' },
+        ],
+        status: 'scheduled',
+      },
+    ],
+  },
   'deal-005': {
     name: 'Deal with proven.com',
     icon_color: 'bg-blue-200',
@@ -116,6 +236,7 @@ export const dealDetailDemoData: Record<string, DealDetailData> = {
           },
         },
       ],
+      ace_predicted_close_confidence: 'Medium',
     },
     opportunity_summary: {
       headline: 'Proven Skincare: AI-powered personalized care manufacturer, ~$15M ARR ($1.25M/mo), scaling via Shopify and Skio.',
@@ -610,12 +731,15 @@ export const dealDetailDemoData: Record<string, DealDetailData> = {
       {
         name: 'Russell Harris',
         avatar_color: 'bg-orange-400',
+        job_title: 'Head of Product/Tech',
         buyer_persona: 'Technical Founder/Decision Maker',
         role_in_buying_process: 'Champion',
         tags: ['Economic Buyer'],
         role_and_engagement: 'Economic Buyer and Champion. Drove the agenda, requested specific math, and identified the primary blocker (subscriptions).',
         authority: 'Validated as decision-maker. Russell is driving the purchase.',
         key_concerns: 'Unit economics (margin preservation) and subscription retention.',
+        communication_style: 'Direct and analytical. Asks probing questions focused on ROI and unit economics.',
+        personal_markers: 'Values data-driven decisions and clear financial modeling.',
         risk: {
           level: 'MEDIUM',
           description: 'Will kill the deal if the math doesn\'t show clear margin growth.',
@@ -624,10 +748,13 @@ export const dealDetailDemoData: Record<string, DealDetailData> = {
       {
         name: 'Theresa Bischof',
         avatar_color: 'bg-pink-400',
-        buyer_persona: 'Brand/Marketing Lead',
+        job_title: 'Brand Lead',
+        buyer_persona: 'Operations/Implementation Manager',
         role_in_buying_process: 'Influencer',
         role_and_engagement: 'Brand/Customer Experience evaluator. Focused on the LMN expiration logic and how the customer is guided (FAQs).',
         key_concerns: 'Ensuring the "medical necessity" process doesn\'t confuse the customer or degrade the brand experience.',
+        communication_style: 'Customer-centric and collaborative. Asks about user experience and brand alignment.',
+        personal_markers: 'Cares deeply about brand consistency and customer journey clarity.',
         risk: {
           level: 'LOW',
           description: 'Seemed satisfied with the customizable templates.',
@@ -636,14 +763,475 @@ export const dealDetailDemoData: Record<string, DealDetailData> = {
       {
         name: 'Yuliia Pyrohova',
         avatar_color: 'bg-cyan-400',
-        buyer_persona: 'Technical Architect',
+        job_title: 'Technical Architect',
+        buyer_persona: 'Technical Implementation Lead',
         role_in_buying_process: 'Influencer',
         role_and_engagement: 'Technical/QA. Focused on edge cases: "What if I have a vitamin for constipation but select anxiety?"',
         key_concerns: 'Ensuring the "Hidden SKU" / personalized product structure maps correctly to the medical conditions list.',
+        communication_style: 'Detail-oriented and methodical. Asks about edge cases and system architecture.',
+        personal_markers: 'Loves thorough testing and finding gaps in logic. Thinks in systems.',
         risk: {
           level: 'LOW',
           description: '"Family of conditions" explanation appeared to resolve the immediate concern.',
         },
+      },
+    ],
+    meetings: [
+      {
+        id: 'call-001',
+        name: 'Demo and pricing review',
+        start_time: '2026-01-06T14:00:00',
+        duration: '45m',
+        attendees: [
+          { name: 'Russell Harris' },
+          { name: 'Theresa Bischof' },
+          { name: 'Yuliia Pyrohova' },
+        ],
+        status: 'completed',
+        momentum: 'Active',
+      },
+      {
+        id: 'call-002',
+        name: 'Initial HSA/FSA exploration',
+        start_time: '2025-12-20T10:30:00',
+        duration: '30m',
+        attendees: [
+          { name: 'Russell Harris' },
+          { name: 'Jacob Francis' },
+        ],
+        status: 'completed',
+        momentum: 'Strong',
+      },
+      {
+        id: 'call-003',
+        name: 'Technical feasibility review',
+        start_time: '2025-12-15T15:00:00',
+        duration: '60m',
+        attendees: [
+          { name: 'Yuliia Pyrohova' },
+          { name: 'Jacob Francis' },
+          { name: 'Morgan Clark' },
+        ],
+        status: 'completed',
+        momentum: 'Strong',
+      },
+    ],
+  },
+  'deal-005-v2-post-call': {
+    name: 'Deal with proven.com',
+    icon_color: 'bg-blue-200',
+    stage_name: 'Discovery & Qualification',
+    status: 'in_progress',
+    momentum: 'Active',
+    last_meeting: '2026-02-20',
+    next_meeting: '2026-03-05',
+    owner_name: 'Jacob Francis',
+    company_name: 'PROVEN Skincare',
+    company_icon_color: 'bg-violet-200',
+    company_logo_url: 'https://logo.clearbit.com/provenskincare.com',
+    customer_profile: 'Mid-Market E-Commerce',
+    overview: {
+      momentum_summary: 'Strong discovery call outcomes with Russell and team validating our HSA/FSA capability. Key gap identified: current Shopify setup cannot process HSA/FSA for subscriptions via Skio. Russell committed to pricing review and ROI model validation by next week.',
+      last_meeting: {
+        title: 'Discovery Call - Payment Infrastructure & HSA/FSA Opportunity',
+        bullets: [
+          'Russell confirmed strong interest in HSA/FSA unlock for both DTC and upcoming Sephora distribution',
+          'Critical blocker identified: Skio subscription incompatibility with HSA/FSA processing',
+          'Pricing sensitivity: must maintain net margin positive after fees (~1.5% margin requirement)',
+          'Next steps: Russell to review ROI model and technical specs; internal stakeholder alignment meeting scheduled',
+        ],
+      },
+      positive_signals: [
+        {
+          label: 'Champion Identified',
+          description: 'Russell Harris (Head of Product/Tech) is driving evaluation and has authority over payment infrastructure decisions.',
+        },
+        {
+          label: 'Use Case Validation',
+          description: 'Russell confirmed HSA/FSA unlock is strategic to their profitability pivot and expansion into retail.',
+        },
+        {
+          label: 'Timeline Clarity',
+          description: 'Russell indicated decision timeline of 3-4 weeks pending ROI validation.',
+        },
+      ],
+      risk_factors: [
+        {
+          label: 'Subscription Technical Gap',
+          description: 'Skio platform cannot natively process HSA/FSA; requires workaround or integration.',
+        },
+        {
+          label: 'Margin Constraint',
+          description: 'Customer requires solution to maintain net positive margins; pricing sensitivity high.',
+        },
+      ],
+      next_steps: [
+        {
+          text: 'Send detailed ROI model and technical spec document',
+          due_date: '2026-02-27',
+          assignee: 'Jacob Francis',
+          completed: false,
+          reasoning: {
+            text: 'Russell explicitly requested ROI calculations based on their 50% AOV uplift potential and technical architecture overview.',
+            verbatims: [
+              { quote: 'Can you send us the ROI model with our numbers? We need to see the math before we can move forward.', timestamp: '00:18:45' },
+            ],
+          },
+        },
+        {
+          text: 'Prepare Skio integration approach / workaround documentation',
+          due_date: '2026-02-27',
+          assignee: 'Morgan Clark',
+          completed: false,
+          reasoning: {
+            text: 'Technical team needs detailed approach to address Skio subscription limitation.',
+          },
+        },
+        {
+          text: 'Internal alignment meeting with Theresa and Yuliia',
+          due_date: '2026-03-03',
+          assignee: 'Russell Harris',
+          completed: false,
+          reasoning: {
+            text: 'Russell needs to align brand (Theresa) and technical (Yuliia) stakeholders on decision.',
+          },
+        },
+      ],
+      ace_predicted_close_confidence: 'High',
+    },
+    opportunity_summary: {
+      headline: 'PROVEN Skincare: AI-powered personalized care manufacturer, ~$15M ARR ($1.25M/mo), seeking HSA/FSA unlock for DTC and Sephora expansion.',
+      what_they_want: [
+        'Strategies to increase Average Order Value (AOV) and conversion rates to support new profitability targets. Russell indicated 50% AOV lift potential with HSA/FSA unlock.',
+        'Automated compliance solutions to unlock HSA/FSA spending for skincare products without operational overhead.',
+        'Seamless payment infrastructure to handle high transaction volumes across their expanding brand portfolio (DTC + Sephora).',
+      ],
+      how_we_help: [
+        'HSA/FSA eligibility validation for their entire skincare catalog with 95% coverage estimated',
+        'Subscription workaround for Skio integration, enabling HSA/FSA processing on recurring orders',
+        'Transparent pricing model with net-margin positive guarantee',
+      ],
+      why_now: [
+        'Strategic pivot from IPO growth to financial sustainability creates urgency for high-margin revenue optimization. Russell confirmed this is a board-level priority.',
+        'Expansion into retail (Sephora) and new verticals (fragrance) increases complexity, driving need to maximize DTC channel efficiency.',
+      ],
+      budget_and_roi: [
+        'Pricing: Enterprise model with 1.5% transaction fee + $8 LMN cap',
+        'ROI projection: 6.38x based on 50% AOV uplift on $1.25M/mo volume = $312K annual incremental revenue',
+      ],
+    },
+    intel: {
+      sections: [
+        {
+          title: 'Business Context',
+          items: [
+            'PROVEN Skincare: AI-powered personalized skincare brand, ~$15M ARR ($1.25M/mo)',
+            'Processing ~10,000 monthly orders through Shopify + Skio subscription',
+            'Primarily DTC e-commerce model; expanding into Sephora retail distribution',
+            'IPO-backed company now focused on profitability over growth',
+          ],
+        },
+        {
+          title: 'Technical Environment',
+          items: [
+            'Platform: Shopify + Skio (subscription management)',
+            'Current payment: Shopify Payments (standard credit/debit only)',
+            'Critical limitation: Skio cannot process HSA/FSA payments; requires workaround',
+            'Transaction volume: ~10k orders/month, expected to grow with Sephora launch',
+          ],
+        },
+        {
+          title: 'Competitive Landscape',
+          items: [
+            'Status quo: Shopify Payments (do nothing scenario)',
+            'No current HSA/FSA provider integrated; competitive advantage to early mover',
+            'Alternative: Custom in-house build (high cost, 6-12 month timeline)',
+          ],
+        },
+        {
+          title: 'Timeline & Urgency',
+          items: [
+            'Decision timeline: 3-4 weeks pending ROI validation',
+            'Internal alignment meeting with brand and tech stakeholders: early March',
+            'Sephora launch timeline: Q2 2026 (HSA/FSA feature could be Sephora differentiator)',
+          ],
+        },
+        {
+          title: 'Commercial Terms',
+          items: [
+            'Budget authority: Russell Harris (Head of Product/Tech)',
+            'Pricing sensitivity: must maintain net positive margins after fees (~1.5% max fee)',
+            'ROI driver: 50% AOV uplift on existing $1.25M/mo = $312K annual revenue',
+          ],
+        },
+        {
+          title: 'Decision Dynamics',
+          items: [
+            'Economic buyer: Russell Harris (confirmed authority over payment decisions)',
+            'Influencers: Theresa Bischof (Brand Lead, UX concerns), Yuliia Pyrohova (Technical Architect)',
+            'Decision process: ROI validation → internal stakeholder alignment → contract negotiation',
+          ],
+        },
+        {
+          title: 'Relationship Intelligence',
+          items: [
+            'Russell is data-driven, skeptical, and values rigorous ROI analysis',
+            'Direct communication style; prefers to "do the math" himself',
+            'Theresa focuses on brand experience and customer friction; concerned about checkout complexity',
+            'Yuliia is technical validator; will stress-test integration approach and edge cases',
+          ],
+        },
+      ],
+    },
+    meddic: {
+      components: [
+        {
+          name: 'Metrics',
+          status: 'complete',
+          information: '~$15M ARR ($1.25M/mo), ~10k orders/month',
+          details: [
+            {
+              text: 'ARR: $15M (confirmed in call)',
+              reasoning: {
+                text: 'Russell provided this during business context discussion',
+                verbatims: [{ quote: 'We are at about 15 million annually', timestamp: '00:05:12' }],
+              },
+            },
+            {
+              text: 'Monthly volume: ~10,000 orders at $1.25M/mo average',
+            },
+          ],
+        },
+        {
+          name: 'Economic Buyer',
+          status: 'complete',
+          information: 'Russell Harris (Head of Product/Tech)',
+          details: [
+            {
+              text: 'Russell Harris has explicit authority over payment infrastructure decisions',
+              reasoning: {
+                text: 'Confirmed during discussion; he is driving the evaluation',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Decision Process',
+          status: 'complete',
+          information: 'ROI review → stakeholder alignment → contract negotiation (3-4 weeks)',
+          details: [
+            {
+              text: 'Step 1: Russell reviews ROI model and technical spec (1 week)',
+              reasoning: {
+                text: 'Russell stated he needs the math before moving forward',
+                verbatims: [{ quote: 'Can you send us the ROI model? We need to see the math before we can move forward.', timestamp: '00:18:45' }],
+              },
+            },
+            {
+              text: 'Step 2: Internal alignment meeting with Theresa (Brand) and Yuliia (Tech) (early March)',
+              reasoning: {
+                text: 'Russell indicated need to align other stakeholders before proceeding',
+              },
+            },
+            {
+              text: 'Step 3: Contract negotiation and signature (mid-March target)',
+            },
+          ],
+        },
+        {
+          name: 'Decision Criteria',
+          status: 'complete',
+          information: 'ROI > 5x, net margin positive, Skio compatibility',
+          details: [
+            {
+              text: 'ROI requirement: Must demonstrate 5x+ return on investment',
+              reasoning: {
+                text: 'Implicit in Russell\'s request for detailed ROI model',
+              },
+            },
+            {
+              text: 'Net margin constraint: Solution must maintain net positive margins (< 1.5% fee)',
+              reasoning: {
+                text: 'Russell emphasized margin sensitivity multiple times',
+                verbatims: [{ quote: 'We have tight margins. Any solution has to maintain our profitability.', timestamp: '00:22:10' }],
+              },
+            },
+            {
+              text: 'Technical feasibility: Solution must work with Skio subscriptions',
+              reasoning: {
+                text: 'Identified as critical blocker; must have workaround plan',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Decision Maker',
+          status: 'complete',
+          information: 'Russell Harris (confirmed authority)',
+          details: [
+            {
+              text: 'Russell has authority to make payment infrastructure decisions',
+              reasoning: {
+                text: 'Confirmed as Head of Product/Tech with explicit sign-off authority',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Identify Pain',
+          status: 'complete',
+          information: 'AOV optimization, subscription payment gap, margin pressure',
+          details: [
+            {
+              text: 'Primary pain: AOV stuck at current levels; HSA/FSA unlock = 50% uplift opportunity',
+              reasoning: {
+                text: 'Russell indicated this is top priority for profitability',
+              },
+            },
+            {
+              text: 'Technical pain: Skio cannot process HSA/FSA; requires custom workaround',
+              reasoning: {
+                text: 'Yuliia identified this as the main implementation blocker',
+              },
+            },
+            {
+              text: 'Financial pain: Margin compression on new revenue streams',
+              reasoning: {
+                text: 'Russell stated cost of solution cannot exceed 1.5% of transaction value',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Champion',
+          status: 'complete',
+          information: 'Russell Harris (self-championing, driving evaluation)',
+          details: [
+            {
+              text: 'Russell is the primary champion; he initiated the conversation and is driving next steps',
+              reasoning: {
+                text: 'Russell is actively pursuing evaluation and has set clear next-step expectations',
+              },
+            },
+            {
+              text: 'Theresa Bischof (Brand Lead) is a secondary champion focused on UX/customer experience',
+              reasoning: {
+                text: 'Theresa emphasized avoiding friction in checkout flow',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Competition',
+          status: 'complete',
+          information: 'Status quo (Shopify Payments)',
+          details: [
+            {
+              text: 'Primary competition: Status quo inertia and complexity of setup',
+              reasoning: {
+                text: 'No other HSA/FSA vendors mentioned; real competition is "do nothing"',
+              },
+            },
+            {
+              text: 'Alternative: Custom in-house build (would take 6-12 months and significant R&D)',
+              reasoning: {
+                text: 'Russell implied they considered building but prefers to buy proven solution',
+              },
+            },
+          ],
+        },
+        {
+          name: 'Compelling Event',
+          status: 'partial',
+          information: 'Sephora launch Q2 2026 (HSA/FSA could be differentiator)',
+          details: [
+            {
+              text: 'Sephora expansion creates timing pressure; HSA/FSA could differentiate DTC channel',
+              reasoning: {
+                text: 'Russell mentioned retail expansion as driver for optimization',
+              },
+            },
+          ],
+        },
+      ],
+    },
+    key_stakeholders: [
+      {
+        name: 'Russell Harris',
+        avatar_color: 'bg-orange-400',
+        job_title: 'Head of Product/Tech',
+        role_in_buying_process: 'Economic Buyer',
+        tags: ['Decision Maker', 'Champion'],
+        role_and_engagement: 'Primary driver of evaluation; has authority over payment infrastructure. Actively reviewing ROI and leading internal stakeholder alignment.',
+        authority: 'Can make final decision on payment solution. Controls product roadmap and technical integration priorities.',
+        key_concerns: 'ROI justification, margin impact, technical feasibility with Skio. Wants rigorous analysis before committing.',
+        communication_style: 'Data-driven, direct, skeptical. Prefers detailed analysis over sales pitch. Values logical argumentation.',
+        personal_markers: 'Quick to engage, thorough questioner, pragmatic. Shows high interest in solving the HSA/FSA problem.',
+        risk: {
+          level: 'LOW',
+          description: 'Strong champion actively driving evaluation. Primary risk is slow ROI validation.',
+        },
+      },
+      {
+        name: 'Theresa Bischof',
+        avatar_color: 'bg-pink-400',
+        job_title: 'Brand Lead',
+        role_in_buying_process: 'Influencer',
+        tags: ['Stakeholder'],
+        role_and_engagement: 'Focused on customer experience and brand perception. Concerned about checkout friction. Influential in internal alignment decision.',
+        authority: 'Can block decision if UX/brand experience negatively impacted.',
+        key_concerns: 'Customer checkout experience, brand perception, HSA/FSA complexity. Wants seamless integration.',
+        communication_style: 'Customer-centric, experience-focused. Values simplicity and user psychology.',
+        personal_markers: 'Engaged in call, asked detailed UX questions, focused on customer friction points.',
+        risk: {
+          level: 'MEDIUM',
+          description: 'Can block if UX solution appears too complex. Manageable with clear UX walkthrough.',
+        },
+      },
+      {
+        name: 'Yuliia Pyrohova',
+        avatar_color: 'bg-blue-400',
+        job_title: 'Technical Architect',
+        role_in_buying_process: 'Influencer',
+        tags: ['Stakeholder'],
+        role_and_engagement: 'Responsible for technical validation and integration approach. Stress-tests solutions against edge cases and architecture constraints.',
+        authority: 'Can block if technical approach is infeasible or introduces system risks.',
+        key_concerns: 'Technical feasibility, Skio integration complexity, system stability. Wants detailed technical spec.',
+        communication_style: 'Technical, detail-oriented. Focuses on edge cases and system reliability.',
+        personal_markers: 'Asked probing technical questions about Skio workaround and subscription order handling.',
+        risk: {
+          level: 'MEDIUM',
+          description: 'Main risk if Skio integration approach is deemed too risky. Mitigated with detailed technical architecture.',
+        },
+      },
+    ],
+    meetings: [
+      {
+        id: 'call-completed-001',
+        name: 'Discovery Call - Payment Infrastructure & HSA/FSA Opportunity',
+        start_time: '2026-02-20T14:00:00',
+        duration: '45m',
+        attendees: [
+          { name: 'Russell Harris' },
+          { name: 'Theresa Bischof' },
+          { name: 'Yuliia Pyrohova' },
+          { name: 'Jacob Francis' },
+        ],
+        status: 'completed',
+        momentum: 'Active',
+      },
+      {
+        id: 'call-scheduled-002',
+        name: 'ROI Validation & Technical Review',
+        start_time: '2026-03-05T15:00:00',
+        duration: '60m',
+        attendees: [
+          { name: 'Russell Harris' },
+          { name: 'Yuliia Pyrohova' },
+          { name: 'Jacob Francis' },
+          { name: 'Morgan Clark' },
+        ],
+        status: 'scheduled',
       },
     ],
   },

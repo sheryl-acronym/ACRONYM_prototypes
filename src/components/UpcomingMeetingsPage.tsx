@@ -32,7 +32,6 @@ import {
   PlusCircle,
   ChevronsUpDown,
   SlidersHorizontal,
-  User,
   ChevronsRight,
   Maximize2,
   MoreHorizontal,
@@ -40,6 +39,7 @@ import {
   PanelLeft,
 } from 'lucide-react';
 import PreCallBrief from '@/components/PreCallBrief';
+import { AttendeeHoverCard } from '@/components/AttendeeHoverCard';
 
 const OVERLAY_BREAKPOINT = 1200;
 
@@ -346,10 +346,12 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
                           <TableCell>
                             <div className="flex items-center gap-2">
                               {meeting.attendees.map((attendee, i) => (
-                                <Badge key={i} variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-                                  <User className="h-3 w-3" />
-                                  {attendee.name}
-                                </Badge>
+                                <AttendeeHoverCard
+                                  key={i}
+                                  name={attendee.name}
+                                  email={attendee.email}
+                                  role={attendee.role}
+                                />
                               ))}
                             </div>
                           </TableCell>

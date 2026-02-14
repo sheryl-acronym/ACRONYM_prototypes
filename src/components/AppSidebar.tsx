@@ -138,8 +138,10 @@ export default function AppSidebar() {
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
-                        <SidebarMenuSubButton className="h-8">
-                          <span>Customer Profiles</span>
+                        <SidebarMenuSubButton asChild className="h-8" isActive={location.pathname === '/customer-profiles'}>
+                          <Link to="/customer-profiles">
+                            <span>Customer Profiles</span>
+                          </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>

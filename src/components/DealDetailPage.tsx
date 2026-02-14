@@ -6,13 +6,13 @@ import {
   Momentum,
   Verbatim,
   ReasoningWithVerbatims,
+  Meeting,
 } from '@/types';
 import {
   Building2,
   Calendar,
   ChevronsRight,
   Diamond,
-  FileText,
   Maximize2,
   MoreHorizontal,
   Upload,
@@ -23,6 +23,7 @@ import {
   ThumbsDown,
   Copy,
   Trash2,
+  BookOpen,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -48,7 +49,7 @@ import {
 
 interface DealDetailPageProps {
   data: DealDetailData;
-  onVersionChange?: (version: 'v1' | 'v2') => void;
+  onVersionChange?: (version: 'v1' | 'v2' | '1st-call' | 'post-call-1') => void;
 }
 
 const stageConfig: Record<DealStage, { bg: string; text: string; border: string }> = {
@@ -232,27 +233,27 @@ const ReasoningPopover: React.FC<ReasoningPopoverProps> = ({ reasoning }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="mt-0.5 p-0.5 rounded hover:bg-slate-100 text-muted-foreground hover:text-foreground transition-colors">
+        <button className="mt-0.5 p-0.5 rounded hover:bg-gray-100 text-muted-foreground hover:text-foreground transition-colors">
           <Sparkles className="h-3.5 w-3.5" />
         </button>
       </PopoverTrigger>
       <PopoverContent side="right" align="start" className="w-80 p-3">
         <div className="flex items-center gap-1.5 mb-2">
-          <Sparkles className="h-3.5 w-3.5 text-slate-600" />
+          <Sparkles className="h-3.5 w-3.5 text-gray-600" />
           <span className="text-xs font-semibold text-foreground">AI Reasoning</span>
         </div>
         <p className="text-xs text-muted-foreground leading-relaxed">{reasoning.text}</p>
         {reasoning.verbatims?.map((v, vi) => (
           <VerbatimCallout key={vi} verbatim={v} />
         ))}
-        <div className="flex items-center gap-2 mt-3 pt-2 border-t border-slate-200">
+        <div className="flex items-center gap-2 mt-3 pt-2 border-t border-gray-200">
           <span className="text-xs text-muted-foreground">Was this helpful?</span>
           <button
             onClick={() => setFeedback(feedback === 'helpful' ? null : 'helpful')}
             className={`p-1 rounded transition-colors ${
               feedback === 'helpful'
-                ? 'bg-slate-200 text-foreground'
-                : 'text-muted-foreground hover:bg-slate-100'
+                ? 'bg-gray-200 text-foreground'
+                : 'text-muted-foreground hover:bg-gray-100'
             }`}
             title="Helpful"
           >
@@ -262,8 +263,8 @@ const ReasoningPopover: React.FC<ReasoningPopoverProps> = ({ reasoning }) => {
             onClick={() => setFeedback(feedback === 'not-helpful' ? null : 'not-helpful')}
             className={`p-1 rounded transition-colors ${
               feedback === 'not-helpful'
-                ? 'bg-slate-200 text-foreground'
-                : 'text-muted-foreground hover:bg-slate-100'
+                ? 'bg-gray-200 text-foreground'
+                : 'text-muted-foreground hover:bg-gray-100'
             }`}
             title="Not helpful"
           >
@@ -281,7 +282,7 @@ const VerbatimCallout: React.FC<{ verbatim: Verbatim }> = ({ verbatim }) => {
   return (
     <button
       onClick={() => openTranscript(verbatim.quote)}
-      className="w-full text-left mt-2 border-l-2 border-slate-300 pl-3 py-1.5 hover:border-amber-400 hover:bg-amber-50/50 transition-colors rounded-r cursor-pointer group/verbatim"
+      className="w-full text-left mt-2 border-l-2 border-gray-300 pl-3 py-1.5 hover:border-amber-400 hover:bg-amber-50/50 transition-colors rounded-r cursor-pointer group/verbatim"
     >
       <p className="text-xs text-foreground/70 leading-relaxed italic">{verbatim.quote}</p>
       <span className="text-[10px] text-muted-foreground mt-1 inline-block group-hover/verbatim:text-amber-600 transition-colors">
@@ -291,7 +292,7 @@ const VerbatimCallout: React.FC<{ verbatim: Verbatim }> = ({ verbatim }) => {
   );
 };
 
-const TopBar: React.FC<{ dealName: string; onVersionChange?: (version: 'v1' | 'v2') => void }> = ({ dealName, onVersionChange }) => {
+const TopBar: React.FC<{ dealName: string; onVersionChange?: (version: 'v1' | 'v2' | '1st-call' | 'post-call-1') => void }> = ({ dealName, onVersionChange }) => {
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between w-full">
@@ -318,13 +319,15 @@ const TopBar: React.FC<{ dealName: string; onVersionChange?: (version: 'v1' | 'v
       </div>
       <div className="flex items-center gap-1">
         {onVersionChange && (
-          <Select defaultValue="v1" onValueChange={(v) => onVersionChange(v as 'v1' | 'v2')}>
+          <Select defaultValue="v1" onValueChange={(v) => onVersionChange(v as 'v1' | 'v2' | '1st-call' | 'post-call-1')}>
             <SelectTrigger className="w-auto h-8 text-xs px-2.5">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="v1">V1</SelectItem>
               <SelectItem value="v2">V2</SelectItem>
+              <SelectItem value="1st-call">1st call scheduled</SelectItem>
+              <SelectItem value="post-call-1">Post Call 1</SelectItem>
             </SelectContent>
           </Select>
         )}
@@ -342,12 +345,9 @@ const TopBar: React.FC<{ dealName: string; onVersionChange?: (version: 'v1' | 'v
 const DealHeader: React.FC<{
   dealName: string;
   dealIconColor: string;
-}> = ({ dealName, dealIconColor }) => (
+}> = ({ dealName }) => (
   <div className="mb-6">
-    <div className="flex items-center gap-3">
-      <span className={`w-7 h-7 rounded-full flex-shrink-0 ${dealIconColor}`} />
-      <h1 className="text-2xl font-bold text-foreground">{dealName}</h1>
-    </div>
+    <h1 className="text-2xl font-bold text-foreground">{dealName}</h1>
   </div>
 );
 
@@ -363,12 +363,9 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
           <Diamond className="h-4 w-4" />
           Deal stage
         </span>
-        <Badge
-          variant="outline"
-          className={`${stageStyle.bg} ${stageStyle.text} ${stageStyle.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
-        >
-          {data.stage_name}
-        </Badge>
+        <div className={`inline-flex items-center h-5.5 rounded-full px-3 border ${stageStyle.bg} ${stageStyle.text} ${stageStyle.border}`}>
+          <span className="text-sm font-medium">{data.stage_name}</span>
+        </div>
       </div>
 
       {/* Momentum */}
@@ -377,12 +374,9 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
           <Square className="h-4 w-4" />
           Momentum
         </span>
-        <Badge
-          variant="outline"
-          className={`${momentumStyle.bg} ${momentumStyle.text} ${momentumStyle.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
-        >
-          {data.momentum}
-        </Badge>
+        <div className={`inline-flex items-center h-5.5 rounded-full px-3 border ${momentumStyle.bg} ${momentumStyle.text} ${momentumStyle.border}`}>
+          <span className="text-sm font-medium">{data.momentum}</span>
+        </div>
       </div>
 
       {/* Last meeting */}
@@ -392,10 +386,10 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
           Last meeting
         </span>
         {data.last_meeting ? (
-          <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-            <Calendar className="h-3 w-3" />
-            {formatShortDate(data.last_meeting)}
-          </Badge>
+          <div className="inline-flex items-center gap-2 h-6 rounded-md bg-white px-2 border border-gray-200">
+            <Calendar className="h-4 w-4" />
+            <span className="text-sm font-medium text-foreground">{formatShortDate(data.last_meeting)}</span>
+          </div>
         ) : (
           <span className="text-sm text-muted-foreground">-</span>
         )}
@@ -408,10 +402,10 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
           Next meeting
         </span>
         {data.next_meeting ? (
-          <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-            <Calendar className="h-3 w-3" />
-            {formatShortDate(data.next_meeting)}
-          </Badge>
+          <div className="inline-flex items-center gap-2 h-6 rounded-md bg-white px-2 border border-gray-200">
+            <Calendar className="h-4 w-4" />
+            <span className="text-sm font-medium text-foreground">{formatShortDate(data.next_meeting)}</span>
+          </div>
         ) : (
           <span className="text-sm text-muted-foreground">No meeting scheduled</span>
         )}
@@ -437,30 +431,32 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
           <Building2 className="h-4 w-4" />
           Company
         </span>
-        <div className="flex items-center gap-2 text-sm text-foreground">
-          {data.company_logo_url ? (
-            <>
-              <img
-                src={data.company_logo_url}
-                alt={data.company_name}
-                className="h-5 w-5 rounded object-contain"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  target.style.display = 'none';
-                  target.nextElementSibling?.classList.remove('hidden');
-                }}
-              />
-              <span className={`w-5 h-5 rounded hidden ${data.company_icon_color || 'bg-gray-300'}`} />
-            </>
-          ) : (
-            <span className={`w-5 h-5 rounded ${data.company_icon_color || 'bg-gray-300'}`} />
-          )}
-          {data.company_name}
+        <div className="flex items-center gap-2">
+          <div className="inline-flex items-center gap-2 h-6 rounded-md bg-white px-2 border border-gray-200">
+            {data.company_logo_url ? (
+              <>
+                <img
+                  src={data.company_logo_url}
+                  alt={data.company_name}
+                  className="h-4 w-4 rounded object-contain"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.style.display = 'none';
+                    target.nextElementSibling?.classList.remove('hidden');
+                  }}
+                />
+                <span className={`w-4 h-4 rounded hidden ${data.company_icon_color || 'bg-gray-300'}`} />
+              </>
+            ) : (
+              <span className={`w-4 h-4 rounded ${data.company_icon_color || 'bg-gray-300'}`} />
+            )}
+            <span className="text-sm font-medium text-foreground">{data.company_name}</span>
+          </div>
           {data.customer_profile && (
-            <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 ml-1">
-              <FileText className="h-3 w-3 mr-1" />
-              {data.customer_profile}
-            </Badge>
+            <div className="inline-flex items-center gap-2 h-6 rounded-md bg-white px-2 border border-gray-200">
+              <BookOpen className="h-4 w-4" />
+              <span className="text-sm font-medium text-foreground">{data.customer_profile}</span>
+            </div>
           )}
         </div>
       </div>
@@ -468,21 +464,46 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
   );
 };
 
-const CurrentStateSection: React.FC<{ summary: string; momentum: Momentum }> = ({ summary, momentum }) => {
+const CurrentStateSection: React.FC<{
+  summary: string;
+  momentum: Momentum;
+  aceCloseConfidence?: 'Low' | 'Medium' | 'High';
+}> = ({ summary, momentum, aceCloseConfidence }) => {
   const momentumStyle = momentumConfig[momentum];
 
+  const confidenceStyles = {
+    Low: 'bg-red-50 text-red-900 border-red-200',
+    Medium: 'bg-amber-50 text-amber-900 border-amber-200',
+    High: 'bg-green-50 text-green-900 border-green-200',
+  };
+
+  const confidenceDisplay = {
+    Low: 'Low',
+    Medium: 'Med',
+    High: 'High',
+  };
+
   return (
-    <div className="py-4">
-      <div className="flex gap-4 rounded-lg border border-slate-200 bg-white p-4">
-        <div className="flex flex-col items-start justify-center flex-shrink-0">
-          <Badge
-            className={`${momentumStyle.bg} ${momentumStyle.text} ${momentumStyle.border} font-medium text-sm rounded-md px-3 py-1.5`}
-          >
-            {momentum}
-          </Badge>
+    <div className="py-4 space-y-4">
+      <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground/60">Momentum</h3>
+          <div className={`inline-flex items-center h-5.5 rounded-full px-3 border ${momentumStyle.bg} ${momentumStyle.text} ${momentumStyle.border}`}>
+            <span className="text-sm font-medium">{momentum}</span>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm text-foreground/80">{summary}</p>
+        <p className="text-sm text-foreground/80">{summary}</p>
+        {aceCloseConfidence && (
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-foreground">Predicted Close Confidence</span>
+            <Badge variant="outline" className={`rounded-full font-normal text-xs px-2.5 py-0.5 ${confidenceStyles[aceCloseConfidence]}`}>
+              {confidenceDisplay[aceCloseConfidence]}
+            </Badge>
+          </div>
+        )}
+        <div className="pt-3 mt-1 border-t border-gray-200 space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground/60 mt-3">Recommended next step</p>
+          <p className="text-sm text-foreground/80">Validate ROI model with Russell's internal team to resolve margin impact concerns and unlock deal progression.</p>
         </div>
       </div>
     </div>
@@ -527,8 +548,8 @@ const LastMeetingSection: React.FC<{
     <p className="text-sm text-foreground mb-3">{title}</p>
     <ul className="space-y-2">
       {bullets.map((b, i) => (
-        <li key={i} className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${lastMeetingReasonings[i] ? 'hover:bg-slate-100/50' : ''}`}>
-          <span className="text-slate-400 leading-none select-none mt-0.5">&bull;</span>
+        <li key={i} className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${lastMeetingReasonings[i] ? 'hover:bg-gray-100/50' : ''}`}>
+          <span className="text-gray-400 leading-none select-none mt-0.5">&bull;</span>
           <span className="flex-1">{b}</span>
           {lastMeetingReasonings[i] && (
             <span className="flex-shrink-0 opacity-0 group-hover/bullet:opacity-100 transition-opacity">
@@ -581,8 +602,8 @@ const PositiveSignalsSection: React.FC<{
       </h2>
       <ul className="space-y-2">
         {items.map((s, i) => (
-          <li key={i} className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${positiveSignalReasonings[i] ? 'hover:bg-slate-100/50' : ''}`}>
-            <span className="text-slate-400 leading-none select-none mt-0.5">&bull;</span>
+          <li key={i} className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${positiveSignalReasonings[i] ? 'hover:bg-gray-100/50' : ''}`}>
+            <span className="text-gray-400 leading-none select-none mt-0.5">&bull;</span>
             <span className="flex-1">
               <span className="font-semibold text-foreground">{s.label}</span>
               {' - '}
@@ -640,8 +661,8 @@ const RiskFactorsSection: React.FC<{
       </h2>
       <ul className="space-y-2">
         {items.map((r, i) => (
-          <li key={i} className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${riskFactorReasonings[i] ? 'hover:bg-slate-100/50' : ''}`}>
-            <span className="text-slate-400 leading-none select-none mt-0.5">&bull;</span>
+          <li key={i} className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${riskFactorReasonings[i] ? 'hover:bg-gray-100/50' : ''}`}>
+            <span className="text-gray-400 leading-none select-none mt-0.5">&bull;</span>
             <span className="flex-1">
               <span className="font-semibold text-foreground">{r.label}</span>
               {' - '}
@@ -683,35 +704,36 @@ const NextStepsSection: React.FC<{
     setItems(updated);
   };
 
-  return (
-    <div className="py-4">
-      <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
-        Next steps
-      </h2>
-      <div className="space-y-2">
-        {items.map((step, i) => (
+  const ourSteps = items.filter((step) => step.assignee.includes('Flex'));
+  const theirSteps = items.filter((step) => step.assignee.includes('PROVEN'));
+
+  const renderSteps = (stepsToRender: typeof items) => (
+    <div className="space-y-2">
+      {stepsToRender.map((step, i) => {
+        const originalIndex = items.indexOf(step);
+        return (
           <div
             key={i}
             draggable
-            onDragStart={() => setDraggedIndex(i)}
+            onDragStart={() => setDraggedIndex(originalIndex)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => {
-              if (draggedIndex !== null && draggedIndex !== i) {
-                moveItem(draggedIndex, i);
+              if (draggedIndex !== null && draggedIndex !== originalIndex) {
+                moveItem(draggedIndex, originalIndex);
                 setDraggedIndex(null);
               }
             }}
             className={`group/step flex items-start gap-3 p-3 rounded-lg transition-colors ${
-              draggedIndex === i
-                ? 'bg-slate-100 opacity-50 cursor-move'
-                : 'hover:bg-slate-50 hover:cursor-move'
+              draggedIndex === originalIndex
+                ? 'bg-gray-100 opacity-50 cursor-move'
+                : 'hover:bg-gray-50 hover:cursor-move'
             }`}
           >
             <Checkbox
               checked={step.completed}
               onCheckedChange={(checked) => {
                 const updated = [...items];
-                updated[i] = { ...updated[i], completed: !!checked };
+                updated[originalIndex] = { ...updated[originalIndex], completed: !!checked };
                 setItems(updated);
               }}
               className="mt-0.5"
@@ -734,23 +756,45 @@ const NextStepsSection: React.FC<{
                 <ReasoningPopover reasoning={step.reasoning} />
               )}
               <button
-                onClick={() => copyItem(i)}
-                className="p-1.5 hover:bg-slate-200 rounded transition-colors"
+                onClick={() => copyItem(originalIndex)}
+                className="p-1.5 hover:bg-gray-200 rounded transition-colors"
                 title="Copy"
               >
-                <Copy className="h-4 w-4 text-slate-500" />
+                <Copy className="h-4 w-4 text-gray-500" />
               </button>
               <button
-                onClick={() => deleteItem(i)}
-                className="p-1.5 hover:bg-slate-200 rounded transition-colors"
+                onClick={() => deleteItem(originalIndex)}
+                className="p-1.5 hover:bg-gray-200 rounded transition-colors"
                 title="Delete"
               >
-                <Trash2 className="h-4 w-4 text-slate-500" />
+                <Trash2 className="h-4 w-4 text-gray-500" />
               </button>
             </div>
           </div>
-        ))}
-      </div>
+        );
+      })}
+    </div>
+  );
+
+  return (
+    <div className="py-4 space-y-6">
+      {ourSteps.length > 0 && (
+        <div>
+          <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
+            Our next steps
+          </h2>
+          {renderSteps(ourSteps)}
+        </div>
+      )}
+
+      {theirSteps.length > 0 && (
+        <div>
+          <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">
+            Their next steps
+          </h2>
+          {renderSteps(theirSteps)}
+        </div>
+      )}
     </div>
   );
 };
@@ -762,8 +806,8 @@ const OpportunitySummaryBullet: React.FC<{
   const reasoning = typeof item === 'string' ? undefined : item.reasoning;
 
   return (
-    <li className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${reasoning ? 'hover:bg-slate-100/50' : ''}`}>
-      <span className="text-slate-400 leading-none select-none mt-0.5">&bull;</span>
+    <li className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${reasoning ? 'hover:bg-gray-100/50' : ''}`}>
+      <span className="text-gray-400 leading-none select-none mt-0.5">&bull;</span>
       <span className="flex-1">{text}</span>
       {reasoning && (
         <span className="flex-shrink-0 opacity-0 group-hover/bullet:opacity-100 transition-opacity">
@@ -786,41 +830,49 @@ const OpportunitySummarySection: React.FC<{
     </p>
 
     <div className="space-y-4">
-      <div>
-        <h3 className="text-sm font-semibold text-foreground mb-1.5">What they're looking for:</h3>
-        <ul className="space-y-1">
-          {data.what_they_want.map((item, i) => (
-            <OpportunitySummaryBullet key={i} item={item} />
-          ))}
-        </ul>
-      </div>
+      {data.what_they_want.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-foreground mb-1.5">What they're likely looking for:</h3>
+          <ul className="space-y-1">
+            {data.what_they_want.map((item, i) => (
+              <OpportunitySummaryBullet key={i} item={item} />
+            ))}
+          </ul>
+        </div>
+      )}
 
-      <div>
-        <h3 className="text-sm font-semibold text-foreground mb-1.5">How we can help them:</h3>
-        <ul className="space-y-1">
-          {data.how_we_help.map((item, i) => (
-            <OpportunitySummaryBullet key={i} item={item} />
-          ))}
-        </ul>
-      </div>
+      {data.how_we_help.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-foreground mb-1.5">How we can help them:</h3>
+          <ul className="space-y-1">
+            {data.how_we_help.map((item, i) => (
+              <OpportunitySummaryBullet key={i} item={item} />
+            ))}
+          </ul>
+        </div>
+      )}
 
-      <div>
-        <h3 className="text-sm font-semibold text-foreground mb-1.5">Why now:</h3>
-        <ul className="space-y-1">
-          {data.why_now.map((item, i) => (
-            <OpportunitySummaryBullet key={i} item={item} />
-          ))}
-        </ul>
-      </div>
+      {data.why_now.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-foreground mb-1.5">Why now:</h3>
+          <ul className="space-y-1">
+            {data.why_now.map((item, i) => (
+              <OpportunitySummaryBullet key={i} item={item} />
+            ))}
+          </ul>
+        </div>
+      )}
 
-      <div>
-        <h3 className="text-sm font-semibold text-foreground mb-1.5">Budget & ROI:</h3>
-        <ul className="space-y-1">
-          {data.budget_and_roi.map((item, i) => (
-            <OpportunitySummaryBullet key={i} item={item} />
-          ))}
-        </ul>
-      </div>
+      {data.budget_and_roi.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-foreground mb-1.5">Budget & ROI:</h3>
+          <ul className="space-y-1">
+            {data.budget_and_roi.map((item, i) => (
+              <OpportunitySummaryBullet key={i} item={item} />
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   </div>
 );
@@ -846,22 +898,27 @@ const KeyStakeholdersSection: React.FC<{
             <div className="flex-1 min-w-0">
               <div className="flex flex-col gap-1.5">
                 <span className="text-sm font-semibold text-foreground">{s.name}</span>
-                <div className="flex flex-wrap gap-1.5">
-                  {s.role_in_buying_process && (
-                    <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
-                      {s.role_in_buying_process}
-                    </Badge>
+                <div className="flex items-center gap-2">
+                  {s.job_title && (
+                    <span className="text-xs text-foreground/60">{s.job_title}</span>
                   )}
-                  {s.tags && s.tags.map((tag, ti) => (
-                    <Badge key={ti} variant="secondary" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
-                      {tag}
-                    </Badge>
-                  ))}
+                  <div className="flex flex-wrap gap-1.5">
+                    {s.role_in_buying_process && (
+                      <Badge variant="outline" className="rounded-full font-normal text-xs px-2.5 py-0.5 w-fit">
+                        {s.role_in_buying_process}
+                      </Badge>
+                    )}
+                    {s.tags && s.tags.map((tag, ti) => (
+                      <Badge key={ti} variant="outline" className="rounded-full font-normal text-xs px-2.5 py-0.5 w-fit bg-white">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
             {s.risk && (
-              <Badge variant="outline" className={`rounded-md font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${
+              <Badge variant="outline" className={`rounded-full font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${
                 s.risk.level === 'HIGH' ? 'bg-red-50 text-red-900 border-red-200' :
                 s.risk.level === 'MEDIUM' ? 'bg-amber-50 text-amber-900 border-amber-200' :
                 'bg-green-50 text-green-900 border-green-200'
@@ -890,7 +947,8 @@ const KeyStakeholdersSection: React.FC<{
                   <h4 className="text-sm font-semibold text-foreground">Buyer Persona</h4>
                 </div>
                 <div>
-                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
+                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit flex items-center gap-1.5">
+                    <BookOpen size={14} />
                     {s.buyer_persona}
                   </Badge>
                 </div>
@@ -919,6 +977,17 @@ const KeyStakeholdersSection: React.FC<{
               </div>
             )}
 
+            {s.communication_style && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Communication</h4>
+                </div>
+                <div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{s.communication_style}</p>
+                </div>
+              </div>
+            )}
+
             {s.risk && (
               <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
                 <div>
@@ -926,6 +995,17 @@ const KeyStakeholdersSection: React.FC<{
                 </div>
                 <div>
                   <p className="text-sm text-foreground/70 leading-relaxed">{s.risk.description}</p>
+                </div>
+              </div>
+            )}
+
+            {s.personal_markers && (
+              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div>
+                  <h4 className="text-sm font-semibold text-foreground">Personal markers</h4>
+                </div>
+                <div>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{s.personal_markers}</p>
                 </div>
               </div>
             )}
@@ -943,8 +1023,8 @@ const IntelBullet: React.FC<{
   const reasoning = typeof item === 'string' ? undefined : item.reasoning;
 
   return (
-    <li className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${reasoning ? 'hover:bg-slate-100/50' : ''}`}>
-      <span className="text-slate-400 leading-none select-none mt-0.5">&bull;</span>
+    <li className={`group/bullet flex items-start gap-2 text-sm text-foreground/80 rounded px-2 py-1 -mx-2 transition-colors ${reasoning ? 'hover:bg-gray-100/50' : ''}`}>
+      <span className="text-gray-400 leading-none select-none mt-0.5">&bull;</span>
       <span className="flex-1">{text}</span>
       {reasoning && (
         <span className="flex-shrink-0 opacity-0 group-hover/bullet:opacity-100 transition-opacity">
@@ -961,7 +1041,7 @@ const IntelSection: React.FC<{
   if (!intel) {
     return (
       <div className="py-12 text-center text-sm text-muted-foreground">
-        No intel available.
+        Intel will be generated after your first meeting.
       </div>
     );
   }
@@ -1002,14 +1082,6 @@ const MeddicsSection: React.FC<{
     () => new Set(meddic?.components.map((_, i) => i) ?? [])
   );
 
-  if (!meddic) {
-    return (
-      <div className="py-12 text-center text-sm text-muted-foreground">
-        MEDDIC status not available.
-      </div>
-    );
-  }
-
   const toggleExpanded = (index: number) => {
     const newSet = new Set(expandedIndices);
     if (newSet.has(index)) {
@@ -1022,9 +1094,9 @@ const MeddicsSection: React.FC<{
 
   return (
     <div className="space-y-6 pt-4">
-      <div className="overflow-x-auto border border-slate-200 rounded-lg">
+      <div className="overflow-x-auto border border-gray-200 rounded-lg">
         <table className="w-full text-sm">
-          <thead className="bg-slate-50">
+          <thead className="bg-gray-50">
             <tr>
               <th className="text-left px-4 py-3 font-medium text-foreground w-8">Status</th>
               <th className="text-left px-4 py-3 font-medium text-foreground w-48">Component</th>
@@ -1033,10 +1105,10 @@ const MeddicsSection: React.FC<{
             </tr>
           </thead>
           <tbody className="divide-y">
-            {meddic.components.map((comp, i) => (
+            {meddic?.components.map((comp, i) => (
               <React.Fragment key={i}>
                 <tr
-                  className="hover:bg-slate-50 cursor-pointer transition-colors"
+                  className="hover:bg-gray-50 cursor-pointer transition-colors"
                   onClick={() => toggleExpanded(i)}
                 >
                   <td className="px-4 py-3 text-center">{statusIcon(comp.status)}</td>
@@ -1091,7 +1163,7 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
     <TranscriptPanelContext.Provider value={contextValue}>
       <div className="flex flex-1 min-h-screen relative flex-col">
         {/* Full-width header - sticky */}
-        <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-slate-200">
+        <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-gray-200">
           <div className="flex-1 flex items-center">
             <TopBar dealName={data.name} onVersionChange={onVersionChange} />
           </div>
@@ -1099,14 +1171,14 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
         {/* Main content area */}
         <div className="flex flex-1 overflow-hidden">
           <div className="flex-1 bg-white overflow-y-auto">
-            <div className="max-w-[1040px] mx-auto px-8 pt-8 pb-24 w-full">
+            <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
             <DealHeader dealName={data.name} dealIconColor={data.icon_color} />
             <MetadataRows data={data} />
 
             <Separator className="my-4" />
 
             <Tabs defaultValue="overview">
-              <TabsList className="bg-transparent p-0 h-auto border-b border-slate-200 w-full justify-around rounded-none gap-0">
+              <TabsList className="bg-transparent p-0 h-auto border-b border-gray-200 w-full justify-around rounded-none gap-0">
                 <TabsTrigger
                   value="overview"
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors px-4 pb-2.5 pt-2 text-sm font-medium"
@@ -1140,16 +1212,38 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
               </TabsList>
 
               <TabsContent value="overview">
-                <CurrentStateSection summary={data.overview.momentum_summary} momentum={data.momentum} />
-                <LastMeetingSection
-                  title={data.overview.last_meeting.title}
-                  bullets={data.overview.last_meeting.bullets}
-                />
-                <PositiveSignalsSection signals={data.overview.positive_signals} />
-                <RiskFactorsSection risks={data.overview.risk_factors} />
-                <NextStepsSection steps={data.overview.next_steps} />
-
-                <Separator className="my-4" />
+                {data.overview.momentum_summary && (
+                  <>
+                    <CurrentStateSection summary={data.overview.momentum_summary} momentum={data.momentum} aceCloseConfidence={data.overview.ace_predicted_close_confidence} />
+                    <Separator className="my-4" />
+                  </>
+                )}
+                {data.overview.positive_signals.length > 0 && (
+                  <>
+                    <PositiveSignalsSection signals={data.overview.positive_signals} />
+                    <Separator className="my-4" />
+                  </>
+                )}
+                {data.overview.risk_factors.length > 0 && (
+                  <>
+                    <RiskFactorsSection risks={data.overview.risk_factors} />
+                    <Separator className="my-4" />
+                  </>
+                )}
+                {data.overview.last_meeting.title && (
+                  <>
+                    <LastMeetingSection
+                      title={data.overview.last_meeting.title}
+                      bullets={data.overview.last_meeting.bullets}
+                    />
+                  </>
+                )}
+                {data.overview.next_steps.length > 0 && (
+                  <>
+                    <NextStepsSection steps={data.overview.next_steps} />
+                    <Separator className="my-4" />
+                  </>
+                )}
 
                 <OpportunitySummarySection data={data.opportunity_summary} />
 
@@ -1176,22 +1270,27 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
                           <div className="flex-1 min-w-0">
                             <div className="flex flex-col gap-1.5">
                               <span className="text-sm font-semibold text-foreground">{data.key_stakeholders[0].name}</span>
-                              <div className="flex flex-wrap gap-1.5">
-                                {data.key_stakeholders[0].role_in_buying_process && (
-                                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
-                                    {data.key_stakeholders[0].role_in_buying_process}
-                                  </Badge>
+                              <div className="flex items-center gap-2">
+                                {data.key_stakeholders[0].job_title && (
+                                  <span className="text-xs text-foreground/60">{data.key_stakeholders[0].job_title}</span>
                                 )}
-                                {data.key_stakeholders[0].tags && data.key_stakeholders[0].tags.map((tag, ti) => (
-                                  <Badge key={ti} variant="secondary" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit">
-                                    {tag}
-                                  </Badge>
-                                ))}
+                                <div className="flex flex-wrap gap-1.5">
+                                  {data.key_stakeholders[0].role_in_buying_process && (
+                                    <Badge variant="outline" className="rounded-full font-normal text-xs px-2.5 py-0.5 w-fit">
+                                      {data.key_stakeholders[0].role_in_buying_process}
+                                    </Badge>
+                                  )}
+                                  {data.key_stakeholders[0].tags && data.key_stakeholders[0].tags.map((tag, ti) => (
+                                    <Badge key={ti} variant="outline" className="rounded-full font-normal text-xs px-2.5 py-0.5 w-fit bg-white">
+                                      {tag}
+                                    </Badge>
+                                  ))}
+                                </div>
                               </div>
                             </div>
                           </div>
                           {data.key_stakeholders[0].risk && (
-                            <Badge variant="outline" className={`rounded-md font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${
+                            <Badge variant="outline" className={`rounded-full font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${
                               data.key_stakeholders[0].risk.level === 'HIGH' ? 'bg-red-50 text-red-900 border-red-200' :
                               data.key_stakeholders[0].risk.level === 'MEDIUM' ? 'bg-amber-50 text-amber-900 border-amber-200' :
                               'bg-green-50 text-green-900 border-green-200'
@@ -1219,9 +1318,7 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
               </TabsContent>
 
               <TabsContent value="meetings">
-                <div className="py-12 text-center text-sm text-muted-foreground">
-                  Meetings content coming soon.
-                </div>
+                <MeetingsSection meetings={data.meetings} />
               </TabsContent>
             </Tabs>
             </div>
@@ -1249,9 +1346,9 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
         </div>
 
         {/* Floating chat bar */}
-        <div className="fixed bottom-0 left-0 right-0 z-30 pointer-events-none">
-          <div className="flex items-center justify-center pb-6 pointer-events-auto">
-            <div className="w-full max-w-[600px] mx-4 bg-white rounded-full shadow-lg border border-slate-200 px-6 py-3 flex items-center gap-3">
+        <div className="fixed bottom-0 left-0 right-0 z-30 pointer-events-none flex items-center justify-center">
+          <div className="pb-6 pointer-events-auto w-full max-w-[720px] mx-4 px-8">
+            <div className="w-full bg-white rounded-full shadow-lg border border-gray-200 px-6 py-3 flex items-center gap-3">
               <input
                 type="text"
                 placeholder="Ask ACE..."
@@ -1265,6 +1362,162 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
         </div>
       </div>
     </TranscriptPanelContext.Provider>
+  );
+};
+
+const MeetingCard: React.FC<{ meeting: Meeting; momentumStyles: any }> = ({ meeting, momentumStyles }) => {
+  const formatMonthDay = (dateStr: string): { month: string; day: string } => {
+    const date = new Date(dateStr);
+    const month = date.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+    const day = date.getDate().toString().padStart(2, '0');
+    return { month, day };
+  };
+
+  const { month, day } = formatMonthDay(meeting.start_time);
+  const time = new Date(meeting.start_time).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+  const endTime = new Date(new Date(meeting.start_time).getTime() + parseInt(meeting.duration) * 60000).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+
+  return (
+    <div className="rounded-lg border border-gray-200 bg-white hover:shadow-sm transition-shadow flex gap-4 p-4 items-start">
+      {/* Calendar date */}
+      <div className="bg-blue-50 rounded-lg px-3 py-2 text-center border border-blue-200 min-w-fit flex-shrink-0">
+        <div className="text-xs font-semibold text-blue-900">{month}</div>
+        <div className="text-lg font-bold text-blue-900 leading-tight">{day}</div>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-start gap-2 mb-1">
+          <h3 className="text-sm font-medium text-foreground">{meeting.name}</h3>
+          {meeting.momentum && (
+            <Badge className={`text-xs font-semibold whitespace-nowrap flex-shrink-0 ${momentumStyles.bg} ${momentumStyles.text} border ${momentumStyles.border}`}>
+              {meeting.momentum}
+            </Badge>
+          )}
+        </div>
+        <div className="text-xs text-muted-foreground mb-2">
+          {time} - {endTime}
+        </div>
+        <div className="flex flex-wrap gap-1">
+          {meeting.attendees.map((attendee, i) => (
+            <Badge
+              key={i}
+              variant="secondary"
+              className="text-xs font-normal bg-gray-100 text-foreground"
+            >
+              {attendee.name}
+            </Badge>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const MeetingsSection: React.FC<{ meetings?: Meeting[] }> = ({ meetings }) => {
+  const getMomentumStyles = (momentum?: Momentum) => {
+    switch (momentum) {
+      case 'Strong':
+        return {
+          bg: 'bg-green-50',
+          text: 'text-green-700',
+          border: 'border-green-200',
+          dot: 'bg-green-500',
+        };
+      case 'Active':
+        return {
+          bg: 'bg-blue-50',
+          text: 'text-blue-700',
+          border: 'border-blue-200',
+          dot: 'bg-blue-500',
+        };
+      case 'At risk':
+        return {
+          bg: 'bg-red-50',
+          text: 'text-red-700',
+          border: 'border-red-200',
+          dot: 'bg-red-500',
+        };
+      case 'Stalled':
+        return {
+          bg: 'bg-amber-50',
+          text: 'text-amber-700',
+          border: 'border-amber-200',
+          dot: 'bg-amber-500',
+        };
+      case 'Closed':
+        return {
+          bg: 'bg-gray-50',
+          text: 'text-gray-700',
+          border: 'border-gray-200',
+          dot: 'bg-gray-500',
+        };
+      default:
+        return {
+          bg: 'bg-gray-50',
+          text: 'text-slate-700',
+          border: 'border-gray-200',
+          dot: 'bg-gray-400',
+        };
+    }
+  };
+
+  const now = new Date();
+  const upcomingMeetings = (meetings || []).filter(
+    (m) => new Date(m.start_time) > now
+  );
+  const pastMeetings = (meetings || [])
+    .filter((m) => new Date(m.start_time) <= now)
+    .sort((a, b) => new Date(b.start_time).getTime() - new Date(a.start_time).getTime());
+
+  return (
+    <div className="pt-4 space-y-8">
+      {/* Upcoming Meetings */}
+      <div>
+        <h3 className="text-sm font-semibold text-foreground mb-4">Upcoming Meetings</h3>
+        {upcomingMeetings.length > 0 ? (
+          <div className="space-y-4">
+            {upcomingMeetings.map((meeting) => (
+              <MeetingCard
+                key={meeting.id}
+                meeting={meeting}
+                momentumStyles={getMomentumStyles(meeting.momentum)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-lg border border-gray-200 bg-white p-6 text-center text-sm text-muted-foreground">
+            No meeting scheduled
+          </div>
+        )}
+      </div>
+
+      {/* Past Meetings */}
+      <div>
+        <h3 className="text-sm font-semibold text-foreground mb-4">Past Meetings</h3>
+        {pastMeetings.length > 0 ? (
+          <div className="space-y-4">
+            {pastMeetings.map((meeting) => (
+              <MeetingCard
+                key={meeting.id}
+                meeting={meeting}
+                momentumStyles={getMomentumStyles(meeting.momentum)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-lg border border-gray-200 bg-white p-6 text-center text-sm text-muted-foreground">
+            No past meetings
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

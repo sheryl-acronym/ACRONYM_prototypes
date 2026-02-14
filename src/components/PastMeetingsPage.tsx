@@ -32,12 +32,11 @@ import {
   PlusCircle,
   ChevronsUpDown,
   SlidersHorizontal,
-  User,
-  Snowflake,
   Loader2,
   AlertCircle,
   PanelLeft,
 } from 'lucide-react';
+import { AttendeeHoverCard } from '@/components/AttendeeHoverCard';
 
 interface PastMeetingsPageProps {
   meetings: PastMeeting[];
@@ -228,8 +227,6 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                               <Loader2 className="h-3 w-3" />
                             ) : meeting.status === 'Error' ? (
                               <AlertCircle className="h-3 w-3 text-red-500" />
-                            ) : !meeting.status ? (
-                              <Snowflake className="h-3 w-3" />
                             ) : null}
                             {meeting.status && meeting.status !== 'Error' && (
                               <span>{meeting.status} &bull; </span>
@@ -247,10 +244,12 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                       <TableCell>
                         <div className="flex items-center gap-2">
                           {meeting.attendees.map((attendee, i) => (
-                            <Badge key={i} variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-                              <User className="h-3 w-3" />
-                              {attendee.name}
-                            </Badge>
+                            <AttendeeHoverCard
+                              key={i}
+                              name={attendee.name}
+                              email={attendee.email}
+                              role={attendee.role}
+                            />
                           ))}
                         </div>
                       </TableCell>
