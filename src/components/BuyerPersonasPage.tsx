@@ -139,7 +139,7 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
         (p) =>
           p.name.toLowerCase().includes(q) ||
           p.description.toLowerCase().includes(q) ||
-          p.typically_found_in.toLowerCase().includes(q)
+          p.typically_found_in.some((profile) => profile.toLowerCase().includes(q))
       );
     }
 
@@ -299,7 +299,17 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
                         <span className="text-sm text-muted-foreground line-clamp-2">{persona.description}</span>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm text-muted-foreground">{persona.typically_found_in || '-'}</span>
+                        {persona.typically_found_in.length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {persona.typically_found_in.map((profile, idx) => (
+                              <Badge key={idx} variant="outline" className="font-normal text-xs rounded-md px-2 py-1">
+                                {profile}
+                              </Badge>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-sm text-muted-foreground">-</span>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))
