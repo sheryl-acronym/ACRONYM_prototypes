@@ -37,7 +37,7 @@ export const customerProfilesData: CustomerProfile[] = [
   },
   {
     id: 'cp-005',
-    category: 'Secondary',
+    category: 'Ideal',
     name: 'SMB DTC Health/Wellness Fast-Movers',
     description: 'Small to medium direct-to-consumer health and wellness businesses with fast decision cycles, seasonal urgency around FSA spending, and resource constraints requiring simple implementation',
     example_companies: ['adaptive sound technologies, inc.', 'adco medical suppliers', 'aletha health'],
