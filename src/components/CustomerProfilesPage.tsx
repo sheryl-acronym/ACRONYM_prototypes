@@ -14,23 +14,12 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
   Users,
   PlusCircle,
   ChevronsUpDown,
   ArrowUp,
   ArrowDown,
   PanelLeft,
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
   X,
 } from 'lucide-react';
 import {
@@ -108,7 +97,7 @@ function SortableHeader({
 export const CustomerProfilesPage: React.FC<CustomerProfilesPageProps> = ({ profiles }) => {
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [rowsPerPage] = React.useState(25);
   const [categoryFilters, setCategoryFilters] = React.useState<Set<string>>(new Set());
   const [sortField, setSortField] = React.useState<SortField>('category');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
@@ -166,7 +155,6 @@ export const CustomerProfilesPage: React.FC<CustomerProfilesPageProps> = ({ prof
     return list;
   }, [profiles, search, categoryFilters, sortField, sortDir]);
 
-  const totalPages = Math.ceil(filtered.length / rowsPerPage);
   const paginatedProfiles = filtered.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
 
   // Reset to first page when filters change
