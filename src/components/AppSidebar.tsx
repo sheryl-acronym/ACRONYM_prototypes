@@ -145,8 +145,10 @@ export default function AppSidebar() {
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
-                        <SidebarMenuSubButton className="h-8">
-                          <span>Buyer Personas</span>
+                        <SidebarMenuSubButton asChild className="h-8" isActive={location.pathname === '/buyer-personas'}>
+                          <Link to="/buyer-personas">
+                            <span>Buyer Personas</span>
+                          </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
