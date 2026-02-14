@@ -37,7 +37,9 @@ import {
   Breadcrumb,
   BreadcrumbList,
   BreadcrumbItem,
+  BreadcrumbLink,
   BreadcrumbPage,
+  BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 
@@ -185,6 +187,12 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem>
+                  <BreadcrumbLink href="#" onClick={(e) => e.preventDefault()}>
+                    Playbook
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
                   <BreadcrumbPage>Buyer Personas</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
@@ -300,12 +308,17 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
                       </TableCell>
                       <TableCell>
                         {persona.typically_found_in.length > 0 ? (
-                          <div className="flex flex-wrap gap-1">
-                            {persona.typically_found_in.map((profile, idx) => (
-                              <Badge key={idx} variant="outline" className="font-normal text-xs rounded-md px-2 py-1">
+                          <div className="flex flex-wrap gap-1 w-72 max-h-14 overflow-hidden">
+                            {persona.typically_found_in.slice(0, 2).map((profile, idx) => (
+                              <Badge key={idx} variant="outline" className="font-normal text-xs rounded-md px-2 py-1 flex-shrink-0">
                                 {profile}
                               </Badge>
                             ))}
+                            {persona.typically_found_in.length > 2 && (
+                              <Badge variant="secondary" className="font-normal text-xs rounded-md px-2 py-1 flex-shrink-0">
+                                +{persona.typically_found_in.length - 2}
+                              </Badge>
+                            )}
                           </div>
                         ) : (
                           <span className="text-sm text-muted-foreground">-</span>
@@ -319,74 +332,6 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
           </div>
         </div>
 
-        {/* Pagination */}
-        <div className="px-8 py-4 flex items-center justify-between border-t">
-          <div className="text-sm text-muted-foreground">
-            0 of {filtered.length} row(s) selected.
-          </div>
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Rows per page</span>
-              <Select
-                value={String(rowsPerPage)}
-                onValueChange={(val) => {
-                  setRowsPerPage(Number(val));
-                  setPage(0);
-                }}
-              >
-                <SelectTrigger className="h-8 w-16 text-sm">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="25">25</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <span className="text-sm text-muted-foreground">
-              Page {page + 1} of {totalPages || 1}
-            </span>
-            <div className="flex items-center gap-1">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setPage(0)}
-                disabled={page === 0}
-              >
-                <ChevronsLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setPage(page - 1)}
-                disabled={page === 0}
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setPage(page + 1)}
-                disabled={page >= totalPages - 1}
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setPage(totalPages - 1)}
-                disabled={page >= totalPages - 1}
-              >
-                <ChevronsRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
