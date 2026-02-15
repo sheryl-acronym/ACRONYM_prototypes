@@ -104,8 +104,20 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
   const [page, setPage] = React.useState(0);
   const [rowsPerPage] = React.useState(25);
   const [categoryFilters, setCategoryFilters] = React.useState<Set<string>>(new Set());
+  const [profileFilters, setProfileFilters] = React.useState<Set<string>>(new Set());
   const [sortField, setSortField] = React.useState<SortField>('category');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
+
+  // Extract unique customer profiles from all personas
+  const allProfiles = React.useMemo(() => {
+    const profiles = new Set<string>();
+    personas.forEach((p) => {
+      p.typically_found_in.forEach((profile) => {
+        profiles.add(profile);
+      });
+    });
+    return Array.from(profiles).sort();
+  }, [personas]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -121,6 +133,15 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
       const next = new Set(prev);
       if (next.has(category)) next.delete(category);
       else next.add(category);
+      return next;
+    });
+  };
+
+  const toggleProfileFilter = (profile: string) => {
+    setProfileFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(profile)) next.delete(profile);
+      else next.add(profile);
       return next;
     });
   };
@@ -142,6 +163,13 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
     // Category filter
     if (categoryFilters.size > 0) {
       list = list.filter((p) => categoryFilters.has(p.category));
+    }
+
+    // Profile filter
+    if (profileFilters.size > 0) {
+      list = list.filter((p) =>
+        p.typically_found_in.some((profile) => profileFilters.has(profile))
+      );
     }
 
     // Sort
@@ -166,14 +194,14 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
     });
 
     return list;
-  }, [personas, search, categoryFilters, sortField, sortDir]);
+  }, [personas, search, categoryFilters, profileFilters, sortField, sortDir]);
 
   const paginatedPersonas = filtered.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
 
   // Reset to first page when filters change
   React.useEffect(() => {
     setPage(0);
-  }, [search, categoryFilters]);
+  }, [search, categoryFilters, profileFilters]);
 
   return (
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
@@ -260,6 +288,56 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
                         onCheckedChange={() => toggleCategoryFilter(category)}
                       />
                       <CategoryBadge category={category} />
+                    </label>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            {/* Customer Profile filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className={`gap-1.5 h-8 text-sm font-normal ${profileFilters.size > 0 ? 'border-foreground/30' : ''}`}
+                >
+                  {profileFilters.size > 0 ? (
+                    <span
+                      className="h-3.5 w-3.5 flex items-center justify-center rounded-sm bg-foreground text-background cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setProfileFilters(new Set());
+                      }}
+                    >
+                      <X className="h-2.5 w-2.5" />
+                    </span>
+                  ) : (
+                    <PlusCircle className="h-3.5 w-3.5" />
+                  )}
+                  Customer Profile
+                  {profileFilters.size > 0 && (
+                    <>
+                      <span className="mx-0.5 h-4 w-px bg-border" />
+                      <Badge variant="secondary" className="rounded-sm px-1.5 py-0 text-xs font-normal">
+                        {profileFilters.size}
+                      </Badge>
+                    </>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-72 p-2 max-h-64 overflow-y-auto" align="start">
+                <div className="space-y-1">
+                  {allProfiles.map((profile) => (
+                    <label
+                      key={profile}
+                      className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent cursor-pointer"
+                    >
+                      <Checkbox
+                        checked={profileFilters.has(profile)}
+                        onCheckedChange={() => toggleProfileFilter(profile)}
+                      />
+                      <span className="text-sm">{profile}</span>
                     </label>
                   ))}
                 </div>
