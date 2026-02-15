@@ -47,8 +47,36 @@ interface FAQsPageProps {
   faqs: FAQ[];
 }
 
-type SortField = 'question' | 'answer';
+const categoryConfig: Record<string, { bg: string; text: string; border: string }> = {
+  'Company': { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
+  'Product & Pricing': { bg: 'bg-purple-50', text: 'text-purple-900', border: 'border-purple-200' },
+  'Integration & Technical': { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
+  'Implementation': { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200' },
+  'Compliance & Operations': { bg: 'bg-rose-50', text: 'text-rose-900', border: 'border-rose-200' },
+};
+
+function CategoryBadge({ category }: { category: string }) {
+  const config = categoryConfig[category];
+  return (
+    <Badge
+      variant="outline"
+      className={`${config.bg} ${config.text} ${config.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
+    >
+      {category}
+    </Badge>
+  );
+}
+
+type SortField = 'category' | 'question' | 'answer';
 type SortDir = 'asc' | 'desc';
+
+const allCategories: Array<'Company' | 'Product & Pricing' | 'Integration & Technical' | 'Implementation' | 'Compliance & Operations'> = [
+  'Company',
+  'Product & Pricing',
+  'Integration & Technical',
+  'Implementation',
+  'Compliance & Operations',
+];
 
 function SortableHeader({
   label,
@@ -89,8 +117,9 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [categoryFilters, setCategoryFilters] = React.useState<Set<string>>(new Set());
   const [personaFilters, setPersonaFilters] = React.useState<Set<string>>(new Set());
-  const [sortField, setSortField] = React.useState<SortField>('question');
+  const [sortField, setSortField] = React.useState<SortField>('category');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
 
   // Extract unique personas from all FAQs
@@ -111,6 +140,15 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
       setSortField(field);
       setSortDir('asc');
     }
+  };
+
+  const toggleCategoryFilter = (category: string) => {
+    setCategoryFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(category)) next.delete(category);
+      else next.add(category);
+      return next;
+    });
   };
 
   const togglePersonaFilter = (persona: string) => {
@@ -136,6 +174,11 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
       );
     }
 
+    // Category filter
+    if (categoryFilters.size > 0) {
+      list = list.filter((item) => categoryFilters.has(item.category));
+    }
+
     // Persona filter
     if (personaFilters.size > 0) {
       list = list.filter((item) =>
@@ -158,7 +201,7 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
     });
 
     return list;
-  }, [faqs, search, personaFilters, sortField, sortDir]);
+  }, [faqs, search, categoryFilters, personaFilters, sortField, sortDir]);
 
   const totalPages = Math.ceil(filtered.length / rowsPerPage);
   const paginatedFAQs = filtered.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
@@ -166,7 +209,7 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
   // Reset to first page when filters change
   React.useEffect(() => {
     setPage(0);
-  }, [search, personaFilters]);
+  }, [search, categoryFilters, personaFilters]);
 
   return (
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
@@ -208,6 +251,56 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
               onChange={(e) => setSearch(e.target.value)}
               className="h-8 w-56 text-sm"
             />
+
+            {/* Category filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className={`gap-1.5 h-8 text-sm font-normal ${categoryFilters.size > 0 ? 'border-foreground/30' : ''}`}
+                >
+                  {categoryFilters.size > 0 ? (
+                    <span
+                      className="h-3.5 w-3.5 flex items-center justify-center rounded-sm bg-foreground text-background cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCategoryFilters(new Set());
+                      }}
+                    >
+                      <X className="h-2.5 w-2.5" />
+                    </span>
+                  ) : (
+                    <PlusCircle className="h-3.5 w-3.5" />
+                  )}
+                  Category
+                  {categoryFilters.size > 0 && (
+                    <>
+                      <span className="mx-0.5 h-4 w-px bg-border" />
+                      <Badge variant="secondary" className="rounded-sm px-1.5 py-0 text-xs font-normal">
+                        {categoryFilters.size}
+                      </Badge>
+                    </>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56 p-2" align="start">
+                <div className="space-y-1">
+                  {allCategories.map((category) => (
+                    <label
+                      key={category}
+                      className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent cursor-pointer"
+                    >
+                      <Checkbox
+                        checked={categoryFilters.has(category)}
+                        onCheckedChange={() => toggleCategoryFilter(category)}
+                      />
+                      <CategoryBadge category={category} />
+                    </label>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
 
             {/* Persona filter */}
             <Popover>
@@ -270,6 +363,9 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
                   <TableHead>
+                    <SortableHeader label="Category" field="category" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                  </TableHead>
+                  <TableHead>
                     <SortableHeader label="Question" field="question" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
                   </TableHead>
                   <TableHead>
@@ -281,13 +377,16 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
               <TableBody>
                 {paginatedFAQs.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={3} className="h-32 text-center text-muted-foreground">
+                    <TableCell colSpan={4} className="h-32 text-center text-muted-foreground">
                       No FAQs found.
                     </TableCell>
                   </TableRow>
                 ) : (
                   paginatedFAQs.map((faq) => (
                     <TableRow key={faq.id}>
+                      <TableCell>
+                        <CategoryBadge category={faq.category} />
+                      </TableCell>
                       <TableCell style={{ width: '320px' }}>
                         <span className="text-sm font-medium">{faq.question}</span>
                       </TableCell>
