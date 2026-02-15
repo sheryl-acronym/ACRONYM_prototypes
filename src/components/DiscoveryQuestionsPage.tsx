@@ -123,8 +123,20 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [categoryFilters, setCategoryFilters] = React.useState<Set<string>>(new Set());
+  const [profileFilters, setProfileFilters] = React.useState<Set<string>>(new Set());
   const [sortField, setSortField] = React.useState<SortField>('category');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
+
+  // Extract unique customer profiles from all questions
+  const allProfiles = React.useMemo(() => {
+    const profiles = new Set<string>();
+    questions.forEach((q) => {
+      q.typically_relevant_for.forEach((profile) => {
+        profiles.add(profile);
+      });
+    });
+    return Array.from(profiles).sort();
+  }, [questions]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -140,6 +152,15 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
       const next = new Set(prev);
       if (next.has(category)) next.delete(category);
       else next.add(category);
+      return next;
+    });
+  };
+
+  const toggleProfileFilter = (profile: string) => {
+    setProfileFilters((prev) => {
+      const next = new Set(prev);
+      if (next.has(profile)) next.delete(profile);
+      else next.add(profile);
       return next;
     });
   };
@@ -161,6 +182,13 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
     // Category filter
     if (categoryFilters.size > 0) {
       list = list.filter((item) => categoryFilters.has(item.category));
+    }
+
+    // Profile filter
+    if (profileFilters.size > 0) {
+      list = list.filter((item) =>
+        item.typically_relevant_for.some((profile) => profileFilters.has(profile))
+      );
     }
 
     // Sort
@@ -185,7 +213,7 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
     });
 
     return list;
-  }, [questions, search, categoryFilters, sortField, sortDir]);
+  }, [questions, search, categoryFilters, profileFilters, sortField, sortDir]);
 
   const totalPages = Math.ceil(filtered.length / rowsPerPage);
   const paginatedQuestions = filtered.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
@@ -193,7 +221,7 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
   // Reset to first page when filters change
   React.useEffect(() => {
     setPage(0);
-  }, [search, categoryFilters]);
+  }, [search, categoryFilters, profileFilters]);
 
   return (
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
@@ -280,6 +308,56 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
                         onCheckedChange={() => toggleCategoryFilter(category)}
                       />
                       <CategoryBadge category={category} />
+                    </label>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+
+            {/* Customer Profile filter */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className={`gap-1.5 h-8 text-sm font-normal ${profileFilters.size > 0 ? 'border-foreground/30' : ''}`}
+                >
+                  {profileFilters.size > 0 ? (
+                    <span
+                      className="h-3.5 w-3.5 flex items-center justify-center rounded-sm bg-foreground text-background cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setProfileFilters(new Set());
+                      }}
+                    >
+                      <X className="h-2.5 w-2.5" />
+                    </span>
+                  ) : (
+                    <PlusCircle className="h-3.5 w-3.5" />
+                  )}
+                  Customer Profile
+                  {profileFilters.size > 0 && (
+                    <>
+                      <span className="mx-0.5 h-4 w-px bg-border" />
+                      <Badge variant="secondary" className="rounded-sm px-1.5 py-0 text-xs font-normal">
+                        {profileFilters.size}
+                      </Badge>
+                    </>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-72 p-2 max-h-64 overflow-y-auto" align="start">
+                <div className="space-y-1">
+                  {allProfiles.map((profile) => (
+                    <label
+                      key={profile}
+                      className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent cursor-pointer"
+                    >
+                      <Checkbox
+                        checked={profileFilters.has(profile)}
+                        onCheckedChange={() => toggleProfileFilter(profile)}
+                      />
+                      <span className="text-sm">{profile}</span>
                     </label>
                   ))}
                 </div>
