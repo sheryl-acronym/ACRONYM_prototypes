@@ -10,6 +10,7 @@ import CompaniesPage from '@/components/CompaniesPage';
 import ContactsPage from '@/components/ContactsPage';
 import CustomerProfilesPage from '@/components/CustomerProfilesPage';
 import BuyerPersonasPage from '@/components/BuyerPersonasPage';
+import DiscoveryQuestionsPage from '@/components/DiscoveryQuestionsPage';
 import PlaybookPositioningPage from '@/components/PlaybookPositioningPage';
 import AppSidebar from '@/components/AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
@@ -22,6 +23,7 @@ import { companiesData } from '@/companies-demo-data';
 import { contactsData } from '@/contacts-demo-data';
 import { customerProfilesData } from '@/customer-profiles-demo-data';
 import { buyerPersonasData } from '@/buyer-personas-demo-data';
+import { discoveryQuestionsData } from '@/discovery-questions-demo-data';
 
 const meetingBriefData: Record<string, typeof provenDemoData> = {
   'um-001': provenDemoData,
@@ -122,6 +124,7 @@ function App() {
             <Route path="/contacts" element={<ContactsPage contacts={contactsData} />} />
             <Route path="/customer-profiles" element={<CustomerProfilesPage profiles={customerProfilesData} />} />
             <Route path="/buyer-personas" element={<BuyerPersonasPage personas={buyerPersonasData} />} />
+            <Route path="/discovery-questions" element={<DiscoveryQuestionsPage questions={discoveryQuestionsData} />} />
             <Route path="/playbook/positioning" element={<PlaybookPositioningPage />} />
           </Routes>
         </SidebarInset>

@@ -152,8 +152,10 @@ export default function AppSidebar() {
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
-                        <SidebarMenuSubButton className="h-8">
-                          <span>Discovery Questions</span>
+                        <SidebarMenuSubButton asChild className="h-8" isActive={location.pathname === '/discovery-questions'}>
+                          <Link to="/discovery-questions">
+                            <span>Discovery Questions</span>
+                          </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>

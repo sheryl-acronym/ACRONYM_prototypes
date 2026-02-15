@@ -1,5 +1,5 @@
 import React from 'react';
-import { CustomerProfile } from '@/customer-profiles-demo-data';
+import { DiscoveryQuestion } from '@/discovery-questions-demo-data';
 import {
   Table,
   TableBody,
@@ -14,14 +14,25 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import {
-  Users,
+  Lightbulb,
   PlusCircle,
   ChevronsUpDown,
   ArrowUp,
   ArrowDown,
   PanelLeft,
   X,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -32,14 +43,15 @@ import {
 } from '@/components/ui/breadcrumb';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 
-interface CustomerProfilesPageProps {
-  profiles: CustomerProfile[];
+interface DiscoveryQuestionsPageProps {
+  questions: DiscoveryQuestion[];
 }
 
 const categoryConfig: Record<string, { bg: string; text: string; border: string }> = {
-  'Ideal': { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
-  'Secondary': { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
-  'Emerging': { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200' },
+  'Current State': { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
+  'Baseline Assessment': { bg: 'bg-slate-50', text: 'text-slate-900', border: 'border-slate-200' },
+  'Founder-Led to First Sales Team Transition': { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
+  'Sales Leader-Driven Scaling': { bg: 'bg-purple-50', text: 'text-purple-900', border: 'border-purple-200' },
 };
 
 function CategoryBadge({ category }: { category: string }) {
@@ -54,10 +66,22 @@ function CategoryBadge({ category }: { category: string }) {
   );
 }
 
-type SortField = 'category' | 'name' | 'description';
+type SortField = 'category' | 'question' | 'why_asking';
 type SortDir = 'asc' | 'desc';
 
-const allCategories: Array<'Ideal' | 'Secondary' | 'Emerging'> = ['Ideal', 'Secondary', 'Emerging'];
+const allCategories: Array<'Current State' | 'Baseline Assessment' | 'Founder-Led to First Sales Team Transition' | 'Sales Leader-Driven Scaling'> = [
+  'Current State',
+  'Baseline Assessment',
+  'Founder-Led to First Sales Team Transition',
+  'Sales Leader-Driven Scaling',
+];
+
+const categoryOrder: Record<'Current State' | 'Baseline Assessment' | 'Founder-Led to First Sales Team Transition' | 'Sales Leader-Driven Scaling', number> = {
+  'Current State': 0,
+  'Baseline Assessment': 1,
+  'Founder-Led to First Sales Team Transition': 2,
+  'Sales Leader-Driven Scaling': 3,
+};
 
 function SortableHeader({
   label,
@@ -94,10 +118,10 @@ function SortableHeader({
   );
 }
 
-export const CustomerProfilesPage: React.FC<CustomerProfilesPageProps> = ({ profiles }) => {
+export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ questions }) => {
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage] = React.useState(25);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [categoryFilters, setCategoryFilters] = React.useState<Set<string>>(new Set());
   const [sortField, setSortField] = React.useState<SortField>('category');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
@@ -121,27 +145,35 @@ export const CustomerProfilesPage: React.FC<CustomerProfilesPageProps> = ({ prof
   };
 
   const filtered = React.useMemo(() => {
-    let list = [...profiles];
+    let list = [...questions];
 
     // Text search
     if (search) {
       const q = search.toLowerCase();
       list = list.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          p.example_companies.some((c) => c.toLowerCase().includes(q))
+        (item) =>
+          item.question.toLowerCase().includes(q) ||
+          item.why_asking.toLowerCase().includes(q) ||
+          item.typically_relevant_for.some((stage) => stage.toLowerCase().includes(q))
       );
     }
 
     // Category filter
     if (categoryFilters.size > 0) {
-      list = list.filter((p) => categoryFilters.has(p.category));
+      list = list.filter((item) => categoryFilters.has(item.category));
     }
 
     // Sort
     list.sort((a, b) => {
       const dir = sortDir === 'asc' ? 1 : -1;
+
+      if (sortField === 'category') {
+        // Use custom category order
+        const aOrder = categoryOrder[a.category];
+        const bOrder = categoryOrder[b.category];
+        return (aOrder - bOrder) * dir;
+      }
+
       const aVal = a[sortField];
       const bVal = b[sortField];
 
@@ -153,9 +185,10 @@ export const CustomerProfilesPage: React.FC<CustomerProfilesPageProps> = ({ prof
     });
 
     return list;
-  }, [profiles, search, categoryFilters, sortField, sortDir]);
+  }, [questions, search, categoryFilters, sortField, sortDir]);
 
-  const paginatedProfiles = filtered.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+  const totalPages = Math.ceil(filtered.length / rowsPerPage);
+  const paginatedQuestions = filtered.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
 
   // Reset to first page when filters change
   React.useEffect(() => {
@@ -181,7 +214,7 @@ export const CustomerProfilesPage: React.FC<CustomerProfilesPageProps> = ({ prof
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Customer Profiles</BreadcrumbPage>
+                  <BreadcrumbPage>Discovery Questions</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
@@ -191,13 +224,13 @@ export const CustomerProfilesPage: React.FC<CustomerProfilesPageProps> = ({ prof
         <div className="px-8 pt-8 pb-0 flex-shrink-0">
           {/* Title */}
           <div className="flex items-center gap-2.5 mb-6">
-            <Users className="h-5 w-5 text-foreground" />
-            <h1 className="text-2xl font-bold text-foreground">Customer Profiles</h1>
+            <Lightbulb className="h-5 w-5 text-foreground" />
+            <h1 className="text-2xl font-bold text-foreground">Discovery Questions</h1>
           </div>
           {/* Filter bar */}
           <div className="flex items-center gap-2 mb-6">
             <Input
-              placeholder="Filter profiles..."
+              placeholder="Filter questions..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="h-8 w-56 text-sm"
@@ -258,7 +291,7 @@ export const CustomerProfilesPage: React.FC<CustomerProfilesPageProps> = ({ prof
         </div>
 
         {/* Table */}
-        <div className="px-8 flex-1 overflow-y-auto flex flex-col">
+        <div className="px-8 pb-4 flex-1 overflow-y-auto flex flex-col">
           <div className="border border-slate-200 rounded-lg overflow-hidden flex-shrink-0">
             <Table className="flex-1">
               <TableHeader>
@@ -267,44 +300,44 @@ export const CustomerProfilesPage: React.FC<CustomerProfilesPageProps> = ({ prof
                     <SortableHeader label="Category" field="category" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
                   </TableHead>
                   <TableHead>
-                    <SortableHeader label="Profile Name" field="name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                    <SortableHeader label="Discovery Question" field="question" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
                   </TableHead>
                   <TableHead>
-                    <SortableHeader label="Description" field="description" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                    <SortableHeader label="Why are we asking it" field="why_asking" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
                   </TableHead>
-                  <TableHead>Example Companies</TableHead>
+                  <TableHead>Typically relevant for</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {paginatedProfiles.length === 0 ? (
+                {paginatedQuestions.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={4} className="h-32 text-center text-muted-foreground">
-                      No profiles found.
+                      No questions found.
                     </TableCell>
                   </TableRow>
                 ) : (
-                  paginatedProfiles.map((profile) => (
-                    <TableRow key={profile.id}>
+                  paginatedQuestions.map((question) => (
+                    <TableRow key={question.id}>
                       <TableCell>
-                        <CategoryBadge category={profile.category} />
+                        <CategoryBadge category={question.category} />
+                      </TableCell>
+                      <TableCell style={{ width: '320px' }}>
+                        <span className="text-sm font-medium">{question.question}</span>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm font-medium">{profile.name}</span>
+                        <span className="text-sm text-muted-foreground line-clamp-2">{question.why_asking}</span>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm text-muted-foreground line-clamp-2">{profile.description}</span>
-                      </TableCell>
-                      <TableCell>
-                        {profile.example_companies.length > 0 ? (
+                        {question.typically_relevant_for.length > 0 ? (
                           <div className="flex flex-wrap gap-1 w-72 max-h-14 overflow-hidden">
-                            {profile.example_companies.slice(0, 2).map((company, idx) => (
+                            {question.typically_relevant_for.slice(0, 2).map((stage, idx) => (
                               <Badge key={idx} variant="outline" className="font-normal text-xs rounded-md px-2 py-1 flex-shrink-0">
-                                {company}
+                                {stage}
                               </Badge>
                             ))}
-                            {profile.example_companies.length > 2 && (
+                            {question.typically_relevant_for.length > 2 && (
                               <Badge variant="secondary" className="font-normal text-xs rounded-md px-2 py-1 flex-shrink-0">
-                                +{profile.example_companies.length - 2 + Math.floor(Math.random() * 40)}
+                                +{question.typically_relevant_for.length - 2}
                               </Badge>
                             )}
                           </div>
@@ -320,9 +353,77 @@ export const CustomerProfilesPage: React.FC<CustomerProfilesPageProps> = ({ prof
           </div>
         </div>
 
+        {/* Pagination */}
+        <div className="px-8 py-4 flex items-center justify-between border-t">
+          <div className="text-sm text-muted-foreground">
+            0 of {filtered.length} row(s) selected.
+          </div>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Rows per page</span>
+              <Select
+                value={String(rowsPerPage)}
+                onValueChange={(val) => {
+                  setRowsPerPage(Number(val));
+                  setPage(0);
+                }}
+              >
+                <SelectTrigger className="h-8 w-16 text-sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="25">25</SelectItem>
+                  <SelectItem value="50">50</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <span className="text-sm text-muted-foreground">
+              Page {page + 1} of {totalPages || 1}
+            </span>
+            <div className="flex items-center gap-1">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setPage(0)}
+                disabled={page === 0}
+              >
+                <ChevronsLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setPage(page - 1)}
+                disabled={page === 0}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setPage(page + 1)}
+                disabled={page >= totalPages - 1}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setPage(totalPages - 1)}
+                disabled={page >= totalPages - 1}
+              >
+                <ChevronsRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default CustomerProfilesPage;
+export default DiscoveryQuestionsPage;
