@@ -15,6 +15,13 @@ export const buyerPersonasData: BuyerPersona[] = [
     typically_found_in: ['Enterprise Multi-Channel Advanced Operations'],
   },
   {
+    id: 'bp-005',
+    category: 'Primary',
+    name: 'Technical Implementation Lead',
+    description: 'Engineering and product leaders who evaluate technical architecture, integration complexity, and system reliability. They have significant influence over implementation decisions and can become blockers if technical concerns aren\'t adequately addressed. Focus heavily on API design, error handling, and maintenance requirements.',
+    typically_found_in: ['Mid-Market E-Commerce Growth Brands', 'Mid-Market Multi-Channel Operators', 'Enterprise Multi-Channel Advanced Operations', 'Health Tech Growth-Stage Partnership-Ready'],
+  },
+  {
     id: 'bp-002',
     category: 'Secondary',
     name: 'Marketing/Growth Leader',
@@ -34,12 +41,5 @@ export const buyerPersonasData: BuyerPersona[] = [
     name: 'Technical Founder/Decision Maker',
     description: 'Technical founders who combine deep product/engineering expertise with business decision-making authority. They evaluate solutions through both technical feasibility and revenue impact lenses, making them uniquely positioned to drive rapid implementation decisions.',
     typically_found_in: ['SMB DTC Health/Wellness Fast-Movers', 'Health Tech Growth-Stage Partnership-Ready'],
-  },
-  {
-    id: 'bp-005',
-    category: 'Primary',
-    name: 'Technical Implementation Lead',
-    description: 'Engineering and product leaders who evaluate technical architecture, integration complexity, and system reliability. They have significant influence over implementation decisions and can become blockers if technical concerns aren\'t adequately addressed. Focus heavily on API design, error handling, and maintenance requirements.',
-    typically_found_in: ['Mid-Market E-Commerce Growth Brands', 'Mid-Market Multi-Channel Operators', 'Enterprise Multi-Channel Advanced Operations', 'Health Tech Growth-Stage Partnership-Ready'],
   },
 ];

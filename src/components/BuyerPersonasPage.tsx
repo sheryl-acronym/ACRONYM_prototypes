@@ -58,6 +58,11 @@ type SortField = 'category' | 'name' | 'description';
 type SortDir = 'asc' | 'desc';
 
 const allCategories: Array<'Primary' | 'Secondary' | 'Emerging'> = ['Primary', 'Secondary', 'Emerging'];
+const categoryOrder: Record<'Primary' | 'Secondary' | 'Emerging', number> = {
+  'Primary': 0,
+  'Secondary': 1,
+  'Emerging': 2,
+};
 
 function SortableHeader({
   label,
@@ -142,6 +147,14 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
     // Sort
     list.sort((a, b) => {
       const dir = sortDir === 'asc' ? 1 : -1;
+
+      if (sortField === 'category') {
+        // Use custom category order
+        const aOrder = categoryOrder[a.category];
+        const bOrder = categoryOrder[b.category];
+        return (aOrder - bOrder) * dir;
+      }
+
       const aVal = a[sortField];
       const bVal = b[sortField];
 
