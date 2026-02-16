@@ -117,6 +117,12 @@ export interface Deal {
   company_name: string;
   company_icon_color: string;
   company_logo_url?: string;
+  meddic_completion?: {
+    complete: number;
+    partial: number;
+    missing: number;
+    gaps?: string[];
+  };
 }
 
 export interface Verbatim {

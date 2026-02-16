@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
 import PreCallBrief from '@/components/PreCallBrief';
 import DealsPage from '@/components/DealsPage';
 import DealDetailPage from '@/components/DealDetailPage';
@@ -48,12 +48,38 @@ function PreCallBriefRoute() {
   return <PreCallBrief data={data} onVersionChange={handleVersionChange} currentVersion={version} />;
 }
 
+function DealsPageRoute() {
+  const { view: urlView } = useParams<{ view?: 'board' | 'table' }>();
+  const [view, setView] = React.useState<'board' | 'table'>(urlView || 'table');
+
+  const handleViewChange = React.useCallback((newView: 'board' | 'table') => {
+    setView(newView);
+    // Update URL when view changes
+    if (newView === 'table') {
+      window.history.pushState(null, '', '/deals');
+    } else {
+      window.history.pushState(null, '', `/deals/${newView}`);
+    }
+  }, []);
+
+  return <DealsPage deals={dealsData} initialView={view} onViewChange={handleViewChange} />;
+}
+
 function DealDetailRoute() {
   const { dealId } = useParams<{ dealId: string }>();
+  const navigate = useNavigate();
   const [version, setVersion] = React.useState<'v1' | 'v2' | '1st-call' | 'post-call-1'>('v1');
+
+  // Redirect if dealId is a view name (board/table)
+  React.useEffect(() => {
+    if (dealId === 'board' || dealId === 'table') {
+      navigate(`/deals/${dealId}`);
+    }
+  }, [dealId, navigate]);
 
   const deal = React.useMemo(() => {
     if (!dealId) return undefined;
+    if (dealId === 'board' || dealId === 'table') return undefined;
     if (version === '1st-call') {
       return dealDetailDemoData[`${dealId}-v3`];
     }
@@ -134,8 +160,10 @@ function App() {
         <SidebarInset>
           <Routes>
             <Route path="/" element={<Navigate to="/deals" replace />} />
-            <Route path="/deals" element={<DealsPage deals={dealsData} />} />
+            <Route path="/deals" element={<DealsPageRoute />} />
             <Route path="/deals/:dealId" element={<DealDetailRoute />} />
+            <Route path="/deals/:view" element={<DealsPageRoute />} />
+            <Route path="/deals/:view/:dealId" element={<DealDetailRoute />} />
             <Route path="/meetings" element={<UpcomingMeetingsPage meetings={upcomingMeetingsData} briefData={meetingBriefData} />} />
             <Route path="/meetings/um-001" element={<PreCallBriefRoute />} />
             <Route path="/meetings/um-001/:version" element={<PreCallBriefRoute />} />

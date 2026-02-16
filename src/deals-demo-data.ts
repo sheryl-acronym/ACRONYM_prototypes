@@ -14,6 +14,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-amber-200',
     company_logo_url: 'https://logo.clearbit.com/ggfitness.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 0,
+      partial: 1,
+      missing: 6,
+      gaps: ['Metrics', 'Economic Buyer', 'Decision Maker', 'Buying Process', 'Paper Process'],
+    },
   },
   {
     id: 'deal-002',
@@ -42,6 +48,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-sky-200',
     company_logo_url: 'https://logo.clearbit.com/fit52.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 1,
+      partial: 4,
+      missing: 2,
+      gaps: ['Metrics', 'Decision Maker'],
+    },
   },
   {
     id: 'deal-004',
@@ -56,6 +68,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-teal-200',
     company_logo_url: 'https://logo.clearbit.com/cryomedics.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 3,
+      partial: 2,
+      missing: 2,
+      gaps: [],
+    },
   },
   {
     id: 'deal-005',
@@ -70,6 +88,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-violet-200',
     company_logo_url: 'https://logo.clearbit.com/provenskincare.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 4,
+      partial: 1,
+      missing: 2,
+      gaps: ['Economic Buyer'],
+    },
   },
   {
     id: 'deal-006',
@@ -84,6 +108,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-emerald-200',
     company_logo_url: 'https://logo.clearbit.com/withflex.com',
     status: 'lost',
+    meddic_completion: {
+      complete: 2,
+      partial: 2,
+      missing: 3,
+      gaps: ['Decision Maker', 'Economic Buyer', 'Buying Process'],
+    },
   },
   {
     id: 'deal-007',
@@ -98,6 +128,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-lime-200',
     company_logo_url: 'https://logo.clearbit.com/allbirds.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 0,
+      partial: 2,
+      missing: 5,
+      gaps: ['Metrics', 'Economic Buyer', 'Decision Maker', 'Buying Process'],
+    },
   },
   {
     id: 'deal-008',
@@ -106,12 +142,18 @@ export const dealsData: Deal[] = [
     icon_color: 'bg-gray-300',
     momentum: 'At risk',
     last_meeting: '2026-01-04',
-    next_meeting: '2026-01-18',
+    next_meeting: null,
     owner_name: 'James Miller',
     company_name: 'Glossier',
     company_icon_color: 'bg-pink-300',
     company_logo_url: 'https://logo.clearbit.com/glossier.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 3,
+      partial: 3,
+      missing: 1,
+      gaps: ['Buying Process'],
+    },
   },
   {
     id: 'deal-009',
@@ -126,6 +168,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-blue-200',
     company_logo_url: 'https://logo.clearbit.com/warbyparker.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 0,
+      partial: 1,
+      missing: 6,
+      gaps: ['Metrics', 'Economic Buyer', 'Decision Maker', 'Buying Process'],
+    },
   },
   {
     id: 'deal-010',
@@ -140,6 +188,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-orange-200',
     company_logo_url: 'https://logo.clearbit.com/bombas.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 2,
+      partial: 2,
+      missing: 3,
+      gaps: ['Economic Buyer', 'Buying Process'],
+    },
   },
   {
     id: 'deal-011',
@@ -154,6 +208,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-indigo-200',
     company_logo_url: 'https://logo.clearbit.com/casper.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 4,
+      partial: 2,
+      missing: 1,
+      gaps: [],
+    },
   },
   {
     id: 'deal-012',
@@ -162,12 +222,18 @@ export const dealsData: Deal[] = [
     icon_color: 'bg-gray-300',
     momentum: 'Strong',
     last_meeting: '2026-01-08',
-    next_meeting: '2026-01-19',
+    next_meeting: null,
     owner_name: 'Maria Lopez',
     company_name: 'Away',
     company_icon_color: 'bg-cyan-200',
     company_logo_url: 'https://logo.clearbit.com/awaytravel.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 3,
+      partial: 3,
+      missing: 1,
+      gaps: ['Economic Buyer'],
+    },
   },
   {
     id: 'deal-013',
@@ -182,6 +248,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-slate-200',
     company_logo_url: 'https://logo.clearbit.com/brooklinen.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 4,
+      partial: 2,
+      missing: 1,
+      gaps: ['Decision Maker'],
+    },
   },
   {
     id: 'deal-014',
@@ -196,6 +268,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-rose-200',
     company_logo_url: 'https://logo.clearbit.com/forhims.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 0,
+      partial: 0,
+      missing: 7,
+      gaps: ['Metrics', 'Economic Buyer', 'Decision Maker', 'Buying Process'],
+    },
   },
   {
     id: 'deal-015',
@@ -210,6 +288,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-teal-200',
     company_logo_url: 'https://logo.clearbit.com/rothys.com',
     status: 'won',
+    meddic_completion: {
+      complete: 1,
+      partial: 4,
+      missing: 2,
+      gaps: ['Metrics', 'Decision Maker'],
+    },
   },
   {
     id: 'deal-016',
@@ -224,6 +308,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-yellow-200',
     company_logo_url: 'https://logo.clearbit.com/drinkolipop.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 5,
+      partial: 2,
+      missing: 0,
+      gaps: [],
+    },
   },
   {
     id: 'deal-017',
@@ -238,6 +328,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-amber-200',
     company_logo_url: 'https://logo.clearbit.com/mejuri.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 3,
+      partial: 2,
+      missing: 2,
+      gaps: ['Buying Process'],
+    },
   },
   {
     id: 'deal-018',
@@ -246,12 +342,18 @@ export const dealsData: Deal[] = [
     icon_color: 'bg-gray-300',
     momentum: 'Active',
     last_meeting: '2026-01-10',
-    next_meeting: '2026-01-24',
+    next_meeting: null,
     owner_name: 'Maria Lopez',
     company_name: 'FIGS',
     company_icon_color: 'bg-violet-200',
     company_logo_url: 'https://logo.clearbit.com/wearfigs.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 2,
+      partial: 4,
+      missing: 1,
+      gaps: [],
+    },
   },
   {
     id: 'deal-019',
@@ -266,6 +368,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-sky-200',
     company_logo_url: 'https://logo.clearbit.com/getquip.com',
     status: 'lost',
+    meddic_completion: {
+      complete: 4,
+      partial: 1,
+      missing: 2,
+      gaps: ['Economic Buyer', 'Decision Maker'],
+    },
   },
   {
     id: 'deal-020',
@@ -280,6 +388,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-yellow-200',
     company_logo_url: 'https://logo.clearbit.com/ritual.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 0,
+      partial: 1,
+      missing: 6,
+      gaps: ['Metrics', 'Economic Buyer', 'Decision Maker', 'Buying Process'],
+    },
   },
   {
     id: 'deal-021',
@@ -294,6 +408,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-emerald-200',
     company_logo_url: 'https://logo.clearbit.com/nativecos.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 3,
+      partial: 2,
+      missing: 2,
+      gaps: ['Metrics', 'Buying Process'],
+    },
   },
   {
     id: 'deal-022',
@@ -308,6 +428,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-blue-200',
     company_logo_url: 'https://logo.clearbit.com/untuckit.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 1,
+      partial: 3,
+      missing: 3,
+      gaps: ['Economic Buyer', 'Buying Process'],
+    },
   },
   {
     id: 'deal-023',
@@ -322,6 +448,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-red-200',
     company_logo_url: 'https://logo.clearbit.com/onepeloton.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 4,
+      partial: 3,
+      missing: 0,
+      gaps: [],
+    },
   },
   {
     id: 'deal-024',
@@ -336,6 +468,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-orange-200',
     company_logo_url: 'https://logo.clearbit.com/drizly.com',
     status: 'won',
+    meddic_completion: {
+      complete: 4,
+      partial: 1,
+      missing: 2,
+      gaps: ['Decision Maker'],
+    },
   },
   {
     id: 'deal-025',
@@ -350,6 +488,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-pink-200',
     company_logo_url: 'https://logo.clearbit.com/thirdlove.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 0,
+      partial: 1,
+      missing: 6,
+      gaps: ['Metrics', 'Economic Buyer', 'Decision Maker', 'Buying Process'],
+    },
   },
   {
     id: 'deal-026',
@@ -364,6 +508,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-fuchsia-200',
     company_logo_url: 'https://logo.clearbit.com/lulus.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 2,
+      partial: 4,
+      missing: 1,
+      gaps: ['Buying Process'],
+    },
   },
   {
     id: 'deal-027',
@@ -378,6 +528,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-lime-200',
     company_logo_url: 'https://logo.clearbit.com/agorabrandsgroup.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 3,
+      partial: 3,
+      missing: 1,
+      gaps: ['Metrics'],
+    },
   },
   {
     id: 'deal-028',
@@ -392,6 +548,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-zinc-200',
     company_logo_url: 'https://logo.clearbit.com/ouraring.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 2,
+      partial: 2,
+      missing: 3,
+      gaps: ['Economic Buyer', 'Decision Maker'],
+    },
   },
   {
     id: 'deal-029',
@@ -406,6 +568,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-orange-200',
     company_logo_url: 'https://logo.clearbit.com/cotopaxi.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 0,
+      partial: 1,
+      missing: 6,
+      gaps: ['Metrics', 'Economic Buyer', 'Decision Maker', 'Buying Process'],
+    },
   },
   {
     id: 'deal-030',
@@ -420,6 +588,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-gray-200',
     company_logo_url: 'https://logo.clearbit.com/brandless.com',
     status: 'lost',
+    meddic_completion: {
+      complete: 3,
+      partial: 3,
+      missing: 1,
+      gaps: ['Decision Maker'],
+    },
   },
   {
     id: 'deal-031',
@@ -434,6 +608,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-amber-200',
     company_logo_url: 'https://logo.clearbit.com/barkbox.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 5,
+      partial: 2,
+      missing: 0,
+      gaps: [],
+    },
   },
   {
     id: 'deal-032',
@@ -448,6 +628,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-teal-200',
     company_logo_url: 'https://logo.clearbit.com/vuoriclothing.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 1,
+      partial: 4,
+      missing: 2,
+      gaps: ['Economic Buyer', 'Buying Process'],
+    },
   },
   {
     id: 'deal-033',
@@ -462,6 +648,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-stone-200',
     company_logo_url: 'https://logo.clearbit.com/koio.co',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 4,
+      partial: 2,
+      missing: 1,
+      gaps: [],
+    },
   },
   {
     id: 'deal-034',
@@ -476,6 +668,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-cyan-200',
     company_logo_url: 'https://logo.clearbit.com/hydroflask.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 0,
+      partial: 1,
+      missing: 6,
+      gaps: ['Metrics', 'Economic Buyer', 'Decision Maker', 'Buying Process'],
+    },
   },
   {
     id: 'deal-035',
@@ -490,6 +688,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-neutral-200',
     company_logo_url: 'https://logo.clearbit.com/everlane.com',
     status: 'won',
+    meddic_completion: {
+      complete: 2,
+      partial: 3,
+      missing: 2,
+      gaps: ['Decision Maker'],
+    },
   },
   {
     id: 'deal-036',
@@ -504,6 +708,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-sky-200',
     company_logo_url: 'https://logo.clearbit.com/parachutehome.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 5,
+      partial: 2,
+      missing: 0,
+      gaps: [],
+    },
   },
   {
     id: 'deal-037',
@@ -518,6 +728,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-lime-200',
     company_logo_url: 'https://logo.clearbit.com/outdoorvoices.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 3,
+      partial: 3,
+      missing: 1,
+      gaps: ['Buying Process'],
+    },
   },
   {
     id: 'deal-038',
@@ -532,6 +748,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-amber-200',
     company_logo_url: 'https://logo.clearbit.com/framebridge.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 2,
+      partial: 4,
+      missing: 1,
+      gaps: ['Economic Buyer'],
+    },
   },
   {
     id: 'deal-039',
@@ -546,6 +768,12 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-violet-200',
     company_logo_url: 'https://logo.clearbit.com/aloyoga.com',
     status: 'in_progress',
+    meddic_completion: {
+      complete: 0,
+      partial: 1,
+      missing: 6,
+      gaps: ['Metrics', 'Economic Buyer', 'Decision Maker', 'Buying Process'],
+    },
   },
   {
     id: 'deal-040',
@@ -560,5 +788,11 @@ export const dealsData: Deal[] = [
     company_icon_color: 'bg-red-200',
     company_logo_url: 'https://logo.clearbit.com/winc.com',
     status: 'lost',
+    meddic_completion: {
+      complete: 3,
+      partial: 2,
+      missing: 2,
+      gaps: ['Buying Process'],
+    },
   },
 ];
