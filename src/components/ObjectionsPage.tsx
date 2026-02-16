@@ -317,7 +317,7 @@ export const ObjectionsPage: React.FC<ObjectionsPageProps> = ({ objections }) =>
               </PopoverContent>
             </Popover>
 
-            {/* Buyer Persona filter */}
+            {/* Typically Raised By filter */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -338,7 +338,7 @@ export const ObjectionsPage: React.FC<ObjectionsPageProps> = ({ objections }) =>
                   ) : (
                     <PlusCircle className="h-3.5 w-3.5" />
                   )}
-                  Buyer Persona
+                  Typically Raised By
                   {buyerPersonaFilters.size > 0 && (
                     <>
                       <span className="mx-0.5 h-4 w-px bg-border" />
