@@ -41,6 +41,13 @@ interface PastMeetingsPageProps {
   meetings: PastMeeting[];
 }
 
+function filterAttendeesByRole(
+  attendees: { name: string; email?: string; role?: string; contact_role?: 'buyer' | 'seller' }[],
+  contactRole: 'buyer' | 'seller'
+) {
+  return attendees.filter((a) => a.contact_role === contactRole);
+}
+
 function formatTime(dateStr: string): string {
   const date = new Date(dateStr);
   return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase();
@@ -71,9 +78,9 @@ const momentumDot: Record<Momentum, string> = {
 
 function SortableHeader({ label }: { label: string }) {
   return (
-    <button className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
+    <button className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-foreground transition-colors">
       {label}
-      <ChevronsUpDown className="h-3 w-3 text-muted-foreground/40" />
+      <ChevronsUpDown className="h-3.5 w-3.5 text-muted-foreground/50" />
     </button>
   );
 }
@@ -182,12 +189,15 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                 <TableHead>
                   <SortableHeader label="Attendees" />
                 </TableHead>
+                <TableHead>
+                  <SortableHeader label="Team" />
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
             {sortedDateKeys.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={4} className="h-32 text-center text-muted-foreground">
+                <TableCell colSpan={5} className="h-32 text-center text-muted-foreground">
                   No past meetings found.
                 </TableCell>
               </TableRow>
@@ -196,7 +206,7 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                 <React.Fragment key={dateKey}>
                   {/* Date group header */}
                   <TableRow className="hover:bg-transparent bg-muted/40">
-                    <TableCell colSpan={4} className="py-2 px-4">
+                    <TableCell colSpan={5} className="py-2 px-4">
                       <span className="text-sm font-medium text-foreground">
                         {formatGroupDate(grouped[dateKey][0].start_time)}
                       </span>
@@ -242,12 +252,30 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          {meeting.attendees.map((attendee, i) => (
+                          {filterAttendeesByRole(meeting.attendees, 'buyer').map((attendee, i) => (
                             <AttendeeHoverCard
                               key={i}
                               name={attendee.name}
                               email={attendee.email}
                               role={attendee.role}
+                              linkedin_url={attendee.linkedin_url}
+                              persona={attendee.persona}
+                              tags={attendee.tags}
+                            />
+                          ))}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          {filterAttendeesByRole(meeting.attendees, 'seller').map((attendee, i) => (
+                            <AttendeeHoverCard
+                              key={i}
+                              name={attendee.name}
+                              email={attendee.email}
+                              role={attendee.role}
+                              linkedin_url={attendee.linkedin_url}
+                              persona={attendee.persona}
+                              tags={attendee.tags}
                             />
                           ))}
                         </div>

@@ -103,7 +103,7 @@ function SortableHeader({
   return (
     <button
       onClick={() => onSort(field)}
-      className={`inline-flex items-center gap-1 text-xs font-medium transition-colors ${
+      className={`inline-flex items-center gap-1.5 text-sm font-medium transition-colors ${
         isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
       }`}
     >
@@ -115,7 +115,7 @@ function SortableHeader({
           <ArrowDown className="h-3 w-3" />
         )
       ) : (
-        <ChevronsUpDown className="h-3 w-3 text-muted-foreground/40" />
+        <ChevronsUpDown className="h-3.5 w-3.5 text-muted-foreground/50" />
       )}
     </button>
   );

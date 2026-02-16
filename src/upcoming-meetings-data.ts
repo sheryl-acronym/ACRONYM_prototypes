@@ -14,8 +14,8 @@ export const upcomingMeetingsData: PastMeeting[] = [
     company_name: 'PROVEN Skincare',
     company_icon_color: 'bg-green-200',
     attendees: [
-      { name: 'Jacob Francis', email: 'jacob.francis@proven.com', role: 'VP Product' },
-      { name: 'Russell Harris', email: 'r.harris@proven.com', role: 'Head of Marketing' },
+      { name: 'Jacob Francis', email: 'jacob@flex.com', role: 'VP Sales', contact_role: 'seller', linkedin_url: 'https://linkedin.com/in/jacobfrancis' },
+      { name: 'Russell Harris', email: 'r.harris@proven.com', role: 'Head of Marketing', contact_role: 'buyer', linkedin_url: 'https://linkedin.com/in/russellharris', persona: 'Technical Founder / Decision Maker', tags: ['Champion', 'Economic Buyer'] },
     ],
   },
   {
@@ -30,8 +30,8 @@ export const upcomingMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-pink-300',
     company_logo_url: 'https://logo.clearbit.com/glossier.com',
     attendees: [
-      { name: 'Morgan Clark', email: 'morgan@glossier.com', role: 'Finance Director' },
-      { name: 'Diana Voss', email: 'diana.voss@glossier.com', role: 'Operations Lead' },
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager', contact_role: 'seller', linkedin_url: 'https://linkedin.com/in/morganclark' },
+      { name: 'Diana Voss', email: 'diana.voss@glossier.com', role: 'Operations Lead', contact_role: 'buyer', linkedin_url: 'https://linkedin.com/in/dianavoss', persona: 'Operations/Implementation Manager', tags: ['Influencer'] },
     ],
   },
   // Tue 17 Feb
@@ -46,8 +46,8 @@ export const upcomingMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-rose-200',
     company_logo_url: 'https://logo.clearbit.com/forhims.com',
     attendees: [
-      { name: 'Nick Holland', email: 'n.holland@forhims.com', role: 'Chief Strategy Officer' },
-      { name: 'Priya Mehta', email: 'p.mehta@forhims.com', role: 'Sr. Product Manager' },
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development', contact_role: 'seller', linkedin_url: 'https://linkedin.com/in/nickholland' },
+      { name: 'Priya Mehta', email: 'p.mehta@forhims.com', role: 'Sr. Product Manager', contact_role: 'buyer', linkedin_url: 'https://linkedin.com/in/priyamehta', persona: 'Marketing/Growth Leader', tags: ['Champion'] },
     ],
   },
   {
@@ -61,8 +61,8 @@ export const upcomingMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-red-200',
     company_logo_url: 'https://logo.clearbit.com/onepeloton.com',
     attendees: [
-      { name: 'Jacob Francis', email: 'jacob.francis@peloton.com', role: 'Business Development' },
-      { name: 'Carlos Reyes', email: 'c.reyes@peloton.com', role: 'Engineering Manager' },
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales', contact_role: 'seller' },
+      { name: 'Carlos Reyes', email: 'c.reyes@peloton.com', role: 'Engineering Manager', contact_role: 'buyer' },
     ],
   },
   // Wed 18 Feb
@@ -77,8 +77,8 @@ export const upcomingMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-zinc-200',
     company_logo_url: 'https://logo.clearbit.com/ouraring.com',
     attendees: [
-      { name: 'Morgan Clark', email: 'morgan.clark@ouraring.com', role: 'Product Lead' },
-      { name: 'Tomoko Sato', email: 't.sato@ouraring.com', role: 'Solutions Architect' },
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager', contact_role: 'seller' },
+      { name: 'Tomoko Sato', email: 't.sato@ouraring.com', role: 'Solutions Architect', contact_role: 'buyer' },
     ],
   },
   {
@@ -92,8 +92,8 @@ export const upcomingMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-blue-200',
     company_logo_url: 'https://logo.clearbit.com/warbyparker.com',
     attendees: [
-      { name: 'Nick Holland', email: 'nholland@warbyparker.com', role: 'VP Partnerships' },
-      { name: 'Andrea Chen', email: 'a.chen@warbyparker.com', role: 'Finance Manager' },
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development', contact_role: 'seller' },
+      { name: 'Andrea Chen', email: 'a.chen@warbyparker.com', role: 'Finance Manager', contact_role: 'buyer' },
     ],
   },
   // Thu 19 Feb
@@ -108,8 +108,8 @@ export const upcomingMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-lime-200',
     company_logo_url: 'https://logo.clearbit.com/allbirds.com',
     attendees: [
-      { name: 'Jacob Francis', email: 'jfrancis@allbirds.com', role: 'Legal Counsel' },
-      { name: 'Liam Okafor', email: 'l.okafor@allbirds.com', role: 'Director of Procurement' },
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales', contact_role: 'seller' },
+      { name: 'Liam Okafor', email: 'l.okafor@allbirds.com', role: 'Director of Procurement', contact_role: 'buyer' },
     ],
   },
   {
@@ -122,8 +122,8 @@ export const upcomingMeetingsData: PastMeeting[] = [
     company_name: 'Cal AI',
     company_icon_color: 'bg-blue-200',
     attendees: [
-      { name: 'Morgan Clark', email: 'morgan@calai.io', role: 'Product Manager' },
-      { name: 'Eugene Kim', email: 'eugene@calai.io', role: 'Co-founder' },
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager', contact_role: 'seller' },
+      { name: 'Eugene Kim', email: 'eugene@calai.io', role: 'Co-founder', contact_role: 'buyer' },
     ],
   },
   // Fri 20 Feb
@@ -138,8 +138,8 @@ export const upcomingMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-orange-200',
     company_logo_url: 'https://logo.clearbit.com/bombas.com',
     attendees: [
-      { name: 'Nick Holland', email: 'nholland@bombas.com', role: 'SVP Business Development' },
-      { name: 'Sophie Grant', email: 's.grant@bombas.com', role: 'Contract Manager' },
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development', contact_role: 'seller' },
+      { name: 'Sophie Grant', email: 's.grant@bombas.com', role: 'Contract Manager', contact_role: 'buyer' },
     ],
   },
 ];

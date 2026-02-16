@@ -89,7 +89,7 @@ export interface PastMeeting {
   company_name: string;
   company_icon_color: string;
   company_logo_url?: string;
-  attendees: { name: string; email?: string; role?: string }[];
+  attendees: { name: string; email?: string; role?: string; contact_role?: 'buyer' | 'seller'; linkedin_url?: string; persona?: string; tags?: string[] }[];
 }
 
 export type DealStage =

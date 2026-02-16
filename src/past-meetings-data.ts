@@ -12,8 +12,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Cal AI',
     company_icon_color: 'bg-blue-200',
     attendees: [
-      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales' },
-      { name: 'Eugene Kim', email: 'eugene@calai.io', role: 'Co-founder' },
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales', contact_role: 'seller' },
+      { name: 'Eugene Kim', email: 'eugene@calai.io', role: 'Co-founder', contact_role: 'buyer' },
     ],
   },
   {
@@ -27,8 +27,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Cal AI',
     company_icon_color: 'bg-blue-200',
     attendees: [
-      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager' },
-      { name: 'Benny Cole', email: 'benny@calai.io', role: 'Head of Operations' },
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager', contact_role: 'seller' },
+      { name: 'Benny Cole', email: 'benny@calai.io', role: 'Head of Operations', contact_role: 'buyer' },
     ],
   },
   {
@@ -41,8 +41,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'WW',
     company_icon_color: 'bg-indigo-200',
     attendees: [
-      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development' },
-      { name: 'Rachel Simmons', email: 'r.simmons@ww.com', role: 'Partnership Manager' },
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development', contact_role: 'seller' },
+      { name: 'Rachel Simmons', email: 'r.simmons@ww.com', role: 'Partnership Manager', contact_role: 'buyer' },
     ],
   },
   {
@@ -56,8 +56,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-pink-300',
     company_logo_url: 'https://logo.clearbit.com/glossier.com',
     attendees: [
-      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager' },
-      { name: 'Diana Voss', email: 'diana.voss@glossier.com', role: 'Operations Lead' },
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager', contact_role: 'seller' },
+      { name: 'Diana Voss', email: 'diana.voss@glossier.com', role: 'Operations Lead', contact_role: 'buyer' },
     ],
   },
   // Thu 5 Feb
@@ -72,8 +72,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Nourish',
     company_icon_color: 'bg-lime-200',
     attendees: [
-      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales' },
-      { name: 'Amir Patel', email: 'apatel@nourish.com', role: 'Chief Product Officer' },
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales', contact_role: 'seller' },
+      { name: 'Amir Patel', email: 'apatel@nourish.com', role: 'Chief Product Officer', contact_role: 'buyer' },
     ],
   },
   {
@@ -87,8 +87,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-rose-200',
     company_logo_url: 'https://logo.clearbit.com/forhims.com',
     attendees: [
-      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development' },
-      { name: 'Priya Mehta', email: 'p.mehta@forhims.com', role: 'Sr. Product Manager' },
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development', contact_role: 'seller' },
+      { name: 'Priya Mehta', email: 'p.mehta@forhims.com', role: 'Sr. Product Manager', contact_role: 'buyer' },
     ],
   },
   {
@@ -101,8 +101,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Ro',
     company_icon_color: 'bg-sky-200',
     attendees: [
-      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager' },
-      { name: 'David Kwon', email: 'd.kwon@ro.com', role: 'Director of Benefits' },
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager', contact_role: 'seller' },
+      { name: 'David Kwon', email: 'd.kwon@ro.com', role: 'Director of Benefits', contact_role: 'buyer' },
     ],
   },
   // Wed 4 Feb
@@ -117,8 +117,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-lime-200',
     company_logo_url: 'https://logo.clearbit.com/allbirds.com',
     attendees: [
-      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales' },
-      { name: 'Liam Okafor', email: 'l.okafor@allbirds.com', role: 'Director of Procurement' },
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales', contact_role: 'seller' },
+      { name: 'Liam Okafor', email: 'l.okafor@allbirds.com', role: 'Director of Procurement', contact_role: 'buyer' },
     ],
   },
   {
@@ -132,8 +132,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-orange-200',
     company_logo_url: 'https://logo.clearbit.com/bombas.com',
     attendees: [
-      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development' },
-      { name: 'Sophie Grant', email: 's.grant@bombas.com', role: 'Contract Manager' },
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development', contact_role: 'seller' },
+      { name: 'Sophie Grant', email: 's.grant@bombas.com', role: 'Contract Manager', contact_role: 'buyer' },
     ],
   },
   // Tue 3 Feb
@@ -148,8 +148,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-red-200',
     company_logo_url: 'https://logo.clearbit.com/onepeloton.com',
     attendees: [
-      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales' },
-      { name: 'Carlos Reyes', email: 'c.reyes@peloton.com', role: 'Engineering Manager' },
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales', contact_role: 'seller' },
+      { name: 'Carlos Reyes', email: 'c.reyes@peloton.com', role: 'Engineering Manager', contact_role: 'buyer' },
     ],
   },
   {
@@ -163,8 +163,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Alma',
     company_icon_color: 'bg-pink-200',
     attendees: [
-      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager' },
-      { name: 'Hannah Torres', email: 'h.torres@alma.com', role: 'Partnerships Lead' },
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager', contact_role: 'seller' },
+      { name: 'Hannah Torres', email: 'h.torres@alma.com', role: 'Partnerships Lead', contact_role: 'buyer' },
     ],
   },
   {
@@ -178,8 +178,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-blue-200',
     company_logo_url: 'https://logo.clearbit.com/warbyparker.com',
     attendees: [
-      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development' },
-      { name: 'Andrea Chen', email: 'a.chen@warbyparker.com', role: 'Finance Manager' },
+      { name: 'Nick Holland', email: 'nholland@flex.com', role: 'Business Development', contact_role: 'seller' },
+      { name: 'Andrea Chen', email: 'a.chen@warbyparker.com', role: 'Finance Manager', contact_role: 'buyer' },
     ],
   },
   // Mon 2 Feb
@@ -194,8 +194,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_icon_color: 'bg-zinc-200',
     company_logo_url: 'https://logo.clearbit.com/ouraring.com',
     attendees: [
-      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager' },
-      { name: 'Tomoko Sato', email: 't.sato@ouraring.com', role: 'Solutions Architect' },
+      { name: 'Morgan Clark', email: 'mclark@flex.com', role: 'Product Manager', contact_role: 'seller' },
+      { name: 'Tomoko Sato', email: 't.sato@ouraring.com', role: 'Solutions Architect', contact_role: 'buyer' },
     ],
   },
   {
@@ -208,8 +208,8 @@ export const pastMeetingsData: PastMeeting[] = [
     company_name: 'Truepill',
     company_icon_color: 'bg-purple-200',
     attendees: [
-      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales' },
-      { name: 'Marcus Webb', email: 'm.webb@truepill.com', role: 'VP Engineering' },
+      { name: 'Jacob Francis', email: 'jfrancis@flex.com', role: 'VP Sales', contact_role: 'seller' },
+      { name: 'Marcus Webb', email: 'm.webb@truepill.com', role: 'VP Engineering', contact_role: 'buyer' },
     ],
   },
 ];
