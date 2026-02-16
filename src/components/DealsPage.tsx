@@ -576,6 +576,9 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
                         <SortableHeader label="Deal stage" icon={LayoutGrid} field="stage_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
                       </TableHead>
                       <TableHead>
+                        <SortableHeader label="Company" icon={Building2} field="company_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                      </TableHead>
+                      <TableHead>
                         <SortableHeader label="Deal name" icon={Box} field="name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
                       </TableHead>
                       <TableHead>
@@ -589,9 +592,6 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
                       </TableHead>
                       <TableHead>
                         <SortableHeader label="Owner" icon={User} field="owner_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
-                      </TableHead>
-                      <TableHead>
-                        <SortableHeader label="Company" icon={Building2} field="company_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
                       </TableHead>
                     </TableRow>
                   </TableHeader>
@@ -607,6 +607,29 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
                         <TableRow key={deal.id} className="cursor-pointer" onClick={() => navigate(`/deals/${deal.id}`)}>
                           <TableCell>
                             <StageCell stage={deal.stage_name} />
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              {deal.company_logo_url ? (
+                                <img
+                                  src={deal.company_logo_url}
+                                  alt={deal.company_name}
+                                  className="w-4 h-4 rounded object-contain flex-shrink-0 border border-border/50"
+                                  onError={(e) => {
+                                    const target = e.currentTarget;
+                                    target.style.display = 'none';
+                                    target.nextElementSibling?.classList.remove('hidden');
+                                  }}
+                                />
+                              ) : null}
+                              <span
+                                className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center text-[10px] leading-none text-muted-foreground ${deal.company_logo_url ? 'hidden' : ''}`}
+                                style={{ fontFamily: 'Oxanium, sans-serif', fontWeight: 800 }}
+                              >
+                                {deal.company_name.charAt(0).toUpperCase()}.
+                              </span>
+                              <span className="text-sm">{deal.company_name}</span>
+                            </div>
                           </TableCell>
                           <TableCell>
                             <span className="text-sm">{deal.name}</span>
@@ -638,29 +661,6 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
                               <User className="h-3 w-3" />
                               {deal.owner_name}
                             </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              {deal.company_logo_url ? (
-                                <img
-                                  src={deal.company_logo_url}
-                                  alt={deal.company_name}
-                                  className="w-4 h-4 rounded object-contain flex-shrink-0 border border-border/50"
-                                  onError={(e) => {
-                                    const target = e.currentTarget;
-                                    target.style.display = 'none';
-                                    target.nextElementSibling?.classList.remove('hidden');
-                                  }}
-                                />
-                              ) : null}
-                              <span
-                                className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center text-[10px] leading-none text-muted-foreground ${deal.company_logo_url ? 'hidden' : ''}`}
-                                style={{ fontFamily: 'Oxanium, sans-serif', fontWeight: 800 }}
-                              >
-                                {deal.company_name.charAt(0).toUpperCase()}.
-                              </span>
-                              <span className="text-sm">{deal.company_name}</span>
-                            </div>
                           </TableCell>
                         </TableRow>
                       ))
