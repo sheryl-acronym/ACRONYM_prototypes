@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useParams, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import PreCallBrief from '@/components/PreCallBrief';
 import DealsPage from '@/components/DealsPage';
 import DealDetailPage from '@/components/DealDetailPage';
@@ -52,6 +52,8 @@ function PreCallBriefRoute() {
 function DealsPageRoute() {
   const { view: urlView } = useParams<{ view?: 'board' | 'table' }>();
   const [view, setView] = React.useState<'board' | 'table'>(urlView || 'table');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedDealId = searchParams.get('dealId') || undefined;
 
   const handleViewChange = React.useCallback((newView: 'board' | 'table') => {
     setView(newView);
@@ -63,7 +65,24 @@ function DealsPageRoute() {
     }
   }, []);
 
-  return <DealsPage deals={dealsData} initialView={view} onViewChange={handleViewChange} />;
+  const handleDealSelect = React.useCallback((dealId: string) => {
+    setSearchParams({ dealId });
+  }, [setSearchParams]);
+
+  const handleCloseSidePanel = React.useCallback(() => {
+    setSearchParams({});
+  }, [setSearchParams]);
+
+  return (
+    <DealsPage
+      deals={dealsData}
+      initialView={view}
+      onViewChange={handleViewChange}
+      selectedDealId={selectedDealId}
+      onDealSelect={handleDealSelect}
+      onCloseSidePanel={handleCloseSidePanel}
+    />
+  );
 }
 
 function DealDetailRoute() {

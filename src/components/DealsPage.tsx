@@ -1,11 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Deal, DealStage, Momentum } from '@/types';
+import { Deal, DealStage, Momentum, DealDetailData } from '@/types';
 import { ContactPill } from '@/components/ContactPill';
 import { DatePill } from '@/components/DatePill';
 import { MomentumPill } from '@/components/MomentumPill';
 import { StagePill } from '@/components/StagePill';
 import { CompanyPill } from '@/components/CompanyPill';
+import { DealDetailSidePanel } from '@/components/DealDetailSidePanel';
 import {
   Table,
   TableBody,
@@ -60,6 +60,9 @@ interface DealsPageProps {
   deals: Deal[];
   initialView?: 'board' | 'table';
   onViewChange?: (view: 'board' | 'table') => void;
+  selectedDealId?: string;
+  onDealSelect?: (dealId: string) => void;
+  onCloseSidePanel?: () => void;
 }
 
 const stageConfig: Record<DealStage, { bg: string; text: string; border: string }> = {
@@ -295,8 +298,14 @@ function KanbanBoardView({ deals, onDealClick }: { deals: Deal[]; onDealClick: (
   );
 }
 
-export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'table', onViewChange }) => {
-  const navigate = useNavigate();
+export const DealsPage: React.FC<DealsPageProps> = ({
+  deals,
+  initialView = 'table',
+  onViewChange,
+  selectedDealId,
+  onDealSelect,
+  onCloseSidePanel,
+}) => {
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -385,6 +394,46 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
   React.useEffect(() => {
     setPage(0);
   }, [search, stageFilters, momentumFilters]);
+
+  // Get selected deal data (function to build fallback deal data)
+  const getSelectedDealData = React.useMemo(() => {
+    if (!selectedDealId) return undefined;
+
+    const baseDeal = deals.find((d) => d.id === selectedDealId);
+    if (!baseDeal) return undefined;
+
+    // Build fallback deal detail data from base deal
+    const fallbackData: DealDetailData = {
+      name: baseDeal.name,
+      icon_color: baseDeal.icon_color,
+      stage_name: baseDeal.stage_name,
+      momentum: baseDeal.momentum,
+      status: baseDeal.status,
+      last_meeting: baseDeal.last_meeting,
+      next_meeting: baseDeal.next_meeting,
+      owner_name: baseDeal.owner_name,
+      company_name: baseDeal.company_name,
+      company_icon_color: baseDeal.company_icon_color,
+      company_logo_url: baseDeal.company_logo_url,
+      overview: {
+        momentum_summary: 'Display momentum summary here.',
+        last_meeting: { title: 'No meeting notes available yet.', bullets: [] },
+        positive_signals: [],
+        risk_factors: [],
+        next_steps: [],
+      },
+      opportunity_summary: {
+        headline: `${baseDeal.company_name}`,
+        what_they_want: [],
+        how_we_help: [],
+        why_now: [],
+        budget_and_roi: [],
+      },
+      key_stakeholders: [],
+    };
+
+    return fallbackData;
+  }, [selectedDealId, deals]);
 
   return (
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
@@ -592,7 +641,7 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
                       </TableRow>
                     ) : (
                       paginatedDeals.map((deal) => (
-                        <TableRow key={deal.id} className="cursor-pointer leading-none" onClick={() => navigate(`/deals/${deal.id}`)}>
+                        <TableRow key={deal.id} className="cursor-pointer leading-none" onClick={() => onDealSelect?.(deal.id)}>
                           <TableCell>
                             <StageCell stage={deal.stage_name} />
                           </TableCell>
@@ -707,12 +756,21 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
             {/* Board view */}
             <div className="flex-1 min-h-0 overflow-hidden">
               <div className="h-full overflow-auto px-8">
-                <KanbanBoardView deals={filtered} onDealClick={(dealId) => navigate(`/deals/${dealId}`)} />
+                <KanbanBoardView deals={filtered} onDealClick={(dealId) => onDealSelect?.(dealId)} />
               </div>
             </div>
           </>
         )}
       </div>
+
+      {/* Deal Detail Side Panel */}
+      {selectedDealId && getSelectedDealData && (
+        <DealDetailSidePanel
+          dealId={selectedDealId}
+          deal={getSelectedDealData}
+          onClose={onCloseSidePanel || (() => {})}
+        />
+      )}
     </div>
   );
 };
