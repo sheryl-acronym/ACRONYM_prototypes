@@ -1,6 +1,6 @@
 import React from 'react';
 import { DealDetailData } from '@/types';
-import { X } from 'lucide-react';
+import { X, ChevronsLeft, ArrowUpRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import DealDetailPageV2 from '@/components/DealDetailPageV2';
 
@@ -11,9 +11,14 @@ interface DealDetailSidePanelProps {
 }
 
 export const DealDetailSidePanel: React.FC<DealDetailSidePanelProps> = ({
+  dealId,
   deal,
   onClose,
 }) => {
+  const handleOpenFullPage = React.useCallback(() => {
+    // Navigate to full deal detail page
+    window.location.href = `/deals/${dealId}`;
+  }, [dealId]);
 
   // Handle ESC key to close
   React.useEffect(() => {
@@ -50,16 +55,38 @@ export const DealDetailSidePanel: React.FC<DealDetailSidePanelProps> = ({
 
       {/* Side Panel */}
       <div className="fixed top-0 right-0 z-50 h-full w-[620px] max-w-[90vw] bg-white border-l border-slate-200 animate-in slide-in-from-right duration-200 flex flex-col overflow-hidden shadow-xl">
-        {/* Header with close button */}
-        <div className="flex-shrink-0 flex items-center justify-end h-16 px-6 border-b border-slate-200">
+        {/* Header */}
+        <div className="flex-shrink-0 flex items-center justify-between h-16 px-6 border-b border-slate-200">
           <Button
             variant="ghost"
             size="sm"
             onClick={onClose}
             className="h-8 w-8 p-0 hover:bg-slate-100"
+            title="Collapse panel"
           >
-            <X className="h-4 w-4" />
+            <ChevronsLeft className="h-4 w-4" />
           </Button>
+
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleOpenFullPage}
+              className="h-8 w-8 p-0 hover:bg-slate-100"
+              title="Open full page"
+            >
+              <ArrowUpRight className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClose}
+              className="h-8 w-8 p-0 hover:bg-slate-100"
+              title="Close"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
 
         {/* Content - scrollable */}
