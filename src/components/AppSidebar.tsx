@@ -166,8 +166,10 @@ export default function AppSidebar() {
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
-                        <SidebarMenuSubButton className="h-8">
-                          <span>Objections</span>
+                        <SidebarMenuSubButton asChild className="h-8" isActive={location.pathname === '/objections'}>
+                          <Link to="/objections">
+                            <span>Objections</span>
+                          </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     </SidebarMenuSub>

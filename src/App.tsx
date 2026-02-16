@@ -12,6 +12,7 @@ import CustomerProfilesPage from '@/components/CustomerProfilesPage';
 import BuyerPersonasPage from '@/components/BuyerPersonasPage';
 import DiscoveryQuestionsPage from '@/components/DiscoveryQuestionsPage';
 import FAQsPage from '@/components/FAQsPage';
+import ObjectionsPage from '@/components/ObjectionsPage';
 import PlaybookPositioningPage from '@/components/PlaybookPositioningPage';
 import AppSidebar from '@/components/AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
@@ -26,6 +27,7 @@ import { customerProfilesData } from '@/customer-profiles-demo-data';
 import { buyerPersonasData } from '@/buyer-personas-demo-data';
 import { discoveryQuestionsData } from '@/discovery-questions-demo-data';
 import { faqs } from '@/faqs-demo-data';
+import { objectionsData } from '@/objections-demo-data';
 
 const meetingBriefData: Record<string, typeof provenDemoData> = {
   'um-001': provenDemoData,
@@ -128,6 +130,7 @@ function App() {
             <Route path="/buyer-personas" element={<BuyerPersonasPage personas={buyerPersonasData} />} />
             <Route path="/discovery-questions" element={<DiscoveryQuestionsPage questions={discoveryQuestionsData} />} />
             <Route path="/faqs" element={<FAQsPage faqs={faqs} />} />
+            <Route path="/objections" element={<ObjectionsPage objections={objectionsData} />} />
             <Route path="/playbook/positioning" element={<PlaybookPositioningPage />} />
           </Routes>
         </SidebarInset>
