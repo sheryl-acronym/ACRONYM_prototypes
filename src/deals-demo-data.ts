@@ -506,7 +506,7 @@ export const dealsData: Deal[] = [
     owner_name: 'Alex Johnson',
     company_name: "Lulu's",
     company_icon_color: 'bg-fuchsia-200',
-    company_logo_url: 'https://logo.clearbit.com/lulus.com',
+    company_logo_url: '/lulus.png',
     status: 'in_progress',
     meddic_completion: {
       complete: 2,
@@ -546,7 +546,7 @@ export const dealsData: Deal[] = [
     owner_name: 'James Miller',
     company_name: 'Oura',
     company_icon_color: 'bg-zinc-200',
-    company_logo_url: 'https://logo.clearbit.com/ouraring.com',
+    company_logo_url: '/oura.png',
     status: 'in_progress',
     meddic_completion: {
       complete: 2,
@@ -626,7 +626,7 @@ export const dealsData: Deal[] = [
     owner_name: 'Alex Johnson',
     company_name: 'Vuori',
     company_icon_color: 'bg-teal-200',
-    company_logo_url: 'https://logo.clearbit.com/vuoriclothing.com',
+    company_logo_url: '/vuori.png',
     status: 'in_progress',
     meddic_completion: {
       complete: 1,
