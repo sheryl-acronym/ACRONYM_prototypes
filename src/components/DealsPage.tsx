@@ -182,46 +182,56 @@ function DealCard({ deal, onClick }: { deal: Deal; onClick: () => void }) {
 
       {/* Main content - grows to fill space */}
       <div className="p-3 flex-1 flex flex-col min-h-0 overflow-hidden">
-        <div className="flex items-start gap-2 mb-2">
+        <div className="flex items-center gap-1.5 mb-1">
+          {deal.company_logo_url ? (
+            <>
+              <div className="logo-frame w-6 h-6 rounded flex-shrink-0 border border-slate-300 bg-white flex items-center justify-center overflow-hidden">
+                <img
+                  src={deal.company_logo_url}
+                  alt={deal.company_name}
+                  className="w-5 h-5 object-contain"
+                  onError={(e) => {
+                    const frame = e.currentTarget.parentElement;
+                    const fallback = frame?.nextElementSibling;
+                    if (frame) frame.style.display = 'none';
+                    if (fallback) fallback.classList.remove('hidden');
+                  }}
+                />
+              </div>
+              <span
+                className="logo-fallback w-6 h-6 rounded flex-shrink-0 flex items-center justify-center text-[8px] leading-none text-gray-600 bg-gray-200 hidden"
+                style={{ fontFamily: 'Oxanium, sans-serif', fontWeight: 800 }}
+              >
+                {deal.company_name.charAt(0).toUpperCase()}.
+              </span>
+            </>
+          ) : (
+            <span
+              className="w-6 h-6 rounded flex-shrink-0 flex items-center justify-center text-[8px] leading-none text-gray-600 bg-gray-200"
+              style={{ fontFamily: 'Oxanium, sans-serif', fontWeight: 800 }}
+            >
+              {deal.company_name.charAt(0).toUpperCase()}.
+            </span>
+          )}
+          <span className="text-sm font-medium text-foreground truncate">{deal.company_name}</span>
+        </div>
+        <div className="flex items-center gap-1 min-w-0 pr-8">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="cursor-help pointer-events-auto">
-                <div className={`w-3 h-3 rounded-full flex-shrink-0 mt-0.5 ${config.dot}`} />
+              <TooltipTrigger className="cursor-help pointer-events-auto flex-shrink-0">
+                <div className={`w-3 h-3 rounded-full ${config.dot}`} />
               </TooltipTrigger>
               <TooltipContent side="right" className="text-xs">
                 {deal.momentum}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <div className="flex-1 min-w-0 pr-8">
-            <div className="text-sm font-medium text-foreground mb-1 line-clamp-2">{deal.name}</div>
-            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              {deal.company_logo_url ? (
-                <img
-                  src={deal.company_logo_url}
-                  alt={deal.company_name}
-                  className="w-3.5 h-3.5 rounded object-contain flex-shrink-0 border border-border/50"
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    target.style.display = 'none';
-                    target.nextElementSibling?.classList.remove('hidden');
-                  }}
-                />
-              ) : null}
-              <span
-                className={`w-3.5 h-3.5 rounded flex-shrink-0 flex items-center justify-center text-[8px] leading-none text-muted-foreground ${deal.company_logo_url ? 'hidden' : ''}`}
-                style={{ fontFamily: 'Oxanium, sans-serif', fontWeight: 800 }}
-              >
-                {deal.company_name.charAt(0).toUpperCase()}.
-              </span>
-              <span className="truncate">{deal.company_name}</span>
-            </div>
-          </div>
+          <div className="text-xs text-muted-foreground line-clamp-2 flex-1 min-w-0">{deal.name}</div>
         </div>
 
         {/* MEDDIC section */}
         {deal.meddic_completion && (
-          <div className="text-xs text-muted-foreground line-clamp-3">
+          <div className="text-xs text-muted-foreground line-clamp-3 mt-2">
             <div className="font-medium">
               MEDDIC: {deal.meddic_completion.complete}/{deal.meddic_completion.complete + deal.meddic_completion.partial + deal.meddic_completion.missing} completed
             </div>

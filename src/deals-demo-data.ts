@@ -126,7 +126,7 @@ export const dealsData: Deal[] = [
     owner_name: 'Sarah Chen',
     company_name: 'Allbirds',
     company_icon_color: 'bg-lime-200',
-    company_logo_url: 'https://logo.clearbit.com/allbirds.com',
+    company_logo_url: '/allbirds.png',
     status: 'in_progress',
     meddic_completion: {
       complete: 0,
@@ -146,7 +146,7 @@ export const dealsData: Deal[] = [
     owner_name: 'James Miller',
     company_name: 'Glossier',
     company_icon_color: 'bg-pink-300',
-    company_logo_url: 'https://logo.clearbit.com/glossier.com',
+    company_logo_url: '/glossier.png',
     status: 'in_progress',
     meddic_completion: {
       complete: 3,
@@ -166,7 +166,7 @@ export const dealsData: Deal[] = [
     owner_name: 'Emily Davis',
     company_name: 'Warby Parker',
     company_icon_color: 'bg-blue-200',
-    company_logo_url: 'https://logo.clearbit.com/warbyparker.com',
+    company_logo_url: '/warby-parker.png',
     status: 'in_progress',
     meddic_completion: {
       complete: 0,
