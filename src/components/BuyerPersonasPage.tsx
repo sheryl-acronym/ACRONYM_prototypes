@@ -294,7 +294,7 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
               </PopoverContent>
             </Popover>
 
-            {/* Customer Profile filter */}
+            {/* Typically Found In filter */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -315,7 +315,7 @@ export const BuyerPersonasPage: React.FC<BuyerPersonasPageProps> = ({ personas }
                   ) : (
                     <PlusCircle className="h-3.5 w-3.5" />
                   )}
-                  Customer Profile
+                  Typically Found In
                   {profileFilters.size > 0 && (
                     <>
                       <span className="mx-0.5 h-4 w-px bg-border" />
