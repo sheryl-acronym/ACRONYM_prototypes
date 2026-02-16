@@ -206,7 +206,7 @@ export const dealsData: Deal[] = [
     owner_name: 'Sarah Chen',
     company_name: 'Casper',
     company_icon_color: 'bg-indigo-200',
-    company_logo_url: 'https://logo.clearbit.com/casper.com',
+    company_logo_url: '/casper.png',
     status: 'in_progress',
     meddic_completion: {
       complete: 4,
@@ -566,7 +566,7 @@ export const dealsData: Deal[] = [
     owner_name: 'Sarah Chen',
     company_name: 'Cotopaxi',
     company_icon_color: 'bg-orange-200',
-    company_logo_url: 'https://logo.clearbit.com/cotopaxi.com',
+    company_logo_url: '/cotopaxi.png',
     status: 'in_progress',
     meddic_completion: {
       complete: 0,
