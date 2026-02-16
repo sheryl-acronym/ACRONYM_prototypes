@@ -16,7 +16,7 @@ import ObjectionsPage from '@/components/ObjectionsPage';
 import PlaybookPositioningPage from '@/components/PlaybookPositioningPage';
 import AppSidebar from '@/components/AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
-import { provenDemoData } from '@/proven-demo-data';
+import { provenDemoData, provenDemoDataCall2 } from '@/proven-demo-data';
 import { dealsData } from '@/deals-demo-data';
 import { dealDetailDemoData } from '@/deal-detail-demo-data';
 import { pastMeetingsData } from '@/past-meetings-data';
@@ -32,6 +32,21 @@ import { objectionsData } from '@/objections-demo-data';
 const meetingBriefData: Record<string, typeof provenDemoData> = {
   'um-001': provenDemoData,
 };
+
+function PreCallBriefRoute() {
+  const { version: urlVersion } = useParams<{ version?: 'call-1' | 'call-2' }>();
+  const [version, setVersion] = React.useState<'call-1' | 'call-2'>(urlVersion || 'call-1');
+
+  const data = version === 'call-2' ? provenDemoDataCall2 : provenDemoData;
+
+  const handleVersionChange = React.useCallback((newVersion: 'call-1' | 'call-2') => {
+    setVersion(newVersion);
+    // Update URL when version changes
+    window.history.pushState(null, '', `/meetings/um-001/${newVersion}`);
+  }, []);
+
+  return <PreCallBrief data={data} onVersionChange={handleVersionChange} currentVersion={version} />;
+}
 
 function DealDetailRoute() {
   const { dealId } = useParams<{ dealId: string }>();
@@ -122,7 +137,8 @@ function App() {
             <Route path="/deals" element={<DealsPage deals={dealsData} />} />
             <Route path="/deals/:dealId" element={<DealDetailRoute />} />
             <Route path="/meetings" element={<UpcomingMeetingsPage meetings={upcomingMeetingsData} briefData={meetingBriefData} />} />
-            <Route path="/meetings/um-001" element={<PreCallBrief data={provenDemoData} />} />
+            <Route path="/meetings/um-001" element={<PreCallBriefRoute />} />
+            <Route path="/meetings/um-001/:version" element={<PreCallBriefRoute />} />
             <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} />} />
             <Route path="/companies" element={<CompaniesPage companies={companiesData} />} />
             <Route path="/contacts" element={<ContactsPage contacts={contactsData} />} />

@@ -3,6 +3,7 @@ export interface Participant {
   email?: string;
   avatar_color?: string;
   role?: string;
+  buyer_persona?: string;
   bio?: string[];
   approach?: string;
   linkedin_url?: string;
@@ -28,10 +29,27 @@ export interface WhoYoureTalkingTo {
 export interface BriefData {
   meeting_objectives: MeetingObjectives;
   who_youre_talking_to: WhoYoureTalkingTo;
+  suggested_discovery_questions?: string[];
+}
+
+export interface GamePlanQuestion {
+  text: string;
+  reasoning?: string;
+  isAI?: boolean;
+}
+
+export interface GamePlanSection {
+  title: string;
+  questions: GamePlanQuestion[];
 }
 
 export interface GameplanData {
-  placeholder: string;
+  placeholder?: string;
+  meeting_objective?: string;
+  agenda?: GamePlanQuestion[];
+  sections?: GamePlanSection[];
+  anticipated_questions?: GamePlanQuestion[];
+  anticipated_objections?: GamePlanQuestion[];
 }
 
 export interface MeetingMetadata {
@@ -57,6 +75,7 @@ export interface PreCallBriefData {
   metadata: MeetingMetadata;
   brief: BriefData;
   gameplan: GameplanData;
+  deal_id?: string;
 }
 
 export interface PastMeeting {

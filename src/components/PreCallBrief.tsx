@@ -4,7 +4,6 @@ import {
   MeetingMetadata,
   MeetingObjectives,
   WhoYoureTalkingTo,
-  GameplanData,
 } from '@/types';
 import {
   Building2,
@@ -13,10 +12,13 @@ import {
   MoreHorizontal,
   Upload,
   Users,
-  Video,
   Plus,
   X,
   Sparkles,
+  BookOpen,
+  ArrowUpRight,
+  BadgeHelp,
+  ShieldMinus,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -26,16 +28,18 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface PreCallBriefProps {
   data: PreCallBriefData;
   hideTopBar?: boolean;
+  onVersionChange?: (version: 'call-1' | 'call-2') => void;
+  currentVersion?: 'call-1' | 'call-2';
 }
 
 const EditableText: React.FC<{
@@ -45,6 +49,10 @@ const EditableText: React.FC<{
 }> = ({ value, className, onChange }) => {
   const [editing, setEditing] = React.useState(false);
   const [text, setText] = React.useState(value);
+
+  React.useEffect(() => {
+    setText(value);
+  }, [value]);
 
   const handleBlur = () => {
     setEditing(false);
@@ -179,7 +187,7 @@ const EditableBullet: React.FC<{
   );
 };
 
-const TopBar: React.FC<{ breadcrumb: string[] }> = ({ breadcrumb }) => (
+const TopBar: React.FC<{ breadcrumb: string[]; onVersionChange?: (version: 'call-1' | 'call-2') => void; currentVersion?: 'call-1' | 'call-2' }> = ({ breadcrumb, onVersionChange, currentVersion = 'call-1' }) => (
   <div className="flex items-center justify-between">
     <Breadcrumb>
       <BreadcrumbList>
@@ -197,7 +205,18 @@ const TopBar: React.FC<{ breadcrumb: string[] }> = ({ breadcrumb }) => (
         ))}
       </BreadcrumbList>
     </Breadcrumb>
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-2">
+      {onVersionChange && (
+        <Select value={currentVersion} onValueChange={(v) => onVersionChange(v as 'call-1' | 'call-2')}>
+          <SelectTrigger className="w-32 h-8">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="call-1">Call 1</SelectItem>
+            <SelectItem value="call-2">Call 2</SelectItem>
+          </SelectContent>
+        </Select>
+      )}
       <Button variant="ghost" size="icon" className="h-8 w-8">
         <MoreHorizontal className="h-4 w-4" />
       </Button>
@@ -211,18 +230,29 @@ const TopBar: React.FC<{ breadcrumb: string[] }> = ({ breadcrumb }) => (
 const MeetingHeader: React.FC<{
   meetingType: { label: string; color: string };
   title: string;
-  joinButtonLabel: string;
-}> = ({ meetingType, title, joinButtonLabel }) => (
+  companyDealId?: string;
+}> = ({ meetingType, title, companyDealId }) => (
   <div className="mb-6">
     <div className="flex items-center gap-1.5 mb-3">
       <span className={`w-2.5 h-2.5 rounded-full ${meetingType.color}`} />
-      <span className="text-sm text-muted-foreground">{meetingType.label}</span>
+      <span className="text-sm text-muted-foreground">
+        {companyDealId ? (
+          <a
+            href={`/deals/${companyDealId}`}
+            className="text-muted-foreground hover:text-foreground border-b border-dotted border-muted-foreground hover:border-foreground transition-colors"
+          >
+            {meetingType.label}
+          </a>
+        ) : (
+          meetingType.label
+        )}
+      </span>
     </div>
     <div className="flex items-center justify-between">
       <h1 className="text-2xl font-bold text-foreground">{title}</h1>
-      <Button className="bg-green-600 hover:bg-green-700 text-white gap-2">
-        <Video className="h-4 w-4" />
-        {joinButtonLabel}
+      <Button variant="outline" size="sm" className="gap-2">
+        <ArrowUpRight className="h-4 w-4" />
+        Pop out
       </Button>
     </div>
   </div>
@@ -314,6 +344,11 @@ const MeetingObjectivesSection: React.FC<{ data: MeetingObjectives }> = ({ data 
   const [learnItems, setLearnItems] = React.useState<BulletItem[]>(
     data.what_we_need_to_learn.map((t) => ({ text: t, isAI: true }))
   );
+
+  React.useEffect(() => {
+    setObjectives(data.objectives.map((t) => ({ text: t, isAI: true })));
+    setLearnItems(data.what_we_need_to_learn.map((t) => ({ text: t, isAI: true })));
+  }, [data]);
 
   const addObjective = () => {
     setObjectives([...objectives, { text: '', isAI: false }]);
@@ -432,13 +467,13 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo }> = ({ data 
       {data.attendees.map((attendee, i) => (
         <div key={i} className="rounded-lg border bg-card p-4">
           {/* Header row: avatar, name, role, LinkedIn */}
-          <div className="flex items-center gap-3 mb-3">
-            <span className={`flex h-8 w-8 items-center justify-center rounded-full text-white text-xs font-semibold flex-shrink-0 ${attendee.avatar_color || 'bg-gray-400'}`}>
+          <div className="flex items-start gap-3 mb-4">
+            <span className={`flex h-10 w-10 items-center justify-center rounded-full text-white text-sm font-semibold flex-shrink-0 ${attendee.avatar_color || 'bg-gray-400'}`}>
               {attendee.name.split(' ').map(n => n[0]).join('')}
             </span>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-foreground">{attendee.name}</span>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-lg font-semibold text-foreground">{attendee.name}</span>
                 {attendee.linkedin_url && (
                   <a
                     href={`https://${attendee.linkedin_url}`}
@@ -446,57 +481,65 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo }> = ({ data 
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-blue-600 transition-colors"
                   >
-                    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                   </a>
                 )}
               </div>
               {attendee.role && (
-                <span className="text-xs text-muted-foreground">{attendee.role}</span>
+                <span className="text-sm text-muted-foreground">{attendee.role}</span>
               )}
             </div>
           </div>
 
-          {/* Bio bullets */}
-          {attendee.bio && attendee.bio.length > 0 && (
-            <ul className="space-y-1 mb-3">
-              {attendee.bio.map((b, j) => (
-                <EditableBullet
-                  key={j}
-                  value={b}
-                  icon="bullet"
-                  readOnly
-                  reasoning={attendeeBioReasonings[attendee.name]?.[j]}
-                />
-              ))}
-            </ul>
-          )}
+          {/* Content section with fields */}
+          <div className="space-y-3">
+            {attendee.buyer_persona && (
+              <div className="flex gap-8">
+                <span className="text-sm font-semibold text-foreground w-32 flex-shrink-0">Buyer Persona</span>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border bg-muted/30 w-fit">
+                  <BookOpen className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-foreground">{attendee.buyer_persona}</span>
+                </div>
+              </div>
+            )}
 
-          {/* Approach */}
-          {attendee.approach && (
-            <div className="rounded-md bg-muted/40 px-3 py-2">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Approach</span>
-              <p className="text-sm text-foreground/80 mt-0.5">{attendee.approach}</p>
-            </div>
-          )}
+            {attendee.bio && attendee.bio.length > 0 && (
+              <div className="flex gap-8">
+                <span className="text-sm font-semibold text-foreground w-32 flex-shrink-0">Notes</span>
+                <ul className="space-y-1 flex-1">
+                  {attendee.bio.map((b, j) => (
+                    <EditableBullet
+                      key={j}
+                      value={b}
+                      icon="bullet"
+                      readOnly
+                      reasoning={attendeeBioReasonings[attendee.name]?.[j]}
+                    />
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {attendee.approach && (
+              <div className="flex gap-8">
+                <span className="text-sm font-semibold text-foreground w-32 flex-shrink-0">Approach</span>
+                <p className="text-sm text-foreground/80 flex-1">{attendee.approach}</p>
+              </div>
+            )}
+          </div>
         </div>
       ))}
     </div>
   </div>
 );
 
-const GameplanTab: React.FC<{ data: GameplanData }> = ({ data }) => (
-  <div className="py-12 text-center text-sm text-muted-foreground">
-    {data.placeholder}
-  </div>
-);
-
-export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = false }) => {
+export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = false, onVersionChange, currentVersion }) => {
   return (
     <div className="flex flex-col min-h-screen bg-white overflow-hidden">
       {!hideTopBar && (
         <div className="sticky top-0 z-20 bg-white border-b border-slate-200 flex-shrink-0">
           <div className="pl-8 pr-8 py-3">
-            <TopBar breadcrumb={data.breadcrumb} />
+            <TopBar breadcrumb={data.breadcrumb} onVersionChange={onVersionChange} currentVersion={currentVersion} />
           </div>
         </div>
       )}
@@ -504,33 +547,62 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
       <MeetingHeader
         meetingType={data.meeting_type}
         title={data.title}
-        joinButtonLabel={data.join_button_label}
+        companyDealId={data.deal_id}
       />
       <MetadataRows metadata={data.metadata} />
       <Separator className="my-4" />
-      <Tabs defaultValue="brief">
-        <TabsList className="bg-transparent p-0 h-auto border-b border-slate-200 w-full justify-start rounded-none gap-0">
-          <TabsTrigger
-            value="brief"
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-2.5 pt-2 text-sm font-medium"
-          >
-            Brief
-          </TabsTrigger>
-          <TabsTrigger
-            value="gameplan"
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 pb-2.5 pt-2 text-sm font-medium"
-          >
-            Gameplan
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="brief">
-          <MeetingObjectivesSection data={data.brief.meeting_objectives} />
-          <WhoYoureTalkingToSection data={data.brief.who_youre_talking_to} />
-        </TabsContent>
-        <TabsContent value="gameplan">
-          <GameplanTab data={data.gameplan} />
-        </TabsContent>
-      </Tabs>
+      <div className="py-4">
+        <MeetingObjectivesSection key={JSON.stringify(data.brief.meeting_objectives)} data={data.brief.meeting_objectives} />
+        <WhoYoureTalkingToSection key={JSON.stringify(data.brief.who_youre_talking_to)} data={data.brief.who_youre_talking_to} />
+
+        {/* Suggested Discovery Questions */}
+        {data.brief.suggested_discovery_questions && data.brief.suggested_discovery_questions.length > 0 && (
+          <div className="py-6 space-y-3 mt-6 border-t border-slate-200">
+            <h3 className="text-sm font-semibold text-foreground">Suggested discovery questions</h3>
+            <ul className="space-y-2 pl-5">
+              {data.brief.suggested_discovery_questions.map((q, i) => (
+                <li key={i} className="list-disc text-sm text-foreground/80">{q}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Anticipated Questions */}
+        <div className="py-6 space-y-6 mt-6 border-t border-slate-200">
+          {data.gameplan.anticipated_questions && data.gameplan.anticipated_questions.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground">
+                Anticipated questions
+              </h3>
+              <ul className="space-y-2">
+                {data.gameplan.anticipated_questions.map((q, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm">
+                    <BadgeHelp className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+                    <span className="text-foreground/80">{q.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Anticipated Objections */}
+          {data.gameplan.anticipated_objections && data.gameplan.anticipated_objections.length > 0 && (
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground">
+                Anticipated objections
+              </h3>
+              <ul className="space-y-2">
+                {data.gameplan.anticipated_objections.map((q, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm">
+                    <ShieldMinus className="h-4 w-4 text-muted-foreground flex-shrink-0 mt-0.5" />
+                    <span className="text-foreground/80">{q.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </div>
       </div>
     </div>
   );
