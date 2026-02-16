@@ -1,6 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Deal, DealStage, Momentum } from '@/types';
+import { ContactPill } from '@/components/ContactPill';
+import { DatePill } from '@/components/DatePill';
+import { MomentumPill } from '@/components/MomentumPill';
+import { StagePill } from '@/components/StagePill';
+import { CompanyPill } from '@/components/CompanyPill';
 import {
   Table,
   TableBody,
@@ -81,28 +86,11 @@ function formatShortDate(dateStr: string | null): string | null {
 }
 
 function StageCell({ stage }: { stage: DealStage }) {
-  const config = stageConfig[stage];
-
-  return (
-    <Badge
-      variant="outline"
-      className={`${config.bg} ${config.text} ${config.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
-    >
-      {stage}
-    </Badge>
-  );
+  return <StagePill stage={stage} />;
 }
 
 function MomentumCell({ momentum }: { momentum: Momentum }) {
-  const config = momentumConfig[momentum];
-  return (
-    <Badge
-      variant="outline"
-      className={`${config.bg} ${config.text} ${config.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
-    >
-      {momentum}
-    </Badge>
-  );
+  return <MomentumPill momentum={momentum} />;
 }
 
 type SortField = 'stage_name' | 'name' | 'momentum' | 'last_meeting' | 'next_meeting' | 'owner_name' | 'company_name';
@@ -418,7 +406,7 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
           </div>
         </div>
         {/* Page header */}
-        <div className="px-8 pt-8 pb-0 flex-shrink-0">
+        <div className="flex-shrink-0 px-8 pt-8 pb-0">
           {/* Title */}
           <div className="flex items-center gap-2.5 mb-6">
             <Box className="h-5 w-5 text-foreground" />
@@ -538,38 +526,38 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
             <Button
               variant={viewMode === 'table' ? 'secondary' : 'ghost'}
               size="sm"
-              className="gap-1.5 h-7 text-xs font-normal"
+              className="gap-1.5 h-8 text-sm font-normal"
               onClick={() => {
                 setViewMode('table');
                 onViewChange?.('table');
               }}
             >
-              <TableIcon className="h-3.5 w-3.5" />
-              Table view
+              <TableIcon className="h-4 w-4" />
+              Table
             </Button>
             <Button
               variant={viewMode === 'board' ? 'secondary' : 'ghost'}
               size="sm"
-              className="gap-1.5 h-7 text-xs font-normal"
+              className="gap-1.5 h-8 text-sm font-normal"
               onClick={() => {
                 setViewMode('board');
                 onViewChange?.('board');
               }}
             >
-              <Columns className="h-3.5 w-3.5" />
-              By deal stage
+              <Columns className="h-4 w-4" />
+              Board
             </Button>
           </div>
-        </div>
+          </div>
         </div>
 
         {/* Content area - Table or Board view */}
         {viewMode === 'table' ? (
           <>
             {/* Table */}
-            <div className="px-8 flex-1 overflow-y-auto flex flex-col">
-              <div className="border border-slate-200 rounded-lg overflow-hidden flex-shrink-0">
-                <Table className="flex-1">
+            <div className="px-8 flex-1 overflow-y-auto">
+              <div className="border border-slate-200 rounded-lg overflow-hidden">
+                <Table className="w-full">
                   <TableHeader>
                     <TableRow className="hover:bg-transparent">
                       <TableHead>
@@ -604,32 +592,15 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
                       </TableRow>
                     ) : (
                       paginatedDeals.map((deal) => (
-                        <TableRow key={deal.id} className="cursor-pointer" onClick={() => navigate(`/deals/${deal.id}`)}>
+                        <TableRow key={deal.id} className="cursor-pointer leading-none" onClick={() => navigate(`/deals/${deal.id}`)}>
                           <TableCell>
                             <StageCell stage={deal.stage_name} />
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-2">
-                              {deal.company_logo_url ? (
-                                <img
-                                  src={deal.company_logo_url}
-                                  alt={deal.company_name}
-                                  className="w-4 h-4 rounded object-contain flex-shrink-0 border border-border/50"
-                                  onError={(e) => {
-                                    const target = e.currentTarget;
-                                    target.style.display = 'none';
-                                    target.nextElementSibling?.classList.remove('hidden');
-                                  }}
-                                />
-                              ) : null}
-                              <span
-                                className={`w-4 h-4 rounded flex-shrink-0 flex items-center justify-center text-[10px] leading-none text-muted-foreground ${deal.company_logo_url ? 'hidden' : ''}`}
-                                style={{ fontFamily: 'Oxanium, sans-serif', fontWeight: 800 }}
-                              >
-                                {deal.company_name.charAt(0).toUpperCase()}.
-                              </span>
-                              <span className="text-sm">{deal.company_name}</span>
-                            </div>
+                            <CompanyPill
+                              company_name={deal.company_name}
+                              company_logo_url={deal.company_logo_url}
+                            />
                           </TableCell>
                           <TableCell>
                             <span className="text-sm">{deal.name}</span>
@@ -638,29 +609,21 @@ export const DealsPage: React.FC<DealsPageProps> = ({ deals, initialView = 'tabl
                             <MomentumCell momentum={deal.momentum} />
                           </TableCell>
                           <TableCell>
-                            {deal.last_meeting ? (
-                              <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-                                <Calendar className="h-3 w-3" />
-                                {formatShortDate(deal.last_meeting)}
-                              </Badge>
+                            {deal.last_meeting && formatShortDate(deal.last_meeting) ? (
+                              <DatePill date={formatShortDate(deal.last_meeting)!} />
                             ) : (
                               <span className="text-sm text-muted-foreground">-</span>
                             )}
                           </TableCell>
                           <TableCell>
-                            {deal.next_meeting ? (
-                              <span className="text-sm text-muted-foreground">
-                                {formatShortDate(deal.next_meeting)}
-                              </span>
+                            {deal.next_meeting && formatShortDate(deal.next_meeting) ? (
+                              <DatePill date={formatShortDate(deal.next_meeting)!} />
                             ) : (
                               <span className="text-sm text-muted-foreground">No meeting scheduled</span>
                             )}
                           </TableCell>
                           <TableCell>
-                            <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-                              <User className="h-3 w-3" />
-                              {deal.owner_name}
-                            </Badge>
+                            <ContactPill name={deal.owner_name} />
                           </TableCell>
                         </TableRow>
                       ))

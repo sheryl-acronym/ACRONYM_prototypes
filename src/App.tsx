@@ -14,6 +14,7 @@ import DiscoveryQuestionsPage from '@/components/DiscoveryQuestionsPage';
 import FAQsPage from '@/components/FAQsPage';
 import ObjectionsPage from '@/components/ObjectionsPage';
 import PlaybookPositioningPage from '@/components/PlaybookPositioningPage';
+import ComponentsPage from '@/components/ComponentsPage';
 import AppSidebar from '@/components/AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { provenDemoData, provenDemoDataCall2 } from '@/proven-demo-data';
@@ -176,6 +177,7 @@ function App() {
             <Route path="/faqs" element={<FAQsPage faqs={faqs} />} />
             <Route path="/objections" element={<ObjectionsPage objections={objectionsData} />} />
             <Route path="/playbook/positioning" element={<PlaybookPositioningPage />} />
+            <Route path="/components" element={<ComponentsPage />} />
           </Routes>
         </SidebarInset>
       </SidebarProvider>

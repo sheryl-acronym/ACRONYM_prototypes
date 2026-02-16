@@ -4,7 +4,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Badge } from '@/components/ui/badge';
 import { User, BookOpen, Mail } from 'lucide-react';
 
 interface AttendeeHoverCardProps {
@@ -21,7 +20,6 @@ export const AttendeeHoverCard: React.FC<AttendeeHoverCardProps> = ({
   name,
   email,
   role,
-  title,
   persona,
   linkedin_url,
   tags,

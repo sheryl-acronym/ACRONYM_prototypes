@@ -38,7 +38,7 @@ import {
   PanelLeft,
 } from 'lucide-react';
 import PreCallBrief from '@/components/PreCallBrief';
-import { AttendeeHoverCard } from '@/components/AttendeeHoverCard';
+import { ContactPill } from '@/components/ContactPill';
 
 const OVERLAY_BREAKPOINT = 1200;
 
@@ -355,30 +355,14 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
                           <TableCell>
                             <div className="flex items-center gap-2">
                               {filterAttendeesByRole(meeting.attendees, 'buyer').map((attendee, i) => (
-                                <AttendeeHoverCard
-                                  key={i}
-                                  name={attendee.name}
-                                  email={attendee.email}
-                                  role={attendee.role}
-                                  linkedin_url={attendee.linkedin_url}
-                                  persona={attendee.persona}
-                                  tags={attendee.tags}
-                                />
+                                <ContactPill key={i} name={attendee.name} />
                               ))}
                             </div>
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-2">
                               {filterAttendeesByRole(meeting.attendees, 'seller').map((attendee, i) => (
-                                <AttendeeHoverCard
-                                  key={i}
-                                  name={attendee.name}
-                                  email={attendee.email}
-                                  role={attendee.role}
-                                  linkedin_url={attendee.linkedin_url}
-                                  persona={attendee.persona}
-                                  tags={attendee.tags}
-                                />
+                                <ContactPill key={i} name={attendee.name} />
                               ))}
                             </div>
                           </TableCell>

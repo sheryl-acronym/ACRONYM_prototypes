@@ -30,6 +30,7 @@ import {
   Building2,
   Settings,
   ChevronsUpDown,
+  Palette,
 } from 'lucide-react';
 
 export default function AppSidebar() {
@@ -206,6 +207,30 @@ export default function AppSidebar() {
                   <Link to="/contacts">
                     <User className="h-4 w-4" />
                     <span>Contacts</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarSeparator className="my-2" />
+
+        {/* Components section */}
+        <SidebarGroup className="px-3 pt-2 pb-2">
+          <SidebarGroupLabel className="mb-1 px-2 text-xs text-muted-foreground/60 uppercase tracking-wider">Development</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu className="gap-0.5">
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === '/components'}
+                  tooltip="Components"
+                  className="h-9"
+                >
+                  <Link to="/components">
+                    <Palette className="h-4 w-4" />
+                    <span>Components</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

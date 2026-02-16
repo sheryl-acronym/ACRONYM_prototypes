@@ -35,7 +35,7 @@ import {
   AlertCircle,
   PanelLeft,
 } from 'lucide-react';
-import { AttendeeHoverCard } from '@/components/AttendeeHoverCard';
+import { ContactPill } from '@/components/ContactPill';
 
 interface PastMeetingsPageProps {
   meetings: PastMeeting[];
@@ -253,30 +253,14 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                       <TableCell>
                         <div className="flex items-center gap-2">
                           {filterAttendeesByRole(meeting.attendees, 'buyer').map((attendee, i) => (
-                            <AttendeeHoverCard
-                              key={i}
-                              name={attendee.name}
-                              email={attendee.email}
-                              role={attendee.role}
-                              linkedin_url={attendee.linkedin_url}
-                              persona={attendee.persona}
-                              tags={attendee.tags}
-                            />
+                            <ContactPill key={i} name={attendee.name} />
                           ))}
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                           {filterAttendeesByRole(meeting.attendees, 'seller').map((attendee, i) => (
-                            <AttendeeHoverCard
-                              key={i}
-                              name={attendee.name}
-                              email={attendee.email}
-                              role={attendee.role}
-                              linkedin_url={attendee.linkedin_url}
-                              persona={attendee.persona}
-                              tags={attendee.tags}
-                            />
+                            <ContactPill key={i} name={attendee.name} />
                           ))}
                         </div>
                       </TableCell>

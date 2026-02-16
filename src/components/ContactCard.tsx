@@ -4,8 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Badge } from '@/components/ui/badge';
-import { Mail, Briefcase, Linkedin } from 'lucide-react';
+import { Mail, Briefcase, Linkedin, User } from 'lucide-react';
 
 export interface ContactCardData {
   id: string;
@@ -25,7 +24,6 @@ interface ContactCardProps {
 
 export const ContactCard: React.FC<ContactCardProps> = ({
   contact,
-  variant = 'outline',
   className = '',
 }) => {
   const handleLinkedInClick = (e: React.MouseEvent) => {
@@ -38,12 +36,12 @@ export const ContactCard: React.FC<ContactCardProps> = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Badge
-          variant={variant}
-          className={`font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground cursor-pointer hover:bg-slate-50 transition-colors ${className}`}
+        <button
+          className={`inline-flex items-center gap-2 h-6 px-3 rounded-full border border-input bg-background text-xs font-normal text-foreground cursor-pointer hover:bg-slate-50 transition-colors ${className}`}
         >
-          {contact.name}
-        </Badge>
+          <User className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+          <span className="truncate">{contact.name}</span>
+        </button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-0 overflow-hidden" align="start" sideOffset={8}>
         {/* Header with avatar and LinkedIn icon */}
