@@ -314,7 +314,7 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
               </PopoverContent>
             </Popover>
 
-            {/* Customer Profile filter */}
+            {/* Typically Relevant For filter */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -335,7 +335,7 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
                   ) : (
                     <PlusCircle className="h-3.5 w-3.5" />
                   )}
-                  Customer Profile
+                  Typically Relevant For
                   {profileFilters.size > 0 && (
                     <>
                       <span className="mx-0.5 h-4 w-px bg-border" />
