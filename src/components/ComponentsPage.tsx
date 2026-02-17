@@ -8,6 +8,7 @@ import { MomentumPill } from '@/components/MomentumPill';
 import { StagePill } from '@/components/StagePill';
 import { CompanyPill } from '@/components/CompanyPill';
 import { PersonaPill } from '@/components/PersonaPill';
+import { CustomerProfilePill } from '@/components/CustomerProfilePill';
 import { BuyerRolePill } from '@/components/BuyerRolePill';
 import { MeetingCard } from '@/components/MeetingCard';
 
@@ -21,10 +22,6 @@ export default function ComponentsPage() {
 
       {/* Custom Components */}
       <section className="space-y-4">
-        <div>
-          <h2 className="text-xl font-semibold mb-2">Custom Components</h2>
-          <p className="text-sm text-muted-foreground mb-4">Reusable components built for ACRONYM</p>
-        </div>
 
         {/* ActionItem */}
         <Card>
@@ -61,24 +58,6 @@ export default function ComponentsPage() {
                   />
                 </div>
               </div>
-            </div>
-            <div className="pt-2">
-              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
-              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<ActionItem
-  text="Send ROI model and case studies"
-  assignee="Jacob Francis (Flex)"
-  completed={false}
-  onCompletedChange={(completed) => setCompleted(completed)}
-  onCopy={() => copyItem()}
-  onDelete={() => deleteItem()}
-  isDraggable={true}
-  isDragging={false}
-  onDragStart={() => setDraggedIndex(index)}
-  onDragOver={(e) => e.preventDefault()}
-  onDrop={() => moveItem()}
-/>`}
-              </pre>
             </div>
             <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Features:</p>
@@ -181,41 +160,6 @@ export default function ComponentsPage() {
                     ]}
                   />
                 </div>
-              </div>
-            </div>
-            <div className="pt-2 space-y-3">
-              <div>
-                <p className="text-xs font-medium text-muted-foreground">Usage (upcoming variant):</p>
-                <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<MeetingCard
-  date="JAN 06"
-  title="Demo and pricing review"
-  variant="upcoming"
-  time="2:00 PM - 2:45 PM"
-  attendees={[
-    { name: "Russell Harris" },
-    { name: "Theresa Bischoff" },
-  ]}
-  onClick={() => navigateToMeeting()}
-/>`}
-                </pre>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-muted-foreground">Usage (past variant):</p>
-                <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<MeetingCard
-  date="JAN 02"
-  title="Product roadmap review"
-  variant="past"
-  startTime="2:00 PM"
-  endTime="2:45 PM"
-  duration="45 mins"
-  attendees={[
-    { name: "Claire Stachniewski" },
-  ]}
-  onClick={() => navigateToMeeting()}
-/>`}
-                </pre>
               </div>
             </div>
             <div className="pt-2">
@@ -346,40 +290,6 @@ export default function ComponentsPage() {
               </div>
             </div>
 
-            <div className="pt-2 space-y-3">
-              <div>
-                <p className="text-xs font-medium text-muted-foreground">Usage (compact-hover variant):</p>
-                <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<UnifiedContactCard
-  contact={{
-    name: "Sarah Johnson",
-    email: "sarah@company.com",
-    role: "VP of Sales",
-    persona: "Decision Maker",
-    tags: ['Champion'],
-    avatar_color: 'bg-blue-400',
-  }}
-  variant="compact-hover"
-/>`}
-                </pre>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-muted-foreground">Usage (full variant):</p>
-                <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<UnifiedContactCard
-  contact={{
-    name: "Russell Harris",
-    avatar_color: 'bg-orange-400',
-    role_and_engagement: "...",
-    authority: "...",
-    risk: { level: 'MEDIUM', description: "..." },
-  }}
-  variant="full"
-  showRisk={true}
-/>`}
-                </pre>
-              </div>
-            </div>
 
             <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Features:</p>
@@ -425,24 +335,6 @@ export default function ComponentsPage() {
                     avatarUrl="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&h=48&fit=crop"
                   />
                 </div>
-              </div>
-            </div>
-            <div className="pt-2 space-y-3">
-              <div>
-                <p className="text-xs font-medium text-muted-foreground">Usage:</p>
-                <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`// Icon variant (default)
-<ContactPill name="Claire Stachniewski" />
-
-// Avatar variant with colored initials
-<ContactPill name="Claire" avatarColor="bg-amber-400" />
-
-// Photo variant with actual image
-<ContactPill
-  name="Emily Rodriguez"
-  avatarUrl="https://images.unsplash.com/..."
-/>`}
-                </pre>
               </div>
             </div>
             <div className="pt-2">
@@ -500,15 +392,6 @@ export default function ComponentsPage() {
               </div>
             </div>
             <div className="pt-2">
-              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
-              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<CompanyPill
-  company_name="Acme Corp"
-  company_logo_url="https://logo.clearbit.com/acme.com"
-/>`}
-              </pre>
-            </div>
-            <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Features:</p>
               <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
                 <li>• Logo on the left (24x24px) runs edge-to-edge</li>
@@ -538,12 +421,6 @@ export default function ComponentsPage() {
                   <DatePill date="Apr 22" />
                 </div>
               </div>
-            </div>
-            <div className="pt-2">
-              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
-              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<DatePill date="Jan 13" />`}
-              </pre>
             </div>
             <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Used in:</p>
@@ -584,12 +461,6 @@ export default function ComponentsPage() {
               </ul>
             </div>
             <div className="pt-2">
-              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
-              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<MomentumPill momentum="Strong" />`}
-              </pre>
-            </div>
-            <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Used in:</p>
               <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
                 <li>• DealsPage.tsx (momentum column)</li>
@@ -628,12 +499,6 @@ export default function ComponentsPage() {
                 <li>• Closed Won — #DCFCE7 (light green)</li>
                 <li>• Closed Lost — #F3F4F6 (grey)</li>
               </ul>
-            </div>
-            <div className="pt-2">
-              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
-              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<StagePill stage="First meeting scheduled" />`}
-              </pre>
             </div>
             <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Used in:</p>
@@ -709,23 +574,36 @@ export default function ComponentsPage() {
               </div>
             </div>
             <div className="pt-2">
-              <p className="text-xs font-medium text-muted-foreground">Color scheme:</p>
+              <p className="text-xs font-medium text-muted-foreground">Used in:</p>
               <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
-                <li>• Background — #F0F5FF (soft blue)</li>
-                <li>• Text — #1E40AF (dark blue)</li>
-                <li>• Border — #DBEAFE (light blue)</li>
+                <li>• UnifiedContactCard.tsx (compact-hover variant persona display)</li>
+                <li>• ContactDetailSidePanel.tsx (buyer persona header display)</li>
               </ul>
             </div>
-            <div className="pt-2">
-              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
-              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<PersonaPill persona="Operational Decision Maker" />`}
-              </pre>
+          </CardContent>
+        </Card>
+
+        {/* Customer Profile Pill */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Customer Profile Pill</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">A rectangular pill component that displays a company's customer profile with a book icon. Matches the style of PersonaPill with the same sizing and styling for visual consistency.</p>
+            <div className="bg-muted p-6 rounded-md border border-input space-y-3">
+              <div>
+                <p className="text-xs text-muted-foreground mb-3">Customer profile examples (24px height):</p>
+                <div className="flex flex-wrap gap-2">
+                  <CustomerProfilePill profile="Ideal customer profile" />
+                  <CustomerProfilePill profile="Secondary market" />
+                  <CustomerProfilePill profile="Enterprise focus" />
+                </div>
+              </div>
             </div>
             <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Used in:</p>
               <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
-                <li>• UnifiedContactCard.tsx (compact-hover variant persona display)</li>
+                <li>• CompaniesPage.tsx (customer profile column)</li>
               </ul>
             </div>
           </CardContent>
@@ -757,12 +635,6 @@ export default function ComponentsPage() {
                 <li>• Influencer — #DBEAFF (saturated blue)</li>
                 <li>• Blocker — #FFE0E0 (saturated red)</li>
               </ul>
-            </div>
-            <div className="pt-2">
-              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
-              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<BuyerRolePill role="Champion" />`}
-              </pre>
             </div>
             <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Used in:</p>

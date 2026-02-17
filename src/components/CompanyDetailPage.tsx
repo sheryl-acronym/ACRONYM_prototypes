@@ -369,7 +369,40 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
           )}
 
           {/* Divider */}
-          {company.recent_news && company.recent_news.length > 0 && (company.total_funding_raised || company.num_funding_rounds || company.latest_funding_stage || company.latest_funding_round) && (
+          {company.recent_news && company.recent_news.length > 0 && (company.company_overview || (company.product_offering && company.product_offering.length > 0)) && (
+            <Separator className="mt-6" />
+          )}
+
+          {/* Company Overview */}
+          {company.company_overview && (
+            <div className="mt-6">
+              <h3 className="text-sm font-medium text-muted-foreground mb-3">Company Overview</h3>
+              <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{company.company_overview}</p>
+            </div>
+          )}
+
+          {/* Divider */}
+          {company.company_overview && (company.product_offering && company.product_offering.length > 0) && (
+            <Separator className="mt-6" />
+          )}
+
+          {/* Product Offering */}
+          {company.product_offering && company.product_offering.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-sm font-medium text-muted-foreground mb-3">Product Offering</h3>
+              <ul className="space-y-2">
+                {company.product_offering.map((offering, index) => (
+                  <li key={index} className="flex gap-2">
+                    <span className="text-muted-foreground flex-shrink-0 mt-1">•</span>
+                    <p className="text-sm text-foreground">{offering}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Divider */}
+          {(company.product_offering && company.product_offering.length > 0) && (company.total_funding_raised || company.num_funding_rounds || company.latest_funding_stage || company.latest_funding_round) && (
             <Separator className="mt-6" />
           )}
 

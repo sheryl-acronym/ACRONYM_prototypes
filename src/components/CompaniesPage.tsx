@@ -53,6 +53,8 @@ export interface Company {
   employee_count: string | null;
   est_revenue: string | null;
   summary: string | null;
+  product_offering?: string[];
+  company_overview?: string;
   recent_news?: Array<{
     date: string;
     title: string;

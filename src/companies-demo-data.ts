@@ -13,6 +13,14 @@ export const companiesData: Company[] = [
     employee_count: '201-500',
     est_revenue: '$50M-$100M',
     summary: 'Leading sustainable fashion e-commerce platform founded in 2019. They focus on eco-friendly materials and ethical production practices. Strong growth trajectory with 45% YoY increase in revenue.',
+    company_overview: 'actandacre is revolutionizing the fashion industry by making sustainable, ethical fashion accessible to mainstream consumers. Founded by three environmental activists, the company operates a vertically integrated supply chain that ensures complete transparency from fabric sourcing to final packaging. Their commitment to reducing carbon footprint has resulted in achieving carbon-neutral status in 2024, ahead of most competitors.\n\nThe company has established itself as a market leader in the sustainable fashion space with a loyal customer base that spans 15+ countries. Their innovative approach combines cutting-edge e-commerce technology with environmental responsibility, attracting Gen Z and millennial consumers who prioritize sustainability. With a team of 300+ employees and plans to expand into Asia-Pacific markets, actandacre is positioned for significant growth in the coming years.',
+    product_offering: [
+      'Sustainable apparel and accessories made from organic materials',
+      'Custom design and personalization services',
+      'B2B wholesale solutions for retail partners',
+      'Subscription box service with curated seasonal collections',
+      'Eco-friendly packaging and carbon-neutral shipping',
+    ],
     recent_news: [
       { date: 'Feb 10, 2026', title: 'Announced expansion into European markets', source: 'https://techcrunch.com/actandacre-europe' },
       { date: 'Jan 15, 2026', title: 'Secured Series B funding of $25M', source: 'https://crunchbase.com/organization/actandacre' },
@@ -78,6 +86,13 @@ export const companiesData: Company[] = [
     employee_count: '11-50',
     est_revenue: '$10M-$25M',
     summary: 'Innovator in adaptive audio technology for wellness applications. Serves over 50,000 health practitioners nationwide. Expanding distribution through retail partnerships.',
+    company_overview: 'Adaptive Sound Technologies stands out in the wellness industry by combining neuroscience research with audio technology to create personalized wellness experiences. Their proprietary algorithms adjust audio frequencies based on individual physiological responses, making them uniquely positioned in a rapidly growing market. The company\'s peer-reviewed research has been featured in leading wellness publications, establishing credibility and trust among health professionals.\n\nWith a customer base spanning yoga studios, meditation centers, corporate wellness programs, and telehealth platforms, Adaptive Sound Technologies has achieved strong product-market fit. Their successful integration with major wellness platforms and recent retail partnerships signal strong momentum. The company is experiencing 40% YoY growth and has recently strengthened its leadership team with industry veterans from meditation app companies and sleep technology firms.',
+    product_offering: [
+      'Proprietary adaptive audio profiles for meditation and sleep',
+      'White-label solutions for wellness app integrations',
+      'Hardware devices with embedded audio technology',
+      'Professional training programs for practitioners',
+    ],
     recent_news: [
       { date: 'Feb 8, 2026', title: 'Partnered with major wellness retailer for nationwide distribution', source: 'https://wellnessnews.com/adaptive-sound-partnership' },
       { date: 'Jan 20, 2026', title: 'Launched new audio profiles for meditation and sleep', source: 'https://www.asoundtech.com/press/new-profiles' },
@@ -133,6 +148,14 @@ export const companiesData: Company[] = [
     employee_count: '201-500',
     est_revenue: '$100M-$250M',
     summary: 'Established medical supply distributor serving 200+ clinics and healthcare facilities. Known for reliable logistics and competitive pricing. Currently modernizing their operations.',
+    company_overview: 'adco Medical Suppliers has been a trusted healthcare logistics partner for over 30 years, building an extensive network of supplier relationships and distribution infrastructure. Their deep expertise in healthcare operations and regulatory compliance has made them an indispensable partner for mid-sized and large medical facilities. Recently, under new leadership, the company launched a comprehensive digital transformation initiative to modernize their legacy systems and improve customer experience.\n\nThe company operates a nationwide network of 12 distribution centers with same-day delivery capabilities in major metropolitan areas. Their recent investments in warehouse automation and supply chain optimization have positioned them to compete with larger players while maintaining the personalized service that long-time customers value. With a strong balance sheet and consistent cash flow, adco Medical Suppliers is well-positioned to weather market changes and invest in growth initiatives.',
+    product_offering: [
+      'Wide range of medical supplies and equipment',
+      'Same-day delivery in major metropolitan areas',
+      'Inventory management and automated ordering systems',
+      'Healthcare facility consulting services',
+      'Competitive bulk pricing programs',
+    ],
     recent_news: [
       { date: 'Feb 5, 2026', title: 'Upgraded warehouse automation systems', source: 'https://supplychaintoday.com/adco-automation' },
       { date: 'Jan 12, 2026', title: 'Expanded service coverage to 3 new states', source: 'https://www.adcopros.com/expansion-announcement' },
@@ -198,6 +221,14 @@ export const companiesData: Company[] = [
     employee_count: '1001-5000',
     est_revenue: '$1B-$10B',
     summary: 'Global nutrition and wellness company with presence in 30+ countries. Operating multi-channel sales including direct, retail, and professional channels. Seeking operational efficiency improvements.',
+    company_overview: 'Advocare is a diversified nutrition company with an exceptional global footprint, operating successfully across multiple distribution channels that would overwhelm most competitors. Their network of 200,000+ independent advisors generates consistent revenue through a hybrid model combining direct sales with traditional retail and online channels. The company\'s strong brand recognition and customer loyalty have been built over decades of consistent product quality and advisor support.\n\nAs a publicly traded company, Advocare is under pressure to innovate while maintaining profitability. Recent strategic initiatives include expanding their product portfolio into emerging wellness categories and investing heavily in digital capabilities to serve millennial and Gen Z consumers. Their scale—with operations in 30+ countries and partnerships with major retail chains—provides significant competitive advantages. The company is actively exploring technology partnerships to enhance their advisor platform and customer experience.',
+    product_offering: [
+      'Nutritional supplements and wellness products',
+      'Direct-to-consumer sales and distribution network',
+      'Professional advisor commission programs',
+      'Retail partnerships with 5,000+ locations',
+      'Online marketplace and mobile app',
+    ],
     recent_news: [
       { date: 'Feb 12, 2026', title: 'Launched new product line in 15 countries', source: 'https://www.advocare.com/press/new-product-launch' },
       { date: 'Jan 28, 2026', title: 'Announced strategic partnership with global fitness chain', source: 'https://fitnessinsider.com/advocare-partnership' },
@@ -263,6 +294,14 @@ export const companiesData: Company[] = [
     employee_count: '5001-10000',
     est_revenue: '$10B+',
     summary: 'Leading fintech payment processor handling $500B+ in annual transaction volume. Serves 5,000+ enterprise customers globally. Continuously expanding platform capabilities.',
+    company_overview: 'Adyen has emerged as one of the world\'s most sophisticated payment processors by combining cutting-edge technology infrastructure with deep expertise in global payments complexity. Their proprietary fraud detection algorithms and risk management platform protect billions in daily transactions while enabling merchants to optimize conversion rates. The company\'s global perspective—with offices in 80+ cities—enables them to serve multinational enterprises with localized support and compliance expertise.\n\nAs a publicly traded company, Adyen continues to invest heavily in AI-powered solutions, expanding emerging payment methods, and building vertical-specific offerings for industries like travel and retail. Their recent launches of embedded finance solutions and white-label payment platforms demonstrate a strategic shift toward becoming a comprehensive fintech infrastructure provider. With consistent revenue growth and strong margins, Adyen remains a favorite among institutional investors and is well-positioned to capture the shift toward digital payments globally.',
+    product_offering: [
+      'Global payment processing across 195+ countries',
+      'AI-powered fraud detection and risk management',
+      'Multi-currency and multi-payment method support',
+      'Enterprise-grade API and integration solutions',
+      'Real-time reporting and analytics dashboard',
+    ],
     recent_news: [
       { date: 'Feb 14, 2026', title: 'Introduced AI-powered fraud detection system', source: 'https://www.adyen.com/blog/ai-fraud-detection' },
       { date: 'Jan 30, 2026', title: 'Expanded coverage to 195 countries and territories', source: 'https://finance.yahoo.com/quote/ADYEN' },
@@ -308,6 +347,14 @@ export const companiesData: Company[] = [
     employee_count: '11-50',
     est_revenue: '$5M-$10M',
     summary: 'Digital health platform providing personalized wellness programs. Partnered with 15 major employers for employee health initiatives. Growing user base of 75,000+.',
+    company_overview: 'Aletha Health represents a new generation of digital health companies focused on preventive wellness rather than reactive treatment. Their AI-driven personalization engine analyzes individual health data to deliver highly targeted recommendations that resonate with users, resulting in exceptional engagement metrics compared to industry averages. Partnerships with Fortune 500 companies provide stable, recurring revenue and credibility in the enterprise market.\n\nThe company has successfully positioned itself at the intersection of healthcare, fitness, and consumer wellness—a rapidly growing market driven by employer demand for reducing healthcare costs. Their recent mobile app redesign and expansion into wearable device integrations have significantly improved user retention. With backing from leading healthtech investors and a clear path to profitability, Aletha Health is poised to become a market leader in corporate wellness platforms.',
+    product_offering: [
+      'Personalized wellness coaching and health tracking',
+      'AI-powered health recommendations',
+      'Integration with major wearable devices',
+      'Corporate wellness program management',
+      'HIPAA-compliant mobile app',
+    ],
     recent_news: [
       { date: 'Feb 3, 2026', title: 'Partnered with 3 Fortune 500 companies', source: 'https://www.alethahealth.com/press/fortune500-partnerships' },
       { date: 'Jan 10, 2026', title: 'Launched mobile app v2.0 with AI coaching', source: 'https://apps.apple.com/us/app/aletha-health/id123456789' },
@@ -342,6 +389,14 @@ export const companiesData: Company[] = [
     employee_count: '201-500',
     est_revenue: '$25M-$50M',
     summary: 'Specialty allergen-free personal care brand disrupting the beauty space. DTC-focused with strong social media presence. Projected 60% revenue growth this year.',
+    company_overview: 'Allermi tapped into an underserved niche in the beauty industry by focusing exclusively on allergen-free formulations without sacrificing efficacy or aesthetics. Their founder\'s personal experience with severe allergies inspired a mission-driven company that resonates deeply with consumers seeking safer, cleaner beauty alternatives. A massive social media following (1M+ followers) demonstrates powerful organic demand and authentic customer advocacy.\n\nThe company\'s recent expansion into 200+ retail locations represents a significant milestone, validating their transition from pure DTC to omnichannel distribution. Their subscription box model provides predictable recurring revenue while driving higher customer lifetime value. With venture backing from beauty-focused investors and a proven product-market fit, Allermi is well-positioned to scale nationally and internationally while competing against larger incumbents by owning the allergen-free positioning.',
+    product_offering: [
+      'Allergen-free skincare and cosmetics line',
+      'Direct-to-consumer e-commerce platform',
+      'Retail partnerships and distribution network',
+      'Subscription beauty box service',
+      'Influencer collaboration and exclusive collections',
+    ],
     recent_news: [
       { date: 'Feb 6, 2026', title: 'Reached 1M social media followers milestone', source: 'https://www.instagram.com/allermi_beauty/' },
       { date: 'Jan 22, 2026', title: 'Launched in 200+ retail locations nationwide', source: 'https://www.allermi.com/retail-locations' },
@@ -377,6 +432,14 @@ export const companiesData: Company[] = [
     employee_count: '11-50',
     est_revenue: '$1M-$10M',
     summary: 'Organic plant-based food company founded in 2018. Direct-to-consumer model with growing wholesale partnerships. Expanding product line across 12 US states.',
+    company_overview: 'Alma exemplifies the new wave of direct-to-consumer food companies leveraging sustainability and transparency as core differentiators. Founded by environmental scientists and nutrition experts, the company maintains an unwavering commitment to organic sourcing and sustainable practices that appeal to health-conscious and environmentally aware consumers. Their Berlin headquarters and European supply chain relationships give them unique advantages in sourcing premium organic ingredients.\n\nThe company\'s subscription box model generates predictable revenue while building community around sustainable eating. Recent retail partnerships with major organic chains represent validation of their product quality and brand strength. With modest funding requirements, lean operations, and strong unit economics, Alma is demonstrating that mission-driven food brands can achieve profitability without compromising their values. They are well-positioned to capitalize on the accelerating consumer shift toward plant-based diets.',
+    product_offering: [
+      'Certified organic plant-based food products',
+      'Direct-to-consumer subscription boxes',
+      'Wholesale B2B partnerships with retailers',
+      'Meal planning and recipe services',
+      'Sustainable packaging and eco-friendly logistics',
+    ],
     recent_news: [
       { date: 'Feb 1, 2026', title: 'Expanded product line with 5 new plant-based options', source: 'https://www.alma.food/new-products' },
       { date: 'Jan 14, 2026', title: 'Secured partnership with major organic retailer chain', source: 'https://organicfoodinsider.com/alma-retail-partnership' },
@@ -411,6 +474,14 @@ export const companiesData: Company[] = [
     employee_count: '201-500',
     est_revenue: '$10M-$25M',
     summary: 'AI-powered health analytics platform for predictive diagnostics. Recently secured Series A funding. Partnering with 8 healthcare systems in pilot programs.',
+    company_overview: 'Alyze.Health represents the convergence of healthcare and artificial intelligence, solving a critical problem in modern medicine: early detection of disease. Their machine learning models are trained on millions of de-identified patient records, enabling predictive capabilities that exceed traditional diagnostic approaches. Recent peer-reviewed publications in top-tier medical journals validate their scientific rigor and establish credibility in the conservative healthcare community.\n\nThe company\'s pilot partnerships with major healthcare systems demonstrate strong clinical validation and provider adoption potential. Their focus on HIPAA compliance and privacy protection has enabled them to build trust with hospitals and health systems concerned about data security. With Series A funding secured and a clear path to commercialization through healthcare system partnerships, Alyze.Health is positioned to transform how diseases are diagnosed and managed globally.',
+    product_offering: [
+      'Predictive diagnostics using machine learning',
+      'Electronic health record integration',
+      'Clinical decision support system',
+      'Actionable insights for healthcare providers',
+      'HIPAA-compliant cloud platform',
+    ],
     recent_news: [
       { date: 'Feb 11, 2026', title: 'Secured $15M Series A funding round', source: 'https://crunchbase.com/organization/alyze-health' },
       { date: 'Jan 26, 2026', title: 'Expanded pilot programs to 8 healthcare systems', source: 'https://www.alyze.health/press/pilot-expansion' },
@@ -446,6 +517,14 @@ export const companiesData: Company[] = [
     employee_count: '201-500',
     est_revenue: '$250M-$500M',
     summary: 'Omnichannel retail platform connecting 300+ independent brands. Operates both B2B2C marketplace and white-label solutions. Processing $20M+ in monthly transactions.',
+    company_overview: 'Andiemup has cracked the code on supporting independent brands at scale through a sophisticated marketplace infrastructure that abstracts away operational complexity. Their platform automates inventory management, fulfillment, and multi-channel selling, enabling small brands to compete effectively against larger competitors. The company\'s white-label offerings give them access to an entirely new customer segment of retailers looking to launch online channels without building from scratch.\n\nWith $20M+ in monthly transaction volume and 300+ connected brands, Andiemup has achieved critical mass while maintaining strong unit economics. Recent funding rounds at increasing valuations reflect investor confidence in their business model and market opportunity. Their recent pivot toward enterprise partnerships signals an evolution beyond marketplace toward becoming essential infrastructure for omnichannel retail, positioning them for significant scale in the multi-channel commerce era.',
+    product_offering: [
+      'B2B2C marketplace for independent brands',
+      'White-label e-commerce solutions',
+      'Inventory management and fulfillment services',
+      'Multi-channel sales integration',
+      'Advanced analytics and business intelligence',
+    ],
     recent_news: [
       { date: 'Feb 7, 2026', title: 'Onboarded 50 new independent brands', source: 'https://www.andiemup.com/press/brand-onboarding' },
       { date: 'Jan 19, 2026', title: 'Launched white-label solution for enterprise partners', source: 'https://www.andiemup.com/enterprise' },
@@ -481,6 +560,14 @@ export const companiesData: Company[] = [
     employee_count: '1001-5000',
     est_revenue: '$500M-$1B',
     summary: 'Consumer electronics brand known for charging accessories and smart home products. Global reach with operations in 80+ countries. Selling through 5,000+ retail locations.',
+    company_overview: 'Anker has achieved remarkable success by focusing on products where consumers have high price sensitivity but quality expectations: charging accessories and power solutions. Their obsessive focus on engineering excellence, combined with aggressive pricing and smart direct-to-consumer strategies, has enabled them to dominate a category many thought commoditized. Recent expansion into IoT and smart home products demonstrates their successful execution of adjacent category expansion.\n\nPublicly traded since 2021, Anker operates with both startup agility and enterprise scale. Their presence in 80+ countries and 5,000+ retail locations provides unmatched distribution advantages. Recent investments in R&D for next-generation fast-charging and smart home technologies position them to compete in higher-margin product categories. With a loyal customer base and strong brand recognition, particularly among tech enthusiasts, Anker is well-positioned to expand beyond accessories into a broader consumer electronics powerhouse.',
+    product_offering: [
+      'Fast-charging technology and power accessories',
+      'Smart home device ecosystem',
+      'Consumer electronics and mobile accessories',
+      'IoT connectivity solutions',
+      'Global retail and online distribution',
+    ],
     recent_news: [
       { date: 'Feb 9, 2026', title: 'Launched new smart home ecosystem with 12 products', source: 'https://www.anker.com/press/smart-home-launch' },
       { date: 'Jan 16, 2026', title: 'Expanded into 15 new markets in Asia-Pacific', source: 'https://techasia.com/anker-expansion' },
@@ -516,6 +603,14 @@ export const companiesData: Company[] = [
     employee_count: '201-500',
     est_revenue: '$100M-$250M',
     summary: 'Leading AI research company specializing in large language models. Serving 500+ enterprise customers with Claude AI platform. Growing $100M+ in annual revenue.',
+    company_overview: 'Anthropic is at the forefront of AI safety research while building commercially successful AI products—a rare combination that positions them uniquely in the rapidly evolving AI landscape. Founded by former OpenAI leaders, the company has attracted world-class AI researchers committed to developing safe, beneficial AI systems. Their Claude models have earned acclaim for their reasoning capabilities, accuracy, and alignment with human values.\n\nWith backing from leading technology companies and venture investors at a $20B+ valuation, Anthropic has the resources to invest in long-term AI safety research while capturing near-term market opportunities. Recent funding rounds and customer acquisitions demonstrate strong enterprise adoption and confidence in their technology. Their transparent approach to AI capabilities and limitations has built unique trust with enterprise customers and policymakers, positioning them as a credible voice in AI governance conversations. As AI becomes increasingly central to enterprise strategy, Anthropic\'s combination of technical excellence and safety focus is a significant competitive advantage.',
+    product_offering: [
+      'Claude AI large language models',
+      'API access for enterprise applications',
+      'Custom AI solutions and consulting',
+      'Safety-focused AI implementation',
+      'Multi-modal AI capabilities',
+    ],
     recent_news: [
       { date: 'Feb 13, 2026', title: 'Released Claude 4 with enhanced reasoning capabilities', source: 'https://www.anthropic.com/news/claude-4' },
       { date: 'Jan 29, 2026', title: 'Announced $1B funding round at $20B valuation', source: 'https://techcrunch.com/anthropic-funding' },
@@ -551,6 +646,14 @@ export const companiesData: Company[] = [
     employee_count: '201-500',
     est_revenue: '$5M-$10M',
     summary: 'Open-source productivity platform competing with Notion and Airtable. Self-hosted and cloud options available. Growing community of 50,000+ active users.',
+    company_overview: 'AppFlowy challenges the monopoly of closed-source productivity platforms by offering a genuinely open-source alternative with impressive feature parity to Notion. Their open-source approach has resonated deeply with developers and organizations concerned about vendor lock-in and data privacy. With 50,000+ active community members and a vibrant developer ecosystem, AppFlowy has demonstrated strong product-market fit in the open-source segment.\n\nRecent launches of AppFlowy Cloud provide a commercial path while maintaining open-source values, enabling the company to monetize without alienating their community. Their rapid feature development and responsiveness to community feedback have positioned them as a credible long-term alternative to incumbent platforms. As enterprises increasingly prioritize data sovereignty and open standards, AppFlowy\'s positioned to capture significant market share from organizations looking for privacy-first productivity solutions.',
+    product_offering: [
+      'Open-source database and productivity suite',
+      'Self-hosted and cloud deployment options',
+      'Team collaboration and database management',
+      'Enterprise features and security',
+      'API and integration marketplace',
+    ],
     recent_news: [
       { date: 'Feb 1, 2026', title: 'Reached 50,000 active users in open-source community', source: 'https://github.com/AppFlowy/AppFlowy' },
       { date: 'Jan 10, 2026', title: 'Launched AppFlowy Cloud with enterprise features', source: 'https://appflowy.io/blog/cloud-launch' },
@@ -585,6 +688,14 @@ export const companiesData: Company[] = [
     employee_count: '201-500',
     est_revenue: '$50M-$100M',
     summary: 'Low-code internal tools platform enabling enterprises to build apps 10x faster. Adopted by 200+ Fortune 500 companies. Providing solutions for data-heavy workflows.',
+    company_overview: 'Appsmith has identified and captured a massive, underserved market: the enterprise need for rapid internal tools development. By lowering barriers to entry with their low-code platform, they\'ve democratized application development for business users while still providing developers with necessary flexibility. Adoption by 200+ Fortune 500 companies validates their ability to operate at enterprise scale while maintaining product excellence.\n\nTheir focus on data-heavy workflows and recent SOC 2 certification demonstrate a commitment to enterprise requirements. Recent Series B funding provides capital to accelerate sales and product development. As enterprises face pressure to do more with less, low-code platforms like Appsmith are becoming essential infrastructure. Their strong product differentiation, enterprise customer base, and market tailwinds position them for significant growth as the low-code market rapidly expands.',
+    product_offering: [
+      'Low-code application development platform',
+      'Pre-built connectors for enterprise systems',
+      'Data management and visualization tools',
+      'Role-based access control and security',
+      'Rapid deployment and maintenance features',
+    ],
     recent_news: [
       { date: 'Feb 14, 2026', title: 'Announced enterprise security features with SOC 2 certification', source: 'https://www.appsmith.com/blog/soc2-certification' },
       { date: 'Jan 23, 2026', title: 'Adopted by 200+ Fortune 500 companies', source: 'https://www.appsmith.com/customers' },
@@ -620,6 +731,14 @@ export const companiesData: Company[] = [
     employee_count: '201-500',
     est_revenue: '$25M-$50M',
     summary: 'Telehealth platform connecting patients with specialists for rare and complex conditions. Operating in 25 states with 1,000+ partnered physicians. Series B funding in progress.',
+    company_overview: 'Arc solves a critical healthcare access problem: rare disease diagnosis and specialist consultation. By leveraging telehealth technology and building relationships with leading specialists, they\'ve created a platform that dramatically reduces time-to-diagnosis for patients with complex conditions. Their patient-centric approach and partnerships with rare disease advocacy organizations have built a loyal, engaged user base.\n\nExpansion to 25 states with 1,000+ partnered physicians demonstrates strong provider adoption and validated business model. Recent Series A funding provides capital to scale operations and expand specialist networks. As healthcare continues to shift toward virtual delivery and personalized care, Arc\'s specialized focus on rare diseases positions them uniquely within the broader telehealth market. Their deep relationships with both patients and specialists create network effects that will be difficult for larger competitors to replicate.',
+    product_offering: [
+      'Telehealth platform for rare disease specialists',
+      'Virtual consultations and patient management',
+      'Electronic health record integration',
+      'Insurance verification and billing',
+      'Rare disease information and community support',
+    ],
     recent_news: [
       { date: 'Jan 24, 2026', title: 'Expanded to 25 states with 1,000+ specialist physicians', source: 'https://www.arc.dev/press/expansion' },
       { date: 'Jan 3, 2026', title: 'Received $30M Series A funding', source: 'https://crunchbase.com/organization/arc-telehealth' },

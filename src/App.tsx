@@ -7,7 +7,9 @@ import DealDetailPageV2 from '@/components/DealDetailPageV2';
 import PastMeetingsPage from '@/components/PastMeetingsPage';
 import UpcomingMeetingsPage from '@/components/UpcomingMeetingsPage';
 import CompaniesPage from '@/components/CompaniesPage';
+import CompanyDetailPage from '@/components/CompanyDetailPage';
 import ContactsPage from '@/components/ContactsPage';
+import ContactDetailPage from '@/components/ContactDetailPage';
 import CustomerProfilesPage from '@/components/CustomerProfilesPage';
 import BuyerPersonasPage from '@/components/BuyerPersonasPage';
 import DiscoveryQuestionsPage from '@/components/DiscoveryQuestionsPage';
@@ -172,6 +174,69 @@ function DealDetailRoute() {
   ) : null;
 }
 
+function ContactsRoute() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedContactId = searchParams.get('contactId') || undefined;
+
+  const handleContactSelect = React.useCallback(
+    (contactId: string) => {
+      setSearchParams({ contactId });
+    },
+    [setSearchParams]
+  );
+
+  const handleCloseSidePanel = React.useCallback(() => {
+    setSearchParams({});
+  }, [setSearchParams]);
+
+  return (
+    <ContactsPage
+      contacts={contactsData}
+      selectedContactId={selectedContactId}
+      onContactSelect={handleContactSelect}
+      onCloseSidePanel={handleCloseSidePanel}
+    />
+  );
+}
+
+function ContactDetailRoute() {
+  const { contactId } = useParams<{ contactId: string }>();
+
+  const contact = React.useMemo(() => {
+    if (!contactId) return undefined;
+    return contactsData.find((c) => c.id === contactId);
+  }, [contactId]);
+
+  if (!contact) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-muted-foreground">
+        Contact not found.
+      </div>
+    );
+  }
+
+  return <ContactDetailPage contact={contact} />;
+}
+
+function CompanyDetailRoute() {
+  const { companyId } = useParams<{ companyId: string }>();
+
+  const company = React.useMemo(() => {
+    if (!companyId) return undefined;
+    return companiesData.find((c) => c.id === companyId);
+  }, [companyId]);
+
+  if (!company) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-muted-foreground">
+        Company not found.
+      </div>
+    );
+  }
+
+  return <CompanyDetailPage company={company} />;
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -189,7 +254,9 @@ function App() {
             <Route path="/meetings/um-001/:version" element={<PreCallBriefRoute />} />
             <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} />} />
             <Route path="/companies" element={<CompaniesPage companies={companiesData} />} />
-            <Route path="/contacts" element={<ContactsPage contacts={contactsData} />} />
+            <Route path="/companies/:companyId" element={<CompanyDetailRoute />} />
+            <Route path="/contacts" element={<ContactsRoute />} />
+            <Route path="/contacts/:contactId" element={<ContactDetailRoute />} />
             <Route path="/customer-profiles" element={<CustomerProfilesPage profiles={customerProfilesData} />} />
             <Route path="/buyer-personas" element={<BuyerPersonasPage personas={buyerPersonasData} />} />
             <Route path="/discovery-questions" element={<DiscoveryQuestionsPage questions={discoveryQuestionsData} />} />

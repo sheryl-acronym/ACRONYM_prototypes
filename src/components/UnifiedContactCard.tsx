@@ -218,7 +218,7 @@ const CompactContent: React.FC<{ contact: ContactCardData }> = ({
   contact,
 }) => {
   return (
-    <div className="rounded-lg border bg-card p-4 max-w-[500px]">
+    <div className="rounded-lg border bg-card p-4 w-full">
       {/* Header Row */}
       <div className="flex items-start gap-3">
         <Avatar name={contact.name} color={contact.avatar_color} size="md" avatarUrl={contact.avatar_url} />
@@ -270,8 +270,12 @@ const CompactContent: React.FC<{ contact: ContactCardData }> = ({
                     </Badge>
                   );
                 })}
-              {contact.persona && <PersonaPill persona={contact.persona} />}
             </div>
+            {contact.persona && (
+              <div className="flex items-center gap-2">
+                <PersonaPill persona={contact.persona} />
+              </div>
+            )}
           </div>
         </div>
       </div>
