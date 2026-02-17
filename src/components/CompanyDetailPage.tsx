@@ -487,22 +487,55 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
         </TabsContent>
 
         {/* Meetings Tab */}
-        <TabsContent value="meetings" className="mt-6">
-          {company.upcoming_meetings && company.upcoming_meetings.length > 0 ? (
-            <div className="space-y-2">
-              {company.upcoming_meetings.map((meeting, index) => (
-                <MeetingCard
-                  key={index}
-                  date={meeting.date}
-                  title={meeting.title}
-                  time={meeting.time}
-                  attendees={meeting.attendees}
-                  variant="upcoming"
-                />
-              ))}
+        <TabsContent value="meetings" className="mt-6 space-y-6">
+          {/* Upcoming Meetings */}
+          <div>
+            <h3 className="text-sm font-medium text-muted-foreground mb-3">Upcoming</h3>
+            {company.upcoming_meetings && company.upcoming_meetings.length > 0 ? (
+              <div className="space-y-2">
+                {company.upcoming_meetings.map((meeting, index) => (
+                  <MeetingCard
+                    key={index}
+                    date={meeting.date}
+                    title={meeting.title}
+                    time={meeting.time}
+                    attendees={meeting.attendees}
+                    variant="upcoming"
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">No upcoming meetings scheduled</p>
+            )}
+          </div>
+
+          {/* Divider */}
+          {(company.upcoming_meetings && company.upcoming_meetings.length > 0) && (company.past_meetings && company.past_meetings.length > 0) && (
+            <Separator />
+          )}
+
+          {/* Past Meetings */}
+          {company.past_meetings && company.past_meetings.length > 0 && (
+            <div>
+              <h3 className="text-sm font-medium text-muted-foreground mb-3">Past</h3>
+              <div className="space-y-2">
+                {company.past_meetings.map((meeting, index) => (
+                  <MeetingCard
+                    key={index}
+                    date={meeting.date}
+                    title={meeting.title}
+                    time={meeting.time}
+                    attendees={meeting.attendees}
+                    variant="past"
+                  />
+                ))}
+              </div>
             </div>
-          ) : (
-            <p className="text-sm text-muted-foreground">No upcoming meetings scheduled</p>
+          )}
+
+          {/* No meetings fallback */}
+          {(!company.upcoming_meetings || company.upcoming_meetings.length === 0) && (!company.past_meetings || company.past_meetings.length === 0) && (
+            <p className="text-sm text-muted-foreground">No meetings scheduled</p>
           )}
         </TabsContent>
       </Tabs>

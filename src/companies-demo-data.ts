@@ -74,6 +74,27 @@ export const companiesData: Company[] = [
         ],
       },
     ],
+    past_meetings: [
+      {
+        date: 'NOV 28',
+        title: 'Initial discovery call',
+        time: '1:00 PM - 1:30 PM',
+        attendees: [
+          { name: 'Sarah Chen', contact_role: 'buyer' },
+          { name: 'Alex Rivera', contact_role: 'seller' },
+        ],
+      },
+      {
+        date: 'NOV 10',
+        title: 'Technical requirements review',
+        time: '3:00 PM - 4:00 PM',
+        attendees: [
+          { name: 'Michael Rodriguez', contact_role: 'buyer' },
+          { name: 'David Kim', contact_role: 'seller' },
+          { name: 'Alex Rivera', contact_role: 'seller' },
+        ],
+      },
+    ],
   },
   {
     id: 'comp-002',
@@ -134,6 +155,17 @@ export const companiesData: Company[] = [
           { name: 'James Miller', contact_role: 'buyer' },
           { name: 'Sarah Johnson', contact_role: 'seller' },
           { name: 'Marcus Chen', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'OCT 13',
+        title: 'Kick-off meeting & requirements gathering',
+        time: '2:00 PM - 2:45 PM',
+        attendees: [
+          { name: 'James Miller', contact_role: 'buyer' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
         ],
       },
     ],
@@ -206,6 +238,26 @@ export const companiesData: Company[] = [
         time: '1:00 PM - 2:00 PM',
         attendees: [
           { name: 'Emily Davis', contact_role: 'buyer' },
+          { name: 'Robert Thompson', contact_role: 'buyer' },
+          { name: 'David Kim', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'SEP 19',
+        title: 'Business requirements walkthrough',
+        time: '10:00 AM - 11:00 AM',
+        attendees: [
+          { name: 'Emily Davis', contact_role: 'buyer' },
+          { name: 'David Kim', contact_role: 'seller' },
+        ],
+      },
+      {
+        date: 'AUG 15',
+        title: 'Initial vendor evaluation',
+        time: '2:00 PM - 2:30 PM',
+        attendees: [
           { name: 'Robert Thompson', contact_role: 'buyer' },
           { name: 'David Kim', contact_role: 'seller' },
         ],
@@ -285,6 +337,17 @@ export const companiesData: Company[] = [
         ],
       },
     ],
+    past_meetings: [
+      {
+        date: 'NOV 18',
+        title: 'Strategic alignment meeting',
+        time: '9:00 AM - 10:00 AM',
+        attendees: [
+          { name: 'Alex Johnson', contact_role: 'buyer' },
+          { name: 'Patricia Williams', contact_role: 'seller' },
+        ],
+      },
+    ],
   },
   {
     id: 'comp-005',
@@ -339,6 +402,28 @@ export const companiesData: Company[] = [
         role_in_buying_process: 'Economic Buyer',
       },
     ],
+    upcoming_meetings: [
+      {
+        date: 'DEC 25',
+        title: 'Q1 2026 planning session',
+        time: '11:00 AM - 12:00 PM',
+        attendees: [
+          { name: 'Maria Lopez', contact_role: 'buyer' },
+          { name: 'Patricia Williams', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'NOV 20',
+        title: 'Enterprise solution demo',
+        time: '2:00 PM - 3:00 PM',
+        attendees: [
+          { name: 'Maria Lopez', contact_role: 'buyer' },
+          { name: 'Patricia Williams', contact_role: 'seller' },
+        ],
+      },
+    ],
   },
   {
     id: 'comp-006',
@@ -381,6 +466,28 @@ export const companiesData: Company[] = [
       { role: 'Mobile Developer', count: 2 },
       { role: 'Health Coach', count: 4 },
       { role: 'Data Scientist', count: 1 },
+    ],
+    upcoming_meetings: [
+      {
+        date: 'DEC 19',
+        title: 'Corporate wellness program review',
+        time: '1:30 PM - 2:30 PM',
+        attendees: [
+          { name: 'David Park', contact_role: 'buyer' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'SEP 25',
+        title: 'Health platform integration discussion',
+        time: '10:00 AM - 11:00 AM',
+        attendees: [
+          { name: 'David Park', contact_role: 'buyer' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
+        ],
+      },
     ],
   },
   {
@@ -426,6 +533,17 @@ export const companiesData: Company[] = [
       { role: 'Brand Designer', count: 1 },
       { role: 'Content Creator', count: 3 },
     ],
+    past_meetings: [
+      {
+        date: 'SEP 19',
+        title: 'Beauty brand partnership discussion',
+        time: '3:00 PM - 4:00 PM',
+        attendees: [
+          { name: 'Jessica Wong', contact_role: 'buyer' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
+        ],
+      },
+    ],
   },
   {
     id: 'comp-008',
@@ -468,6 +586,28 @@ export const companiesData: Company[] = [
       { role: 'Operations Manager', count: 1 },
       { role: 'Product Designer', count: 1 },
       { role: 'Full Stack Developer', count: 2 },
+    ],
+    upcoming_meetings: [
+      {
+        date: 'DEC 17',
+        title: 'Organic retail partnership proposal',
+        time: '2:00 PM - 3:00 PM',
+        attendees: [
+          { name: 'Michael Chen', contact_role: 'buyer' },
+          { name: 'Marcus Chen', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'OCT 21',
+        title: 'Product quality & sourcing discussion',
+        time: '11:00 AM - 12:00 PM',
+        attendees: [
+          { name: 'Michael Chen', contact_role: 'buyer' },
+          { name: 'Marcus Chen', contact_role: 'seller' },
+        ],
+      },
     ],
   },
   {
@@ -513,6 +653,29 @@ export const companiesData: Company[] = [
       { role: 'Clinical Researcher', count: 2 },
       { role: 'Healthcare Solutions Architect', count: 1 },
     ],
+    upcoming_meetings: [
+      {
+        date: 'DEC 21',
+        title: 'Healthcare system pilot program review',
+        time: '9:00 AM - 10:00 AM',
+        attendees: [
+          { name: 'Rachel Martinez', contact_role: 'buyer' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'NOV 26',
+        title: 'AI diagnostics demo & clinical validation',
+        time: '2:00 PM - 3:30 PM',
+        attendees: [
+          { name: 'Rachel Martinez', contact_role: 'buyer' },
+          { name: 'Marcus Chen', contact_role: 'seller' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
+        ],
+      },
+    ],
   },
   {
     id: 'comp-010',
@@ -556,6 +719,28 @@ export const companiesData: Company[] = [
       { role: 'Frontend Engineer', count: 4 },
       { role: 'Backend Engineer', count: 3 },
       { role: 'QA Engineer', count: 2 },
+    ],
+    upcoming_meetings: [
+      {
+        date: 'DEC 23',
+        title: 'Marketplace integration planning',
+        time: '10:00 AM - 11:00 AM',
+        attendees: [
+          { name: 'Kevin Thompson', contact_role: 'buyer' },
+          { name: 'Patricia Williams', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'DEC 8',
+        title: 'White-label solution discovery',
+        time: '3:00 PM - 4:00 PM',
+        attendees: [
+          { name: 'Kevin Thompson', contact_role: 'buyer' },
+          { name: 'Patricia Williams', contact_role: 'seller' },
+        ],
+      },
     ],
   },
   {
@@ -601,6 +786,28 @@ export const companiesData: Company[] = [
       { role: 'Supply Chain Manager', count: 2 },
       { role: 'Sales Engineer', count: 3 },
     ],
+    upcoming_meetings: [
+      {
+        date: 'DEC 19',
+        title: 'Smart home product roadmap discussion',
+        time: '1:00 PM - 2:00 PM',
+        attendees: [
+          { name: 'Sophie Anderson', contact_role: 'buyer' },
+          { name: 'Patricia Williams', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'NOV 5',
+        title: 'Distribution channel expansion',
+        time: '10:00 AM - 11:00 AM',
+        attendees: [
+          { name: 'Sophie Anderson', contact_role: 'buyer' },
+          { name: 'Patricia Williams', contact_role: 'seller' },
+        ],
+      },
+    ],
   },
   {
     id: 'comp-012',
@@ -645,6 +852,29 @@ export const companiesData: Company[] = [
       { role: 'ML Engineer', count: 3 },
       { role: 'Systems Engineer', count: 2 },
     ],
+    upcoming_meetings: [
+      {
+        date: 'DEC 24',
+        title: 'Claude AI integration planning',
+        time: '11:00 AM - 12:30 PM',
+        attendees: [
+          { name: 'Christopher Lee', contact_role: 'buyer' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
+          { name: 'Marcus Chen', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'OCT 15',
+        title: 'AI safety & capabilities demo',
+        time: '2:00 PM - 3:30 PM',
+        attendees: [
+          { name: 'Christopher Lee', contact_role: 'buyer' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
+        ],
+      },
+    ],
   },
   {
     id: 'comp-013',
@@ -687,6 +917,28 @@ export const companiesData: Company[] = [
       { role: 'Rust Developer', count: 2 },
       { role: 'Community Manager', count: 1 },
       { role: 'Product Manager', count: 1 },
+    ],
+    upcoming_meetings: [
+      {
+        date: 'DEC 20',
+        title: 'Open-source community feedback session',
+        time: '4:00 PM - 5:00 PM',
+        attendees: [
+          { name: 'Nicole Brown', contact_role: 'buyer' },
+          { name: 'Marcus Chen', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'SEP 30',
+        title: 'Self-hosted deployment options discussion',
+        time: '1:00 PM - 2:00 PM',
+        attendees: [
+          { name: 'Nicole Brown', contact_role: 'buyer' },
+          { name: 'Marcus Chen', contact_role: 'seller' },
+        ],
+      },
     ],
   },
   {
@@ -732,6 +984,28 @@ export const companiesData: Company[] = [
       { role: 'Solutions Architect', count: 2 },
       { role: 'Customer Success Manager', count: 2 },
     ],
+    upcoming_meetings: [
+      {
+        date: 'DEC 26',
+        title: 'Low-code platform enterprise features review',
+        time: '2:00 PM - 3:00 PM',
+        attendees: [
+          { name: 'Thomas Wilson', contact_role: 'buyer' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'NOV 12',
+        title: 'Fortune 500 success stories & use cases',
+        time: '10:00 AM - 11:00 AM',
+        attendees: [
+          { name: 'Thomas Wilson', contact_role: 'buyer' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
+        ],
+      },
+    ],
   },
   {
     id: 'comp-015',
@@ -775,6 +1049,28 @@ export const companiesData: Company[] = [
       { role: 'Telehealth Specialist', count: 3 },
       { role: 'Python Developer', count: 2 },
       { role: 'Healthcare Compliance Officer', count: 1 },
+    ],
+    upcoming_meetings: [
+      {
+        date: 'DEC 18',
+        title: 'Rare disease specialist network expansion',
+        time: '3:00 PM - 4:00 PM',
+        attendees: [
+          { name: 'Laura Garcia', contact_role: 'buyer' },
+          { name: 'Sarah Johnson', contact_role: 'seller' },
+        ],
+      },
+    ],
+    past_meetings: [
+      {
+        date: 'AUG 20',
+        title: 'Initial telehealth platform assessment',
+        time: '1:00 PM - 2:30 PM',
+        attendees: [
+          { name: 'Laura Garcia', contact_role: 'buyer' },
+          { name: 'Marcus Chen', contact_role: 'seller' },
+        ],
+      },
     ],
   },
 ];

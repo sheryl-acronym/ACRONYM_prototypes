@@ -84,6 +84,12 @@ export interface Company {
     time: string;
     attendees: Array<{ name: string; email?: string; contact_role?: 'buyer' | 'seller' }>;
   }>;
+  past_meetings?: Array<{
+    date: string;
+    title: string;
+    time: string;
+    attendees: Array<{ name: string; email?: string; contact_role?: 'buyer' | 'seller' }>;
+  }>;
 }
 
 interface CompaniesPageProps {
