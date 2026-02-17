@@ -230,19 +230,6 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
           </div>
         )}
 
-        {/* Primary contact */}
-        {company.primary_contact && (
-          <div className="grid grid-cols-[160px_1fr] gap-6">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-muted-foreground">Primary Contact</span>
-            </div>
-            <div className="flex items-center">
-              <ContactPill name={company.primary_contact} avatarColor={company.primary_contact_color} />
-            </div>
-          </div>
-        )}
-
         {/* Company Details Collapsible Section */}
         {(company.industry || company.employee_count || company.est_revenue || company.company_type || company.location || company.linkedin_url || company.tech_stack) && (
           <div className="mt-3">
@@ -357,7 +344,7 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
       </div>
 
       {/* Separator */}
-      {company.primary_contact && (company.industry || company.contacts || company.upcoming_meetings) && (
+      {(company.industry || company.contacts || company.upcoming_meetings) && (
         <Separator />
       )}
 
