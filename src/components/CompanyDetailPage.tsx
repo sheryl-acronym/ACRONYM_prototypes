@@ -104,6 +104,56 @@ const CompanyHeader: React.FC<{ company: Company }> = ({ company }) => (
   </div>
 );
 
+function parseTimeRange(timeStr: string): { startTime: string; endTime: string; duration: string } | null {
+  if (!timeStr) return null;
+  const match = timeStr.match(/(\d{1,2}:\d{2}\s*(?:AM|PM))\s*-\s*(\d{1,2}:\d{2}\s*(?:AM|PM))/i);
+  if (!match) return null;
+
+  const startTime = match[1];
+  const endTime = match[2];
+
+  // Calculate duration
+  const parseTime = (timeStr: string): { hours: number; minutes: number; isPM: boolean } => {
+    const parts = timeStr.trim().match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+    if (!parts) return { hours: 0, minutes: 0, isPM: false };
+    let hours = parseInt(parts[1]);
+    const minutes = parseInt(parts[2]);
+    const isPM = parts[3].toUpperCase() === 'PM';
+    if (isPM && hours !== 12) hours += 12;
+    if (!isPM && hours === 12) hours = 0;
+    return { hours, minutes, isPM };
+  };
+
+  const start = parseTime(startTime);
+  const end = parseTime(endTime);
+
+  let startMinutes = start.hours * 60 + start.minutes;
+  let endMinutes = end.hours * 60 + end.minutes;
+
+  // Handle case where end time is next day
+  if (endMinutes < startMinutes) {
+    endMinutes += 24 * 60;
+  }
+
+  const durationMinutes = endMinutes - startMinutes;
+  const hours = Math.floor(durationMinutes / 60);
+  const minutes = durationMinutes % 60;
+
+  let duration = '';
+  if (hours > 0) {
+    duration += `${hours} hr`;
+    if (hours > 1) duration += 's';
+  }
+  if (minutes > 0) {
+    if (hours > 0) duration += ' ';
+    duration += `${minutes} min`;
+    if (minutes > 1) duration += 's';
+  }
+  if (!duration) duration = '0 mins';
+
+  return { startTime, endTime, duration };
+}
+
 const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [isCompanyDetailsExpanded, setIsCompanyDetailsExpanded] = useState(false);
@@ -525,16 +575,21 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
             <div>
               <h3 className="text-sm font-medium text-muted-foreground mb-3">Past</h3>
               <div className="space-y-2">
-                {company.past_meetings.map((meeting, index) => (
-                  <MeetingCard
-                    key={index}
-                    date={meeting.date}
-                    title={meeting.title}
-                    time={meeting.time}
-                    attendees={meeting.attendees}
-                    variant="past"
-                  />
-                ))}
+                {company.past_meetings.map((meeting, index) => {
+                  const timeInfo = parseTimeRange(meeting.time);
+                  return (
+                    <MeetingCard
+                      key={index}
+                      date={meeting.date}
+                      title={meeting.title}
+                      startTime={timeInfo?.startTime}
+                      endTime={timeInfo?.endTime}
+                      duration={timeInfo?.duration}
+                      attendees={meeting.attendees}
+                      variant="past"
+                    />
+                  );
+                })}
               </div>
             </div>
           )}
