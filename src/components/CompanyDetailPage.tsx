@@ -106,7 +106,7 @@ const CompanyHeader: React.FC<{ company: Company }> = ({ company }) => (
 );
 
 const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
-  const [activeTab, setActiveTab] = useState('info');
+  const [activeTab, setActiveTab] = useState('overview');
   const [isCompanyDetailsExpanded, setIsCompanyDetailsExpanded] = useState(false);
 
   return (
@@ -314,14 +314,15 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
 
       {/* Tabs Section */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="info">Info</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="research">Research</TabsTrigger>
           <TabsTrigger value="contacts">Contacts</TabsTrigger>
           <TabsTrigger value="meetings">Meetings</TabsTrigger>
         </TabsList>
 
-        {/* Info Tab */}
-        <TabsContent value="info" className="mt-6 space-y-3">
+        {/* Overview Tab */}
+        <TabsContent value="overview" className="mt-6 space-y-3">
           {/* Summary */}
           {company.summary && (
             <div className="mt-6">
@@ -462,6 +463,11 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
             </div>
           )}
 
+        </TabsContent>
+
+        {/* Research Tab */}
+        <TabsContent value="research" className="mt-6">
+          <p className="text-sm text-muted-foreground">Research content coming soon</p>
         </TabsContent>
 
         {/* Contacts Tab */}
