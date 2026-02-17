@@ -147,8 +147,10 @@ export interface NextStep {
 export interface KeyStakeholder {
   name: string;
   avatar_color?: string;
+  email?: string;
   job_title?: string;
   buyer_persona?: string;
+  linkedin_url?: string;
   role_in_buying_process?: string;
   tags?: string[];
   role_and_engagement?: string;

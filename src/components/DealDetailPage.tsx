@@ -48,6 +48,7 @@ import { MomentumPill } from '@/components/MomentumPill';
 import { ContactPill } from '@/components/ContactPill';
 import { ActionItem } from '@/components/ActionItem';
 import { UnifiedContactCard } from '@/components/UnifiedContactCard';
+import { MeetingCard } from '@/components/MeetingCard';
 
 interface DealDetailPageProps {
   data: DealDetailData;
@@ -1088,15 +1089,15 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
                         contact={{
                           name: data.key_stakeholders[0].name,
                           avatar_color: data.key_stakeholders[0].avatar_color,
+                          email: data.key_stakeholders[0].email,
                           job_title: data.key_stakeholders[0].job_title,
                           persona: data.key_stakeholders[0].buyer_persona,
+                          linkedin_url: data.key_stakeholders[0].linkedin_url,
                           role_in_buying_process: data.key_stakeholders[0].role_in_buying_process,
                           tags: data.key_stakeholders[0].tags,
                           risk: data.key_stakeholders[0].risk,
                         }}
-                        variant="full"
-                        showRisk={true}
-                        expandableFields={false}
+                        variant="compact"
                       />
                     )}
                   </div>
@@ -1148,107 +1149,21 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
   );
 };
 
-const MeetingCard: React.FC<{ meeting: Meeting; momentumStyles: any }> = ({ meeting, momentumStyles }) => {
-  const formatMonthDay = (dateStr: string): { month: string; day: string } => {
+const MeetingsSection: React.FC<{ meetings?: Meeting[] }> = ({ meetings }) => {
+  const formatDatePill = (dateStr: string): string => {
     const date = new Date(dateStr);
     const month = date.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
-    const day = date.getDate().toString().padStart(2, '0');
-    return { month, day };
+    const day = date.getDate().toString();
+    return `${month} ${day}`;
   };
 
-  const { month, day } = formatMonthDay(meeting.start_time);
-  const time = new Date(meeting.start_time).toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-  });
-  const endTime = new Date(new Date(meeting.start_time).getTime() + parseInt(meeting.duration) * 60000).toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-  });
-
-  return (
-    <div className="rounded-lg border border-gray-200 bg-white hover:shadow-sm transition-shadow flex gap-4 p-4 items-start">
-      {/* Calendar date */}
-      <div className="bg-blue-50 rounded-lg px-3 py-2 text-center border border-blue-200 min-w-fit flex-shrink-0">
-        <div className="text-xs font-semibold text-blue-900">{month}</div>
-        <div className="text-lg font-bold text-blue-900 leading-tight">{day}</div>
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-start gap-2 mb-1">
-          <h3 className="text-sm font-medium text-foreground">{meeting.name}</h3>
-          {meeting.momentum && (
-            <Badge className={`text-xs font-semibold whitespace-nowrap flex-shrink-0 ${momentumStyles.bg} ${momentumStyles.text} border ${momentumStyles.border}`}>
-              {meeting.momentum}
-            </Badge>
-          )}
-        </div>
-        <div className="text-xs text-muted-foreground mb-2">
-          {time} - {endTime}
-        </div>
-        <div className="flex flex-wrap gap-1">
-          {meeting.attendees.map((attendee, i) => (
-            <Badge
-              key={i}
-              variant="secondary"
-              className="text-xs font-normal bg-gray-100 text-foreground"
-            >
-              {attendee.name}
-            </Badge>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const MeetingsSection: React.FC<{ meetings?: Meeting[] }> = ({ meetings }) => {
-  const getMomentumStyles = (momentum?: Momentum) => {
-    switch (momentum) {
-      case 'Strong':
-        return {
-          bg: 'bg-green-50',
-          text: 'text-green-700',
-          border: 'border-green-200',
-          dot: 'bg-green-500',
-        };
-      case 'Active':
-        return {
-          bg: 'bg-blue-50',
-          text: 'text-blue-700',
-          border: 'border-blue-200',
-          dot: 'bg-blue-500',
-        };
-      case 'At risk':
-        return {
-          bg: 'bg-red-50',
-          text: 'text-red-700',
-          border: 'border-red-200',
-          dot: 'bg-red-500',
-        };
-      case 'Stalled':
-        return {
-          bg: 'bg-amber-50',
-          text: 'text-amber-700',
-          border: 'border-amber-200',
-          dot: 'bg-amber-500',
-        };
-      case 'Closed':
-        return {
-          bg: 'bg-gray-50',
-          text: 'text-gray-700',
-          border: 'border-gray-200',
-          dot: 'bg-gray-500',
-        };
-      default:
-        return {
-          bg: 'bg-gray-50',
-          text: 'text-slate-700',
-          border: 'border-gray-200',
-          dot: 'bg-gray-400',
-        };
-    }
+  const formatTimeRange = (dateStr: string, duration: string): string => {
+    const start = new Date(dateStr);
+    const mins = parseInt(duration, 10);
+    const end = new Date(start.getTime() + mins * 60_000);
+    const fmt = (d: Date) =>
+      d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase();
+    return `${fmt(start)} - ${fmt(end)}`;
   };
 
   const now = new Date();
@@ -1265,12 +1180,15 @@ const MeetingsSection: React.FC<{ meetings?: Meeting[] }> = ({ meetings }) => {
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-4">Upcoming Meetings</h3>
         {upcomingMeetings.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3 max-w-2xl">
             {upcomingMeetings.map((meeting) => (
               <MeetingCard
                 key={meeting.id}
-                meeting={meeting}
-                momentumStyles={getMomentumStyles(meeting.momentum)}
+                date={formatDatePill(meeting.start_time)}
+                title={meeting.name}
+                variant="upcoming"
+                time={formatTimeRange(meeting.start_time, meeting.duration)}
+                attendees={meeting.attendees}
               />
             ))}
           </div>
@@ -1285,14 +1203,38 @@ const MeetingsSection: React.FC<{ meetings?: Meeting[] }> = ({ meetings }) => {
       <div>
         <h3 className="text-sm font-semibold text-foreground mb-4">Past Meetings</h3>
         {pastMeetings.length > 0 ? (
-          <div className="space-y-4">
-            {pastMeetings.map((meeting) => (
-              <MeetingCard
-                key={meeting.id}
-                meeting={meeting}
-                momentumStyles={getMomentumStyles(meeting.momentum)}
-              />
-            ))}
+          <div className="space-y-3 max-w-2xl">
+            {pastMeetings.map((meeting) => {
+              const start = new Date(meeting.start_time).toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true,
+              });
+              const end = new Date(new Date(meeting.start_time).getTime() + parseInt(meeting.duration) * 60000).toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true,
+              });
+              const durationMins = parseInt(meeting.duration);
+              const hours = Math.floor(durationMins / 60);
+              const mins = durationMins % 60;
+              let duration = '';
+              if (hours > 0) duration += `${hours} hr${hours > 1 ? 's' : ''}`;
+              if (mins > 0) duration += `${duration ? ' ' : ''}${mins} min${mins > 1 ? 's' : ''}`;
+
+              return (
+                <MeetingCard
+                  key={meeting.id}
+                  date={formatDatePill(meeting.start_time)}
+                  title={meeting.name}
+                  variant="past"
+                  startTime={start}
+                  endTime={end}
+                  duration={duration}
+                  attendees={meeting.attendees}
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="rounded-lg border border-gray-200 bg-white p-6 text-center text-sm text-muted-foreground">

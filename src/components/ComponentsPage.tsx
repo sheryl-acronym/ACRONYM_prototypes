@@ -9,6 +9,7 @@ import { StagePill } from '@/components/StagePill';
 import { CompanyPill } from '@/components/CompanyPill';
 import { PersonaPill } from '@/components/PersonaPill';
 import { BuyerRolePill } from '@/components/BuyerRolePill';
+import { MeetingCard } from '@/components/MeetingCard';
 
 export default function ComponentsPage() {
   return (
@@ -93,6 +94,146 @@ export default function ComponentsPage() {
               <p className="text-xs font-medium text-muted-foreground">Used in:</p>
               <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
                 <li>• DealDetailPage.tsx (NextStepsSection)</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* MeetingCard */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">MeetingCard</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">A card component for displaying meeting information with support for upcoming and past meeting variants. Upcoming meetings show a time range, while past meetings display start time, end time, and duration.</p>
+            <div className="bg-muted p-6 rounded-md border border-input space-y-6">
+              <div>
+                <p className="text-xs text-muted-foreground mb-3 font-medium">Upcoming variant:</p>
+                <div className="space-y-3 max-w-lg">
+                  <MeetingCard
+                    date="JAN 06"
+                    title="Demo and pricing review"
+                    variant="upcoming"
+                    time="2:00 PM - 2:45 PM"
+                    attendees={[
+                      { name: "Russell Harris" },
+                      { name: "Theresa Bischoff" },
+                      { name: "Yulia Pyrohova" },
+                    ]}
+                  />
+                  <MeetingCard
+                    date="JAN 10"
+                    title="Executive steering committee"
+                    variant="upcoming"
+                    time="10:00 AM - 11:30 AM"
+                    attendees={[
+                      { name: "Sarah Johnson" },
+                      { name: "Mike Chen" },
+                    ]}
+                  />
+                </div>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground mb-3 font-medium">Past variant:</p>
+                <div className="space-y-3 max-w-lg">
+                  <MeetingCard
+                    date="JAN 02"
+                    title="Product roadmap review"
+                    variant="past"
+                    startTime="2:00 PM"
+                    endTime="2:45 PM"
+                    duration="45 mins"
+                    attendees={[
+                      { name: "Claire Stachniewski" },
+                      { name: "Emily Rodriguez" },
+                      { name: "Jacob Francis" },
+                    ]}
+                  />
+                  <MeetingCard
+                    date="DEC 28"
+                    title="Q4 planning session"
+                    variant="past"
+                    startTime="9:00 AM"
+                    endTime="10:30 AM"
+                    duration="1 hr 30 mins"
+                    attendees={[
+                      { name: "Russell Harris" },
+                      { name: "Sarah Johnson" },
+                    ]}
+                  />
+                </div>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground mb-3 font-medium">With attendee truncation:</p>
+                <div className="space-y-3 max-w-lg">
+                  <MeetingCard
+                    date="JAN 12"
+                    title="All-hands engineering meeting"
+                    variant="upcoming"
+                    time="3:00 PM - 4:00 PM"
+                    maxAttendees={2}
+                    attendees={[
+                      { name: "Russell Harris" },
+                      { name: "Theresa Bischoff" },
+                      { name: "Sarah Johnson" },
+                      { name: "Mike Chen" },
+                      { name: "Claire Stachniewski" },
+                    ]}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="pt-2 space-y-3">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">Usage (upcoming variant):</p>
+                <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
+{`<MeetingCard
+  date="JAN 06"
+  title="Demo and pricing review"
+  variant="upcoming"
+  time="2:00 PM - 2:45 PM"
+  attendees={[
+    { name: "Russell Harris" },
+    { name: "Theresa Bischoff" },
+  ]}
+  onClick={() => navigateToMeeting()}
+/>`}
+                </pre>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">Usage (past variant):</p>
+                <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
+{`<MeetingCard
+  date="JAN 02"
+  title="Product roadmap review"
+  variant="past"
+  startTime="2:00 PM"
+  endTime="2:45 PM"
+  duration="45 mins"
+  attendees={[
+    { name: "Claire Stachniewski" },
+  ]}
+  onClick={() => navigateToMeeting()}
+/>`}
+                </pre>
+              </div>
+            </div>
+            <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Features:</p>
+              <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
+                <li>• Date box with month and day display</li>
+                <li>• Meeting title with truncation for long text</li>
+                <li>• Two variants: upcoming (time range) and past (start, end, duration)</li>
+                <li>• Attendee pills with contact display and truncation</li>
+                <li>• "+n more" pill shows remaining attendees beyond maxAttendees</li>
+                <li>• Customizable attendee display limit (default: 3)</li>
+                <li>• Hover effects and click handler support</li>
+              </ul>
+            </div>
+            <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Used in:</p>
+              <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
+                <li>• Meeting list pages (upcoming and past meetings)</li>
               </ul>
             </div>
           </CardContent>

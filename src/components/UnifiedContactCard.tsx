@@ -218,72 +218,61 @@ const CompactContent: React.FC<{ contact: ContactCardData }> = ({
   contact,
 }) => {
   return (
-    <div className="rounded-lg border bg-card p-0 max-w-[500px]">
-      <div className="flex flex-col gap-0">
-        {/* Header Section */}
-        <div className="px-4 pt-4 pb-3">
-          <div className="flex items-start gap-3">
-            <Avatar name={contact.name} color={contact.avatar_color} size="md" avatarUrl={contact.avatar_url} />
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-col gap-1.5">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-foreground">{contact.name}</span>
-                  {contact.email && (
-                    <a
-                      href={`mailto:${contact.email}`}
-                      className="text-gray-500 hover:text-gray-600 transition-colors flex-shrink-0"
-                      title="Email"
+    <div className="rounded-lg border bg-card p-4 max-w-[500px]">
+      {/* Header Row */}
+      <div className="flex items-start gap-3">
+        <Avatar name={contact.name} color={contact.avatar_color} size="md" avatarUrl={contact.avatar_url} />
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-foreground">{contact.name}</span>
+              {contact.email && (
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="text-gray-500 hover:text-gray-600 transition-colors flex-shrink-0"
+                  title="Email"
+                >
+                  <Mail className="h-4 w-4" />
+                </a>
+              )}
+              {contact.linkedin_url && (
+                <a
+                  href={contact.linkedin_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-gray-600 transition-colors flex-shrink-0"
+                  title="LinkedIn"
+                >
+                  <LinkedInIcon className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              {contact.job_title && <span className="text-xs text-foreground/60">{contact.job_title}</span>}
+              {contact.role_in_buying_process && (
+                <BuyerRolePill role={contact.role_in_buying_process as 'Champion' | 'Economic Buyer' | 'Influencer' | 'Blocker'} />
+              )}
+              {contact.tags &&
+                contact.tags.map((tag, i) => {
+                  const buyerRoles = ['Champion', 'Economic Buyer', 'Influencer', 'Blocker'];
+                  if (buyerRoles.includes(tag)) {
+                    return (
+                      <BuyerRolePill key={i} role={tag as 'Champion' | 'Economic Buyer' | 'Influencer' | 'Blocker'} />
+                    );
+                  }
+                  return (
+                    <Badge
+                      key={i}
+                      variant="outline"
+                      className={`rounded-full font-normal text-xs px-2.5 py-0.5 w-fit bg-white ${getTagBadgeStyle(tag)}`}
                     >
-                      <Mail className="h-4 w-4" />
-                    </a>
-                  )}
-                  {contact.linkedin_url && (
-                    <a
-                      href={contact.linkedin_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-gray-500 hover:text-gray-600 transition-colors flex-shrink-0"
-                      title="LinkedIn"
-                    >
-                      <LinkedInIcon className="h-4 w-4" />
-                    </a>
-                  )}
-                </div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  {contact.job_title && <span className="text-xs text-foreground/60">{contact.job_title}</span>}
-                  {contact.role_in_buying_process && (
-                    <BuyerRolePill role={contact.role_in_buying_process as 'Champion' | 'Economic Buyer' | 'Influencer' | 'Blocker'} />
-                  )}
-                </div>
-              </div>
+                      {tag}
+                    </Badge>
+                  );
+                })}
+              {contact.persona && <PersonaPill persona={contact.persona} />}
             </div>
           </div>
-        </div>
-
-        {/* Divider */}
-        <Separator className="mx-0" />
-
-        {/* Persona & Tags Section */}
-        <div className="px-4 pt-3 pb-4 space-y-3">
-          {contact.tags &&
-            contact.tags.map((tag, i) => {
-              const buyerRoles = ['Champion', 'Economic Buyer', 'Influencer', 'Blocker'];
-              if (buyerRoles.includes(tag)) {
-                return (
-                  <BuyerRolePill key={i} role={tag as 'Champion' | 'Economic Buyer' | 'Influencer' | 'Blocker'} />
-                );
-              }
-              return (
-                <Badge
-                  key={i}
-                  variant="outline"
-                  className={`rounded-full font-normal text-xs px-2.5 py-0.5 w-fit bg-white ${getTagBadgeStyle(tag)}`}
-                >
-                  {tag}
-                </Badge>
-              );
-            })}
-          {contact.persona && <PersonaPill persona={contact.persona} />}
         </div>
       </div>
     </div>
