@@ -166,6 +166,7 @@ export interface ContactCardData {
   // Core
   name: string;
   avatar_color?: string;
+  avatar_url?: string;
 
   // Contact info
   email?: string;

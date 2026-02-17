@@ -7,7 +7,8 @@ import { DatePill } from '@/components/DatePill';
 import { MomentumPill } from '@/components/MomentumPill';
 import { StagePill } from '@/components/StagePill';
 import { CompanyPill } from '@/components/CompanyPill';
-import { BookOpen } from 'lucide-react';
+import { PersonaPill } from '@/components/PersonaPill';
+import { BuyerRolePill } from '@/components/BuyerRolePill';
 
 export default function ComponentsPage() {
   return (
@@ -103,14 +104,14 @@ export default function ComponentsPage() {
             <CardTitle className="text-base">UnifiedContactCard</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">Flexible contact card component with multiple display variants: compact-hover (trigger button with popover), compact-click (pill trigger with popover), full (inline card with expandable sections), and minimal (inline name and avatar).</p>
+            <p className="text-sm text-muted-foreground">Flexible contact card component with multiple display variants: compact-hover (hover-triggered popover), compact (card with header only), full (card with expandable sections), and minimal (inline name and avatar).</p>
 
             {/* Compact Hover Variant */}
             <div>
               <h4 className="text-sm font-semibold text-foreground mb-3">Variant: compact-hover</h4>
               <div className="bg-muted p-6 rounded-md border border-input">
-                <p className="text-xs text-muted-foreground mb-3">Hover-triggered popover with name, email, role, persona, and tags:</p>
-                <div className="space-y-2">
+                <p className="text-xs text-muted-foreground mb-3">Hover over a contact pill to trigger the popover with name, email, role, persona, and tags:</p>
+                <div className="flex flex-wrap gap-2">
                   <UnifiedContactCard
                     contact={{
                       name: "Sarah Johnson",
@@ -118,8 +119,8 @@ export default function ComponentsPage() {
                       role: "VP of Sales",
                       persona: "Operational Decision Maker",
                       linkedin_url: "https://linkedin.com",
-                      tags: ['Champion'],
-                      avatar_color: 'bg-blue-400',
+                      role_in_buying_process: "Champion",
+                      avatar_url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&h=48&fit=crop",
                     }}
                     variant="compact-hover"
                   />
@@ -130,8 +131,7 @@ export default function ComponentsPage() {
                       role: "CFO",
                       persona: "Financial Decision Maker",
                       linkedin_url: "https://linkedin.com",
-                      tags: ['Economic Buyer'],
-                      avatar_color: 'bg-green-400',
+                      role_in_buying_process: "Economic Buyer",
                     }}
                     variant="compact-hover"
                   />
@@ -139,35 +139,36 @@ export default function ComponentsPage() {
               </div>
             </div>
 
-            {/* Compact Click Variant */}
+            {/* Compact Variant */}
             <div>
-              <h4 className="text-sm font-semibold text-foreground mb-3">Variant: compact-click</h4>
-              <div className="bg-muted p-6 rounded-md border border-input">
-                <p className="text-xs text-muted-foreground mb-3">Click-triggered popover with structured sections:</p>
-                <div className="space-y-2">
-                  <UnifiedContactCard
-                    contact={{
-                      name: "Emily Rodriguez",
-                      email: "emily@company.com",
-                      job_title: "Director of Operations",
-                      role: "Influencer",
-                      persona: "Process Optimizer",
-                      avatar_color: 'bg-purple-400',
-                    }}
-                    variant="compact-click"
-                  />
-                  <UnifiedContactCard
-                    contact={{
-                      name: "James Park",
-                      email: "james@company.com",
-                      job_title: "Director of IT",
-                      role: "Blocker",
-                      persona: "Risk Manager",
-                      avatar_color: 'bg-pink-400',
-                    }}
-                    variant="compact-click"
-                  />
-                </div>
+              <h4 className="text-sm font-semibold text-foreground mb-3">Variant: compact</h4>
+              <div className="bg-muted p-6 rounded-md border border-input space-y-3">
+                <p className="text-xs text-muted-foreground mb-3">Compact card display with header structure but no expandable fields:</p>
+                <UnifiedContactCard
+                  contact={{
+                    name: "Sarah Johnson",
+                    email: "sarah@company.com",
+                    job_title: "VP of Sales",
+                    persona: "Operational Decision Maker",
+                    linkedin_url: "https://linkedin.com",
+                    role_in_buying_process: "Champion",
+                    avatar_url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&h=48&fit=crop",
+                  }}
+                  variant="compact"
+                  showRisk={false}
+                />
+                <UnifiedContactCard
+                  contact={{
+                    name: "Mike Chen",
+                    email: "mike@company.com",
+                    job_title: "CFO",
+                    persona: "Financial Decision Maker",
+                    linkedin_url: "https://linkedin.com",
+                    role_in_buying_process: "Economic Buyer",
+                    avatar_color: 'bg-blue-400',
+                  }}
+                  variant="compact"
+                />
               </div>
             </div>
 
@@ -182,8 +183,10 @@ export default function ComponentsPage() {
                       name: "Russell Harris",
                       email: "russell@proven.com",
                       job_title: "Head of Product/Tech",
-                      role_in_buying_process: "Prospect",
-                      tags: ['Decision Maker'],
+                      persona: "Technical Decision Maker",
+                      linkedin_url: "https://linkedin.com",
+                      role_in_buying_process: "Champion",
+                      tags: ['Economic Buyer'],
                       avatar_color: 'bg-orange-400',
                       role_and_engagement: "Initial point of contact who responded positively to outreach and brought team members into demo.",
                       authority: "Likely has authority over payment infrastructure decisions as Head of Product/Tech.",
@@ -197,33 +200,6 @@ export default function ComponentsPage() {
                     variant="full"
                     showRisk={true}
                     expandableFields={true}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Minimal Variant */}
-            <div>
-              <h4 className="text-sm font-semibold text-foreground mb-3">Variant: minimal</h4>
-              <div className="bg-muted p-6 rounded-md border border-input">
-                <p className="text-xs text-muted-foreground mb-3">Minimal inline display for lists and tables:</p>
-                <div className="space-y-2">
-                  <UnifiedContactCard
-                    contact={{
-                      name: "Claire Stachniewski",
-                      job_title: "Sales Manager",
-                      avatar_color: 'bg-amber-400',
-                    }}
-                    variant="minimal"
-                  />
-                  <UnifiedContactCard
-                    contact={{
-                      name: "Alice Wong",
-                      job_title: "Product Lead",
-                      tags: ['Champion'],
-                      avatar_color: 'bg-cyan-400',
-                    }}
-                    variant="minimal"
                   />
                 </div>
               </div>
@@ -292,30 +268,61 @@ export default function ComponentsPage() {
             <CardTitle className="text-base">ContactPill</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">A compact rectangular pill that displays a contact's name with a user icon. Used in meeting and deal lists to show attendees and team members.</p>
-            <div className="bg-muted p-6 rounded-md border border-input space-y-3">
+            <p className="text-sm text-muted-foreground">A compact rectangular pill that displays a contact's name. Supports three variants: icon (default user icon), avatar (colored initials), or photo (actual avatar images).</p>
+            <div className="bg-muted p-6 rounded-md border border-input space-y-4">
               <div>
-                <p className="text-xs text-muted-foreground mb-3">Example contact pills (24px height):</p>
+                <p className="text-xs text-muted-foreground mb-3">Without avatar photo:</p>
                 <div className="flex flex-wrap gap-2">
                   <ContactPill name="Claire Stachniewski" />
-                  <ContactPill name="Alice Wong" />
-                  <ContactPill name="James Park" />
-                  <ContactPill name="Sarah Johnson" />
+                </div>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground mb-3">With avatar photo:</p>
+                <div className="flex flex-wrap gap-2">
+                  <ContactPill
+                    name="Emily Rodriguez"
+                    avatarUrl="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&h=48&fit=crop"
+                  />
                 </div>
               </div>
             </div>
+            <div className="pt-2 space-y-3">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">Usage:</p>
+                <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
+{`// Icon variant (default)
+<ContactPill name="Claire Stachniewski" />
+
+// Avatar variant with colored initials
+<ContactPill name="Claire" avatarColor="bg-amber-400" />
+
+// Photo variant with actual image
+<ContactPill
+  name="Emily Rodriguez"
+  avatarUrl="https://images.unsplash.com/..."
+/>`}
+                </pre>
+              </div>
+            </div>
             <div className="pt-2">
-              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
-              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<ContactPill name="Claire Stachniewski" />`}
-              </pre>
+              <p className="text-xs font-medium text-muted-foreground">Features:</p>
+              <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
+                <li>• Three variants: icon (default), avatar (colored initials), photo (actual images)</li>
+                <li>• Compact 24px height with minimal padding</li>
+                <li>• Text truncation for longer names</li>
+                <li>• Data-driven avatar colors via avatarColor prop</li>
+                <li>• Text truncation for long names</li>
+                <li>• Used as trigger for UnifiedContactCard popovers</li>
+              </ul>
             </div>
             <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Used in:</p>
               <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
-                <li>• UpcomingMeetingsPage.tsx (lines 357-367)</li>
-                <li>• PastMeetingsPage.tsx (similar usage)</li>
-                <li>• DealsPage.tsx (similar usage)</li>
+                <li>• UnifiedContactCard.tsx (compact-hover and compact-click triggers)</li>
+                <li>• ActionItem.tsx (assignee display)</li>
+                <li>• UpcomingMeetingsPage.tsx (attendee displays)</li>
+                <li>• PastMeetingsPage.tsx (attendee displays)</li>
+                <li>• DealsPage.tsx (team member displays)</li>
               </ul>
             </div>
           </CardContent>
@@ -549,47 +556,77 @@ export default function ComponentsPage() {
             <CardTitle className="text-base">Persona Pill</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">A rectangular pill component that displays a contact's buyer persona. Features a book icon with the persona name in a light slate background.</p>
-            <div className="bg-muted p-6 rounded-md border border-input space-y-4">
-              <div className="space-y-3">
-                <div>
-                  <p className="text-xs text-muted-foreground mb-3">Operational Decision Maker:</p>
-                  <div className="inline-flex items-center gap-2 bg-muted rounded-md px-2.5 py-1.5 border border-input">
-                    <BookOpen className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                    <span className="text-xs text-foreground">Operational Decision Maker</span>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground mb-3">Strategic Decision Maker:</p>
-                  <div className="inline-flex items-center gap-2 bg-muted rounded-md px-2.5 py-1.5 border border-input">
-                    <BookOpen className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                    <span className="text-xs text-foreground">Strategic Decision Maker</span>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground mb-3">Marketing/Growth Leader:</p>
-                  <div className="inline-flex items-center gap-2 bg-muted rounded-md px-2.5 py-1.5 border border-input">
-                    <BookOpen className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                    <span className="text-xs text-foreground">Marketing/Growth Leader</span>
-                  </div>
+            <p className="text-sm text-muted-foreground">A rounded pill component that displays a contact's buyer persona. Features a soft blue background with blue text for visual consistency across buyer persona displays.</p>
+            <div className="bg-muted p-6 rounded-md border border-input space-y-3">
+              <div>
+                <p className="text-xs text-muted-foreground mb-3">Persona examples (24px height):</p>
+                <div className="flex flex-wrap gap-2">
+                  <PersonaPill persona="Operational Decision Maker" />
+                  <PersonaPill persona="Strategic Decision Maker" />
+                  <PersonaPill persona="Marketing/Growth Leader" />
                 </div>
               </div>
             </div>
             <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Color scheme:</p>
+              <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
+                <li>• Background — #F0F5FF (soft blue)</li>
+                <li>• Text — #1E40AF (dark blue)</li>
+                <li>• Border — #DBEAFE (light blue)</li>
+              </ul>
+            </div>
+            <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Usage:</p>
               <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<div className="inline-flex items-center gap-2 bg-muted rounded-md px-2.5 py-1.5 border border-input">
-  <BookOpen className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-  <span className="text-xs text-foreground">{persona}</span>
-</div>`}
+{`<PersonaPill persona="Operational Decision Maker" />`}
               </pre>
             </div>
             <div className="pt-2">
               <p className="text-xs font-medium text-muted-foreground">Used in:</p>
               <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
-                <li>• AttendeeHoverCard.tsx (lines 109-115)</li>
-                <li>• ContactCard.tsx (lines 89-94)</li>
-                <li>• PreCallBrief.tsx (multiple locations)</li>
+                <li>• UnifiedContactCard.tsx (compact-hover variant persona display)</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Buyer Role Pill */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Buyer Role Pill</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">A rounded pill component that displays a buyer's role in the purchasing process with color-coded states. Each role has a distinct background and text color for quick visual identification.</p>
+            <div className="bg-muted p-6 rounded-md border border-input space-y-3">
+              <div>
+                <p className="text-xs text-muted-foreground mb-3">Buyer role examples (24px height):</p>
+                <div className="flex flex-wrap gap-2">
+                  <BuyerRolePill role="Champion" />
+                  <BuyerRolePill role="Economic Buyer" />
+                  <BuyerRolePill role="Influencer" />
+                  <BuyerRolePill role="Blocker" />
+                </div>
+              </div>
+            </div>
+            <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Color scheme:</p>
+              <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
+                <li>• Champion — #D8F5E8 (saturated green)</li>
+                <li>• Economic Buyer — #FFF4D6 (saturated yellow)</li>
+                <li>• Influencer — #DBEAFF (saturated blue)</li>
+                <li>• Blocker — #FFE0E0 (saturated red)</li>
+              </ul>
+            </div>
+            <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
+              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
+{`<BuyerRolePill role="Champion" />`}
+              </pre>
+            </div>
+            <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Used in:</p>
+              <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
+                <li>• UnifiedContactCard.tsx (full variant role display)</li>
               </ul>
             </div>
           </CardContent>

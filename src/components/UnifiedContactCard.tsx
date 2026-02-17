@@ -1,10 +1,14 @@
 import React from 'react';
 import { ContactCardData } from '@/types';
-import { User, Mail, Briefcase, BookOpen, Linkedin } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { ContactPill } from '@/components/ContactPill';
+import { PersonaPill } from '@/components/PersonaPill';
+import { BuyerRolePill } from '@/components/BuyerRolePill';
 
-type ContactCardVariant = 'compact-hover' | 'compact-click' | 'full' | 'minimal';
+type ContactCardVariant = 'compact-hover' | 'compact' | 'full';
 
 interface UnifiedContactCardProps {
   contact: ContactCardData;
@@ -61,18 +65,6 @@ const getAvatarColor = (color?: string): string => {
   return avatarColorConfig[color] || color;
 };
 
-// Risk badge styling
-const getRiskBadgeStyles = (level: 'LOW' | 'MEDIUM' | 'HIGH'): string => {
-  switch (level) {
-    case 'HIGH':
-      return 'bg-red-50 text-red-900 border-red-200';
-    case 'MEDIUM':
-      return 'bg-amber-50 text-amber-900 border-amber-200';
-    case 'LOW':
-      return 'bg-green-50 text-green-900 border-green-200';
-  }
-};
-
 // Badge styling for tags
 const getTagBadgeStyle = (tag?: string): string => {
   if (!tag) return 'bg-blue-50 text-blue-700 border-blue-200';
@@ -91,17 +83,41 @@ const getTagBadgeStyle = (tag?: string): string => {
   }
 };
 
+// LinkedIn Icon Component (filled square with rounded corners)
+const LinkedInIcon: React.FC<{ className?: string }> = ({ className = 'h-3.5 w-3.5' }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M20 2H4C2.9 2 2 2.9 2 4V20C2 21.1 2.9 22 4 22H20C21.1 22 22 21.1 22 20V4C22 2.9 21.1 2 20 2ZM8 19H5V9H8V19ZM6.5 7.5C5.4 7.5 4.5 6.6 4.5 5.5C4.5 4.4 5.4 3.5 6.5 3.5C7.6 3.5 8.5 4.4 8.5 5.5C8.5 6.6 7.6 7.5 6.5 7.5ZM19 19H16V13.5C16 12 15.4 11 14 11C13 11 12.4 11.6 12.2 12.2C12.1 12.4 12 12.7 12 13V19H9C9 19 9 10 9 9H12V10.5C12.4 9.8 13.5 8.7 15.4 8.7C18 8.7 19 10.5 19 13V19Z" />
+  </svg>
+);
+
 // Avatar component (reusable)
-const Avatar: React.FC<{ name: string; color?: string; size?: 'sm' | 'md' | 'lg' }> = ({
+const Avatar: React.FC<{ name: string; color?: string; size?: 'sm' | 'md' | 'lg'; avatarUrl?: string }> = ({
   name,
   color,
   size = 'md',
+  avatarUrl,
 }) => {
   const sizeClasses = {
     sm: 'h-6 w-6 text-xs',
     md: 'h-8 w-8 text-xs',
     lg: 'h-10 w-10 text-sm',
   };
+
+  // Photo variant - shows actual avatar image
+  if (avatarUrl) {
+    return (
+      <img
+        src={avatarUrl}
+        alt={name}
+        className={`rounded-full object-cover flex-shrink-0 ${sizeClasses[size]}`}
+      />
+    );
+  }
 
   return (
     <span
@@ -114,152 +130,163 @@ const Avatar: React.FC<{ name: string; color?: string; size?: 'sm' | 'md' | 'lg'
 
 // Compact Hover Variant (replaces AttendeeHoverCard)
 const CompactHoverContent: React.FC<{ contact: ContactCardData }> = ({ contact }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <button className="inline-flex items-center gap-2 hover:bg-slate-50 rounded px-2 py-1 transition-colors">
-          <User className="h-3.5 w-3.5 text-muted-foreground" />
-          <span className="text-xs font-medium text-foreground">{contact.name}</span>
-        </button>
+        <div
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
+        >
+          <ContactPill name={contact.name} avatarUrl={contact.avatar_url} avatarColor={contact.avatar_color} />
+        </div>
       </PopoverTrigger>
-      <PopoverContent side="right" align="start" className="w-80 p-6" sideOffset={8}>
-        <div className="space-y-4">
-          {/* Header */}
-          <div className="flex items-start gap-3">
-            <Avatar name={contact.name} color={contact.avatar_color} size="lg" />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="text-sm font-semibold text-foreground">{contact.name}</h3>
-                {contact.linkedin_url && (
-                  <a
-                    href={contact.linkedin_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-blue-600 transition-colors"
-                    title="LinkedIn"
-                  >
-                    <Linkedin className="h-3.5 w-3.5" />
-                  </a>
-                )}
+      <PopoverContent side="right" align="start" className="w-80 p-0" sideOffset={8} onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
+        <div className="flex flex-col gap-0">
+          {/* Header Section */}
+          <div className="px-6 pt-6 pb-3">
+            <div className="flex items-start gap-3">
+              <Avatar name={contact.name} color={contact.avatar_color} size="lg" avatarUrl={contact.avatar_url} />
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-sm font-semibold text-foreground">{contact.name}</h3>
+                    {contact.email && (
+                      <a
+                        href={`mailto:${contact.email}`}
+                        className="text-gray-500 hover:text-gray-600 transition-colors"
+                        title="Email"
+                      >
+                        <Mail className="h-4 w-4" />
+                      </a>
+                    )}
+                    {contact.linkedin_url && (
+                      <a
+                        href={contact.linkedin_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-500 hover:text-gray-600 transition-colors"
+                        title="LinkedIn"
+                      >
+                        <LinkedInIcon className="h-4 w-4" />
+                      </a>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {contact.role && <span className="text-xs text-foreground/60">{contact.role}</span>}
+                    {contact.role_in_buying_process && (
+                      <BuyerRolePill role={contact.role_in_buying_process as 'Champion' | 'Economic Buyer' | 'Influencer' | 'Blocker'} />
+                    )}
+                  </div>
+                </div>
               </div>
-              {contact.role && <p className="text-xs text-muted-foreground mt-0.5">{contact.role}</p>}
             </div>
           </div>
 
-          {/* Email */}
-          {contact.email && (
-            <div className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-              <a href={`mailto:${contact.email}`} className="text-xs text-blue-600 hover:underline truncate">
-                {contact.email}
-              </a>
-            </div>
-          )}
+          {/* Divider */}
+          <Separator className="mx-0" />
 
-          {/* Persona */}
-          {contact.persona && (
-            <div className="pt-2 border-t border-gray-200">
-              <div className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                <span className="text-xs text-muted-foreground">Buyer Persona:</span>
+          {/* Persona & Tags Section */}
+          <div className="px-6 pt-3 pb-6 space-y-4">
+            {/* Persona */}
+            {contact.persona && <PersonaPill persona={contact.persona} />}
+
+            {/* Tags */}
+            {contact.tags && contact.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {contact.tags.map((tag, i) => (
+                  <Badge
+                    key={i}
+                    variant="outline"
+                    className={`rounded-full font-normal text-xs px-2.5 py-0.5 ${getTagBadgeStyle(tag)}`}
+                  >
+                    {tag}
+                  </Badge>
+                ))}
               </div>
-              <p className="text-xs text-foreground mt-1">{contact.persona}</p>
-            </div>
-          )}
-
-          {/* Tags */}
-          {contact.tags && contact.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {contact.tags.map((tag, i) => (
-                <Badge
-                  key={i}
-                  variant="outline"
-                  className={`rounded-full font-normal text-xs px-2.5 py-0.5 ${getTagBadgeStyle(tag)}`}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          )}
-
-          {/* Role in buying process */}
-          {contact.role_in_buying_process && (
-            <div>
-              <Badge variant="outline" className="rounded-full font-normal text-xs px-2.5 py-0.5 w-fit">
-                {contact.role_in_buying_process}
-              </Badge>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </PopoverContent>
     </Popover>
   );
 };
 
-// Compact Click Variant (replaces ContactCard)
-const CompactClickContent: React.FC<{ contact: ContactCardData }> = ({ contact }) => {
+// Compact Variant (card display without expandable fields)
+const CompactContent: React.FC<{ contact: ContactCardData }> = ({
+  contact,
+}) => {
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <button className="inline-flex items-center h-6 px-2 rounded-full border border-gray-200 bg-white hover:bg-gray-50 transition-colors gap-1.5">
-          <User className="h-3.5 w-3.5 text-muted-foreground" />
-          <span className="text-xs font-medium text-foreground truncate">{contact.name}</span>
-        </button>
-      </PopoverTrigger>
-      <PopoverContent side="right" align="start" className="w-80 p-0" sideOffset={8}>
-        <div className="bg-slate-50 px-4 py-3 border-b border-slate-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-semibold text-foreground">{contact.name}</h3>
-              {contact.job_title && <p className="text-xs text-muted-foreground mt-0.5">{contact.job_title}</p>}
+    <div className="rounded-lg border bg-card p-0 max-w-[500px]">
+      <div className="flex flex-col gap-0">
+        {/* Header Section */}
+        <div className="px-4 pt-4 pb-3">
+          <div className="flex items-start gap-3">
+            <Avatar name={contact.name} color={contact.avatar_color} size="md" avatarUrl={contact.avatar_url} />
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold text-foreground">{contact.name}</span>
+                  {contact.email && (
+                    <a
+                      href={`mailto:${contact.email}`}
+                      className="text-gray-500 hover:text-gray-600 transition-colors flex-shrink-0"
+                      title="Email"
+                    >
+                      <Mail className="h-4 w-4" />
+                    </a>
+                  )}
+                  {contact.linkedin_url && (
+                    <a
+                      href={contact.linkedin_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-500 hover:text-gray-600 transition-colors flex-shrink-0"
+                      title="LinkedIn"
+                    >
+                      <LinkedInIcon className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {contact.job_title && <span className="text-xs text-foreground/60">{contact.job_title}</span>}
+                  {contact.role_in_buying_process && (
+                    <BuyerRolePill role={contact.role_in_buying_process as 'Champion' | 'Economic Buyer' | 'Influencer' | 'Blocker'} />
+                  )}
+                </div>
+              </div>
             </div>
-            {contact.linkedin_url && (
-              <a
-                href={contact.linkedin_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-blue-600"
-                title="LinkedIn"
-              >
-                <Linkedin className="h-4 w-4" />
-              </a>
-            )}
           </div>
         </div>
-        <div className="px-4 py-3 space-y-2.5">
-          {/* Role */}
-          {contact.role && (
-            <div className="flex items-center gap-2">
-              <Briefcase className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-              <span className="text-sm text-foreground">{contact.role}</span>
-            </div>
-          )}
 
-          {/* Email */}
-          {contact.email && (
-            <div className="flex items-center gap-2">
-              <Mail className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-              <a href={`mailto:${contact.email}`} className="text-sm text-blue-600 hover:underline">
-                {contact.email}
-              </a>
-            </div>
-          )}
+        {/* Divider */}
+        <Separator className="mx-0" />
 
-          {/* Persona */}
-          {contact.persona && (
-            <>
-              <div className="pt-2 border-t border-gray-200">
-                <h4 className="text-xs font-semibold text-foreground mb-2">Buyer Persona</h4>
-                <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit flex items-center gap-1.5">
-                  <BookOpen size={14} />
-                  {contact.persona}
+        {/* Persona & Tags Section */}
+        <div className="px-4 pt-3 pb-4 space-y-3">
+          {contact.tags &&
+            contact.tags.map((tag, i) => {
+              const buyerRoles = ['Champion', 'Economic Buyer', 'Influencer', 'Blocker'];
+              if (buyerRoles.includes(tag)) {
+                return (
+                  <BuyerRolePill key={i} role={tag as 'Champion' | 'Economic Buyer' | 'Influencer' | 'Blocker'} />
+                );
+              }
+              return (
+                <Badge
+                  key={i}
+                  variant="outline"
+                  className={`rounded-full font-normal text-xs px-2.5 py-0.5 w-fit bg-white ${getTagBadgeStyle(tag)}`}
+                >
+                  {tag}
                 </Badge>
-              </div>
-            </>
-          )}
+              );
+            })}
+          {contact.persona && <PersonaPill persona={contact.persona} />}
         </div>
-      </PopoverContent>
-    </Popover>
+      </div>
+    </div>
   );
 };
 
@@ -274,40 +301,75 @@ const FullContent: React.FC<{ contact: ContactCardData; showRisk?: boolean; expa
     <div className="rounded-lg border bg-card p-4">
       {/* Header Row */}
       <div className="flex items-start gap-3 mb-3">
-        <Avatar name={contact.name} color={contact.avatar_color} size="md" />
+        <Avatar name={contact.name} color={contact.avatar_color} size="md" avatarUrl={contact.avatar_url} />
         <div className="flex-1 min-w-0">
           <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-semibold text-foreground">{contact.name}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-foreground">{contact.name}</span>
+              {contact.email && (
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="text-gray-500 hover:text-gray-600 transition-colors flex-shrink-0"
+                  title="Email"
+                >
+                  <Mail className="h-4 w-4" />
+                </a>
+              )}
+              {contact.linkedin_url && (
+                <a
+                  href={contact.linkedin_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-500 hover:text-gray-600 transition-colors flex-shrink-0"
+                  title="LinkedIn"
+                >
+                  <LinkedInIcon className="h-4 w-4" />
+                </a>
+              )}
+            </div>
             <div className="flex items-center gap-2 flex-wrap">
               {contact.job_title && <span className="text-xs text-foreground/60">{contact.job_title}</span>}
               {contact.role_in_buying_process && (
-                <Badge variant="outline" className="rounded-full font-normal text-xs px-2.5 py-0.5 w-fit">
-                  {contact.role_in_buying_process}
-                </Badge>
+                <BuyerRolePill role={contact.role_in_buying_process as 'Champion' | 'Economic Buyer' | 'Influencer' | 'Blocker'} />
               )}
               {contact.tags &&
-                contact.tags.map((tag, i) => (
-                  <Badge
-                    key={i}
-                    variant="outline"
-                    className={`rounded-full font-normal text-xs px-2.5 py-0.5 w-fit bg-white ${getTagBadgeStyle(tag)}`}
-                  >
-                    {tag}
-                  </Badge>
-                ))}
+                contact.tags.map((tag, i) => {
+                  const buyerRoles = ['Champion', 'Economic Buyer', 'Influencer', 'Blocker'];
+                  if (buyerRoles.includes(tag)) {
+                    return (
+                      <BuyerRolePill key={i} role={tag as 'Champion' | 'Economic Buyer' | 'Influencer' | 'Blocker'} />
+                    );
+                  }
+                  return (
+                    <Badge
+                      key={i}
+                      variant="outline"
+                      className={`rounded-full font-normal text-xs px-2.5 py-0.5 w-fit bg-white ${getTagBadgeStyle(tag)}`}
+                    >
+                      {tag}
+                    </Badge>
+                  );
+                })}
             </div>
           </div>
         </div>
-        {showRisk && contact.risk && (
-          <Badge variant="outline" className={`rounded-full font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${getRiskBadgeStyles(contact.risk.level)}`}>
-            {contact.risk.level} Risk
-          </Badge>
-        )}
       </div>
 
       {/* Detailed Metadata Sections */}
       {expandableFields && (
         <div className="space-y-3">
+          {/* Buyer Persona */}
+          {contact.persona && (
+            <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
+              <div>
+                <h4 className="text-sm font-semibold text-foreground">Buyer Persona</h4>
+              </div>
+              <div>
+                <PersonaPill persona={contact.persona} />
+              </div>
+            </div>
+          )}
+
           {/* Role and Engagement */}
           {contact.role_and_engagement && (
             <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
@@ -316,21 +378,6 @@ const FullContent: React.FC<{ contact: ContactCardData; showRisk?: boolean; expa
               </div>
               <div>
                 <p className="text-sm text-foreground/70 leading-relaxed">{contact.role_and_engagement}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Persona */}
-          {contact.persona && (
-            <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
-              <div>
-                <h4 className="text-sm font-semibold text-foreground">Buyer Persona</h4>
-              </div>
-              <div>
-                <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit flex items-center gap-1.5">
-                  <BookOpen size={14} />
-                  {contact.persona}
-                </Badge>
               </div>
             </div>
           )}
@@ -401,24 +448,6 @@ const FullContent: React.FC<{ contact: ContactCardData; showRisk?: boolean; expa
 };
 
 // Minimal Variant (new - for inline displays)
-const MinimalContent: React.FC<{ contact: ContactCardData }> = ({ contact }) => {
-  return (
-    <div className="inline-flex items-center gap-2">
-      <Avatar name={contact.name} color={contact.avatar_color} size="sm" />
-      <div className="flex items-center gap-2">
-        <span className="text-sm font-medium text-foreground">{contact.name}</span>
-        {contact.job_title && <span className="text-xs text-muted-foreground">{contact.job_title}</span>}
-        {contact.tags &&
-          contact.tags.map((tag, i) => (
-            <Badge key={i} variant="outline" className="rounded-full font-normal text-xs px-2 py-0.5">
-              {tag}
-            </Badge>
-          ))}
-      </div>
-    </div>
-  );
-};
-
 // Main Component
 export const UnifiedContactCard: React.FC<UnifiedContactCardProps> = ({
   contact,
@@ -429,12 +458,9 @@ export const UnifiedContactCard: React.FC<UnifiedContactCardProps> = ({
   switch (variant) {
     case 'compact-hover':
       return <CompactHoverContent contact={contact} />;
-    case 'compact-click':
-      return <CompactClickContent contact={contact} />;
+    case 'compact':
+      return <CompactContent contact={contact} />;
     case 'full':
-      return <FullContent contact={contact} showRisk={showRisk} expandableFields={expandableFields} />;
-    case 'minimal':
-      return <MinimalContent contact={contact} />;
     default:
       return <FullContent contact={contact} showRisk={showRisk} expandableFields={expandableFields} />;
   }
