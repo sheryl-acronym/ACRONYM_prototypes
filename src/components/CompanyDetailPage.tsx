@@ -369,15 +369,21 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
           )}
 
           {/* Divider */}
-          {company.recent_news && company.recent_news.length > 0 && (company.total_funding_raised || company.num_funding_rounds || company.latest_funding_stage || company.latest_funding_round) && (
+          {company.recent_news && company.recent_news.length > 0 && (company.founded || company.total_funding_raised || company.num_funding_rounds || company.latest_funding_stage || company.latest_funding_round) && (
             <Separator className="mt-6" />
           )}
 
           {/* Funding Information */}
-          {(company.total_funding_raised || company.num_funding_rounds || company.latest_funding_stage || company.latest_funding_round) && (
+          {(company.founded || company.total_funding_raised || company.num_funding_rounds || company.latest_funding_stage || company.latest_funding_round) && (
             <div className="mt-6">
               <h3 className="text-sm font-medium text-muted-foreground mb-3">Funding Information</h3>
               <div className="space-y-3">
+                {company.founded && (
+                  <div className="grid grid-cols-[160px_1fr] gap-6">
+                    <span className="text-sm font-medium text-muted-foreground">Founded</span>
+                    <p className="text-sm text-foreground">{company.founded}</p>
+                  </div>
+                )}
                 {company.total_funding_raised && (
                   <div className="grid grid-cols-[160px_1fr] gap-6">
                     <span className="text-sm font-medium text-muted-foreground">Total Funding Raised</span>
@@ -413,7 +419,7 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
           )}
 
           {/* Divider */}
-          {(company.total_funding_raised || company.num_funding_rounds || company.latest_funding_stage || company.latest_funding_round) && company.hiring_signals && company.hiring_signals.length > 0 && (
+          {(company.founded || company.total_funding_raised || company.num_funding_rounds || company.latest_funding_stage || company.latest_funding_round) && company.hiring_signals && company.hiring_signals.length > 0 && (
             <Separator className="mt-6" />
           )}
 
