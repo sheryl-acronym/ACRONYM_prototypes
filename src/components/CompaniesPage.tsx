@@ -63,6 +63,7 @@ export interface Company {
   num_funding_rounds: number | null;
   latest_funding_stage: string | null;
   latest_funding_round: string | null;
+  latest_funding_date?: string | null;
   hiring_signals?: Array<{
     role: string;
     count: number;

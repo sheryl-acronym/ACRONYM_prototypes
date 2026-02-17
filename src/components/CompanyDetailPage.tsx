@@ -402,6 +402,12 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
                     <p className="text-sm text-foreground">{company.latest_funding_round}</p>
                   </div>
                 )}
+                {company.latest_funding_date && (
+                  <div className="grid grid-cols-[160px_1fr] gap-6">
+                    <span className="text-sm font-medium text-muted-foreground">Last Funding Date</span>
+                    <p className="text-sm text-foreground">{company.latest_funding_date}</p>
+                  </div>
+                )}
               </div>
             </div>
           )}
