@@ -25,7 +25,6 @@ import {
   Calendar,
   BookOpen,
   ChevronDown,
-  Globe,
   User,
   Building2,
   Settings,
@@ -178,12 +177,6 @@ export default function AppSidebar() {
                 </SidebarMenuItem>
               </Collapsible>
 
-              <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Custom Knowledge" className="h-9">
-                  <Globe className="h-4 w-4" />
-                  <span>Custom Knowledge</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
