@@ -10,6 +10,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import type { ContactCardData } from '@/types';
 import {
   Select,
   SelectContent,
@@ -29,6 +30,9 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from 'lucide-react';
+import { DatePill } from '@/components/DatePill';
+import { CustomerProfilePill } from '@/components/CustomerProfilePill';
+import { CompanyDetailSidePanel } from '@/components/CompanyDetailSidePanel';
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -44,7 +48,40 @@ export interface Company {
   logo_url?: string;
   icon_color: string;
   last_meeting: string | null;
+  next_meeting: string | null;
   customer_profile: string | null;
+  employee_count: string | null;
+  est_revenue: string | null;
+  summary: string | null;
+  recent_news?: Array<{
+    date: string;
+    title: string;
+    source?: string;
+  }>;
+  total_funding_raised: string | null;
+  num_funding_rounds: number | null;
+  latest_funding_stage: string | null;
+  latest_funding_round: string | null;
+  hiring_signals?: Array<{
+    role: string;
+    count: number;
+  }>;
+  deal: string | null;
+  deal_momentum: 'Strong' | 'Stalled' | 'At risk' | 'Closed' | 'Active' | null;
+  primary_contact: string | null;
+  primary_contact_color?: string;
+  linkedin_url: string | null;
+  industry: string | null;
+  company_type: string | null;
+  location: string | null;
+  tech_stack: string | null;
+  contacts?: ContactCardData[];
+  upcoming_meetings?: Array<{
+    date: string;
+    title: string;
+    time: string;
+    attendees: Array<{ name: string; email?: string; contact_role?: 'buyer' | 'seller' }>;
+  }>;
 }
 
 interface CompaniesPageProps {
@@ -104,6 +141,19 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [sortField, setSortField] = React.useState<SortField>('name');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
+  const [selectedCompanyId, setSelectedCompanyId] = React.useState<string | null>(null);
+
+  // Update selected company ID from URL on mount and when URL changes
+  React.useEffect(() => {
+    const updateSelectedId = () => {
+      const params = new URLSearchParams(window.location.search);
+      setSelectedCompanyId(params.get('company'));
+    };
+
+    updateSelectedId();
+    window.addEventListener('popstate', updateSelectedId);
+    return () => window.removeEventListener('popstate', updateSelectedId);
+  }, []);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -241,14 +291,23 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
                   </TableRow>
                 ) : (
                   paginatedCompanies.map((company) => (
-                    <TableRow key={company.id} className="cursor-pointer">
+                    <TableRow
+                      key={company.id}
+                      className="cursor-pointer hover:bg-gray-50"
+                      onClick={() => {
+                        setSelectedCompanyId(company.id);
+                        const url = new URL(window.location);
+                        url.searchParams.set('company', company.id);
+                        window.history.pushState({}, '', url);
+                      }}
+                    >
                       <TableCell>
                         <div className="flex items-center gap-2">
                           {company.logo_url ? (
                             <img
                               src={company.logo_url}
                               alt={company.name}
-                              className="w-6 h-6 rounded object-contain flex-shrink-0 border border-border/50"
+                              className="w-8 h-8 rounded object-contain flex-shrink-0 border border-border/50"
                               onError={(e) => {
                                 const target = e.currentTarget;
                                 target.style.display = 'none';
@@ -257,32 +316,27 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
                             />
                           ) : null}
                           <span
-                            className={`w-6 h-6 rounded flex-shrink-0 flex items-center justify-center text-xs leading-none text-white font-bold ${company.icon_color} ${company.logo_url ? 'hidden' : ''}`}
+                            className={`w-8 h-8 rounded flex-shrink-0 flex items-center justify-center text-base leading-none text-white font-bold ${company.icon_color} ${company.logo_url ? 'hidden' : ''}`}
                             style={{ fontFamily: 'Oxanium, sans-serif' }}
                           >
                             {company.name.charAt(0).toUpperCase()}
                           </span>
                           <div className="flex flex-col min-w-0">
                             <span className="text-sm font-medium truncate">{company.name}</span>
-                            <span className="text-xs text-muted-foreground truncate">{company.domain}</span>
+                            <span className="text-sm text-muted-foreground truncate">{company.domain}</span>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell>
                         {company.last_meeting ? (
-                          <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 gap-1.5 text-muted-foreground">
-                            <Calendar className="h-3 w-3" />
-                            {formatShortDate(company.last_meeting)}
-                          </Badge>
+                          <DatePill date={formatShortDate(company.last_meeting) || ''} />
                         ) : (
                           <span className="text-sm text-muted-foreground">-</span>
                         )}
                       </TableCell>
                       <TableCell>
                         {company.customer_profile ? (
-                          <Badge variant="outline" className="font-normal text-xs rounded-md px-2.5 py-0.5 text-muted-foreground">
-                            {company.customer_profile}
-                          </Badge>
+                          <CustomerProfilePill profile={company.customer_profile} />
                         ) : (
                           <span className="text-sm text-muted-foreground">-</span>
                         )}
@@ -364,6 +418,20 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
           </div>
         </div>
       </div>
+
+      {/* Detail Side Panel */}
+      {selectedCompanyId && (
+        <CompanyDetailSidePanel
+          companyId={selectedCompanyId}
+          company={companies.find((c) => c.id === selectedCompanyId)!}
+          onClose={() => {
+            setSelectedCompanyId(null);
+            const url = new URL(window.location);
+            url.searchParams.delete('company');
+            window.history.pushState({}, '', url);
+          }}
+        />
+      )}
     </div>
   );
 };
