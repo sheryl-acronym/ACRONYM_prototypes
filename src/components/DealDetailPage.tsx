@@ -47,6 +47,7 @@ import { StagePill } from '@/components/StagePill';
 import { MomentumPill } from '@/components/MomentumPill';
 import { ContactPill } from '@/components/ContactPill';
 import { ActionItem } from '@/components/ActionItem';
+import { UnifiedContactCard } from '@/components/UnifiedContactCard';
 
 interface DealDetailPageProps {
   data: DealDetailData;
@@ -817,134 +818,26 @@ const KeyStakeholdersSection: React.FC<{
   <div className="py-4">
     <div className="space-y-3">
       {stakeholders.map((s, i) => (
-        <div key={i} className="rounded-lg border bg-card p-4">
-          {/* Header row: avatar, name, role in buying process, and risk badge */}
-          <div className="flex items-start gap-3 mb-3">
-            <span
-              className={`flex h-8 w-8 items-center justify-center rounded-full text-white text-xs font-semibold flex-shrink-0 ${s.avatar_color || 'bg-gray-400'}`}
-            >
-              {s.name
-                .split(' ')
-                .map((n) => n[0])
-                .join('')
-                .toUpperCase()}
-            </span>
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-col gap-1.5">
-                <span className="text-sm font-semibold text-foreground">{s.name}</span>
-                <div className="flex items-center gap-2">
-                  {s.job_title && (
-                    <span className="text-xs text-foreground/60">{s.job_title}</span>
-                  )}
-                  <div className="flex flex-wrap gap-1.5">
-                    {s.role_in_buying_process && (
-                      <Badge variant="outline" className="rounded-full font-normal text-xs px-2.5 py-0.5 w-fit">
-                        {s.role_in_buying_process}
-                      </Badge>
-                    )}
-                    {s.tags && s.tags.map((tag, ti) => (
-                      <Badge key={ti} variant="outline" className="rounded-full font-normal text-xs px-2.5 py-0.5 w-fit bg-white">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            {s.risk && (
-              <Badge variant="outline" className={`rounded-full font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${
-                s.risk.level === 'HIGH' ? 'bg-red-50 text-red-900 border-red-200' :
-                s.risk.level === 'MEDIUM' ? 'bg-amber-50 text-amber-900 border-amber-200' :
-                'bg-green-50 text-green-900 border-green-200'
-              }`}>
-                {s.risk.level} Risk
-              </Badge>
-            )}
-          </div>
-
-          {/* Additional context sections - two column layout */}
-          <div className="space-y-3">
-            {s.role_and_engagement && (
-              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
-                <div>
-                  <h4 className="text-sm font-semibold text-foreground">Role</h4>
-                </div>
-                <div>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{s.role_and_engagement}</p>
-                </div>
-              </div>
-            )}
-
-            {s.buyer_persona && (
-              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
-                <div>
-                  <h4 className="text-sm font-semibold text-foreground">Buyer Persona</h4>
-                </div>
-                <div>
-                  <Badge variant="outline" className="rounded-md font-normal text-xs px-2.5 py-0.5 w-fit flex items-center gap-1.5">
-                    <BookOpen size={14} />
-                    {s.buyer_persona}
-                  </Badge>
-                </div>
-              </div>
-            )}
-
-            {s.authority && (
-              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
-                <div>
-                  <h4 className="text-sm font-semibold text-foreground">Authority</h4>
-                </div>
-                <div>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{s.authority}</p>
-                </div>
-              </div>
-            )}
-
-            {s.key_concerns && (
-              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
-                <div>
-                  <h4 className="text-sm font-semibold text-foreground">Key concerns</h4>
-                </div>
-                <div>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{s.key_concerns}</p>
-                </div>
-              </div>
-            )}
-
-            {s.communication_style && (
-              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
-                <div>
-                  <h4 className="text-sm font-semibold text-foreground">Communication</h4>
-                </div>
-                <div>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{s.communication_style}</p>
-                </div>
-              </div>
-            )}
-
-            {s.risk && (
-              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
-                <div>
-                  <h4 className="text-sm font-semibold text-foreground">Risk</h4>
-                </div>
-                <div>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{s.risk.description}</p>
-                </div>
-              </div>
-            )}
-
-            {s.personal_markers && (
-              <div className="grid gap-3" style={{ gridTemplateColumns: '120px 1fr' }}>
-                <div>
-                  <h4 className="text-sm font-semibold text-foreground">Personal markers</h4>
-                </div>
-                <div>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{s.personal_markers}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
+        <UnifiedContactCard
+          key={i}
+          contact={{
+            name: s.name,
+            avatar_color: s.avatar_color,
+            job_title: s.job_title,
+            persona: s.buyer_persona,
+            role_in_buying_process: s.role_in_buying_process,
+            tags: s.tags,
+            risk: s.risk,
+            role_and_engagement: s.role_and_engagement,
+            authority: s.authority,
+            key_concerns: s.key_concerns,
+            communication_style: s.communication_style,
+            personal_markers: s.personal_markers,
+          }}
+          variant="full"
+          showRisk={true}
+          expandableFields={true}
+        />
       ))}
     </div>
   </div>
@@ -1191,51 +1084,20 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
                   </h2>
                   <div className="space-y-3">
                     {data.key_stakeholders && data.key_stakeholders[0] && (
-                      <div className="rounded-lg border bg-card p-4">
-                        {/* Header row only - no details below */}
-                        <div className="flex items-start gap-3">
-                          <span
-                            className={`flex h-8 w-8 items-center justify-center rounded-full text-white text-xs font-semibold flex-shrink-0 ${data.key_stakeholders[0].avatar_color || 'bg-gray-400'}`}
-                          >
-                            {data.key_stakeholders[0].name
-                              .split(' ')
-                              .map((n) => n[0])
-                              .join('')
-                              .toUpperCase()}
-                          </span>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex flex-col gap-1.5">
-                              <span className="text-sm font-semibold text-foreground">{data.key_stakeholders[0].name}</span>
-                              <div className="flex items-center gap-2">
-                                {data.key_stakeholders[0].job_title && (
-                                  <span className="text-xs text-foreground/60">{data.key_stakeholders[0].job_title}</span>
-                                )}
-                                <div className="flex flex-wrap gap-1.5">
-                                  {data.key_stakeholders[0].role_in_buying_process && (
-                                    <Badge variant="outline" className="rounded-full font-normal text-xs px-2.5 py-0.5 w-fit">
-                                      {data.key_stakeholders[0].role_in_buying_process}
-                                    </Badge>
-                                  )}
-                                  {data.key_stakeholders[0].tags && data.key_stakeholders[0].tags.map((tag, ti) => (
-                                    <Badge key={ti} variant="outline" className="rounded-full font-normal text-xs px-2.5 py-0.5 w-fit bg-white">
-                                      {tag}
-                                    </Badge>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          {data.key_stakeholders[0].risk && (
-                            <Badge variant="outline" className={`rounded-full font-normal text-xs px-2.5 py-0.5 flex-shrink-0 uppercase ${
-                              data.key_stakeholders[0].risk.level === 'HIGH' ? 'bg-red-50 text-red-900 border-red-200' :
-                              data.key_stakeholders[0].risk.level === 'MEDIUM' ? 'bg-amber-50 text-amber-900 border-amber-200' :
-                              'bg-green-50 text-green-900 border-green-200'
-                            }`}>
-                              {data.key_stakeholders[0].risk.level} Risk
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
+                      <UnifiedContactCard
+                        contact={{
+                          name: data.key_stakeholders[0].name,
+                          avatar_color: data.key_stakeholders[0].avatar_color,
+                          job_title: data.key_stakeholders[0].job_title,
+                          persona: data.key_stakeholders[0].buyer_persona,
+                          role_in_buying_process: data.key_stakeholders[0].role_in_buying_process,
+                          tags: data.key_stakeholders[0].tags,
+                          risk: data.key_stakeholders[0].risk,
+                        }}
+                        variant="full"
+                        showRisk={true}
+                        expandableFields={false}
+                      />
                     )}
                   </div>
                 </div>

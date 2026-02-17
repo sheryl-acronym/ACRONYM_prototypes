@@ -162,6 +162,37 @@ export interface KeyStakeholder {
   };
 }
 
+export interface ContactCardData {
+  // Core
+  name: string;
+  avatar_color?: string;
+
+  // Contact info
+  email?: string;
+  job_title?: string;
+  role?: string;
+  title?: string;
+  persona?: string;
+  linkedin_url?: string;
+
+  // Classification
+  tags?: string[];
+  role_in_buying_process?: string;
+
+  // Risk (optional)
+  risk?: {
+    level: 'LOW' | 'MEDIUM' | 'HIGH';
+    description: string;
+  };
+
+  // Detailed metadata (for expandable sections in 'full' variant)
+  role_and_engagement?: string;
+  authority?: string;
+  key_concerns?: string;
+  communication_style?: string;
+  personal_markers?: string;
+}
+
 export interface Meeting {
   id: string;
   name: string;

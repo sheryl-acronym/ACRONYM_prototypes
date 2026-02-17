@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AttendeeHoverCard } from '@/components/AttendeeHoverCard';
+import { UnifiedContactCard } from '@/components/UnifiedContactCard';
 import { ActionItem } from '@/components/ActionItem';
 import { ContactPill } from '@/components/ContactPill';
 import { DatePill } from '@/components/DatePill';
@@ -97,60 +97,191 @@ export default function ComponentsPage() {
           </CardContent>
         </Card>
 
-        {/* AttendeeHoverCard */}
+        {/* UnifiedContactCard */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">AttendeeHoverCard</CardTitle>
+            <CardTitle className="text-base">UnifiedContactCard</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">Popover card that displays attendee information on hover. Shows name, email, role, buyer persona, and color-coded tags (Champion, Economic Buyer, etc.).</p>
-            <div className="bg-muted p-6 rounded-md border border-input space-y-3">
-              <div>
-                <p className="text-xs text-muted-foreground mb-3">Example with Champion tag:</p>
-                <AttendeeHoverCard
-                  name="Sarah Johnson"
-                  email="sarah@company.com"
-                  role="VP of Sales"
-                  persona="Operational Decision Maker"
-                  linkedin_url="https://linkedin.com"
-                  tags={['Champion']}
-                />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground mb-3">Example with Economic Buyer tag:</p>
-                <AttendeeHoverCard
-                  name="Mike Chen"
-                  email="mike@company.com"
-                  role="CFO"
-                  persona="Financial Decision Maker"
-                  linkedin_url="https://linkedin.com"
-                  tags={['Economic Buyer']}
-                />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground mb-3">Example with multiple tags:</p>
-                <AttendeeHoverCard
-                  name="Emily Rodriguez"
-                  email="emily@company.com"
-                  role="Director of Operations"
-                  persona="Process Optimizer"
-                  linkedin_url="https://linkedin.com"
-                  tags={['Champion', 'Economic Buyer']}
-                />
+            <p className="text-sm text-muted-foreground">Flexible contact card component with multiple display variants: compact-hover (trigger button with popover), compact-click (pill trigger with popover), full (inline card with expandable sections), and minimal (inline name and avatar).</p>
+
+            {/* Compact Hover Variant */}
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-3">Variant: compact-hover</h4>
+              <div className="bg-muted p-6 rounded-md border border-input">
+                <p className="text-xs text-muted-foreground mb-3">Hover-triggered popover with name, email, role, persona, and tags:</p>
+                <div className="space-y-2">
+                  <UnifiedContactCard
+                    contact={{
+                      name: "Sarah Johnson",
+                      email: "sarah@company.com",
+                      role: "VP of Sales",
+                      persona: "Operational Decision Maker",
+                      linkedin_url: "https://linkedin.com",
+                      tags: ['Champion'],
+                      avatar_color: 'bg-blue-400',
+                    }}
+                    variant="compact-hover"
+                  />
+                  <UnifiedContactCard
+                    contact={{
+                      name: "Mike Chen",
+                      email: "mike@company.com",
+                      role: "CFO",
+                      persona: "Financial Decision Maker",
+                      linkedin_url: "https://linkedin.com",
+                      tags: ['Economic Buyer'],
+                      avatar_color: 'bg-green-400',
+                    }}
+                    variant="compact-hover"
+                  />
+                </div>
               </div>
             </div>
-            <div className="pt-2">
-              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
-              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
-{`<AttendeeHoverCard
-  name="John Smith"
-  email="john@company.com"
-  role="VP of Sales"
-  persona="Strategic Decision Maker"
-  linkedin_url="https://linkedin.com/..."
-  tags={['Champion', 'Economic Buyer']}
+
+            {/* Compact Click Variant */}
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-3">Variant: compact-click</h4>
+              <div className="bg-muted p-6 rounded-md border border-input">
+                <p className="text-xs text-muted-foreground mb-3">Click-triggered popover with structured sections:</p>
+                <div className="space-y-2">
+                  <UnifiedContactCard
+                    contact={{
+                      name: "Emily Rodriguez",
+                      email: "emily@company.com",
+                      job_title: "Director of Operations",
+                      role: "Influencer",
+                      persona: "Process Optimizer",
+                      avatar_color: 'bg-purple-400',
+                    }}
+                    variant="compact-click"
+                  />
+                  <UnifiedContactCard
+                    contact={{
+                      name: "James Park",
+                      email: "james@company.com",
+                      job_title: "Director of IT",
+                      role: "Blocker",
+                      persona: "Risk Manager",
+                      avatar_color: 'bg-pink-400',
+                    }}
+                    variant="compact-click"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Full Variant */}
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-3">Variant: full</h4>
+              <div className="bg-muted p-6 rounded-md border border-input space-y-4">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-3">Full card display with expandable sections and risk badge:</p>
+                  <UnifiedContactCard
+                    contact={{
+                      name: "Russell Harris",
+                      email: "russell@proven.com",
+                      job_title: "Head of Product/Tech",
+                      role_in_buying_process: "Prospect",
+                      tags: ['Decision Maker'],
+                      avatar_color: 'bg-orange-400',
+                      role_and_engagement: "Initial point of contact who responded positively to outreach and brought team members into demo.",
+                      authority: "Likely has authority over payment infrastructure decisions as Head of Product/Tech.",
+                      key_concerns: "Subscription payment integration and unit economics impact on margins.",
+                      communication_style: "Direct, data-driven, asks probing questions about ROI and implementation details.",
+                      risk: {
+                        level: 'MEDIUM',
+                        description: 'Has identified subscription payment as a potential deal blocker; may require direct product roadmap commitment.',
+                      },
+                    }}
+                    variant="full"
+                    showRisk={true}
+                    expandableFields={true}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Minimal Variant */}
+            <div>
+              <h4 className="text-sm font-semibold text-foreground mb-3">Variant: minimal</h4>
+              <div className="bg-muted p-6 rounded-md border border-input">
+                <p className="text-xs text-muted-foreground mb-3">Minimal inline display for lists and tables:</p>
+                <div className="space-y-2">
+                  <UnifiedContactCard
+                    contact={{
+                      name: "Claire Stachniewski",
+                      job_title: "Sales Manager",
+                      avatar_color: 'bg-amber-400',
+                    }}
+                    variant="minimal"
+                  />
+                  <UnifiedContactCard
+                    contact={{
+                      name: "Alice Wong",
+                      job_title: "Product Lead",
+                      tags: ['Champion'],
+                      avatar_color: 'bg-cyan-400',
+                    }}
+                    variant="minimal"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-2 space-y-3">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">Usage (compact-hover variant):</p>
+                <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
+{`<UnifiedContactCard
+  contact={{
+    name: "Sarah Johnson",
+    email: "sarah@company.com",
+    role: "VP of Sales",
+    persona: "Decision Maker",
+    tags: ['Champion'],
+    avatar_color: 'bg-blue-400',
+  }}
+  variant="compact-hover"
 />`}
-              </pre>
+                </pre>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground">Usage (full variant):</p>
+                <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
+{`<UnifiedContactCard
+  contact={{
+    name: "Russell Harris",
+    avatar_color: 'bg-orange-400',
+    role_and_engagement: "...",
+    authority: "...",
+    risk: { level: 'MEDIUM', description: "..." },
+  }}
+  variant="full"
+  showRisk={true}
+/>`}
+                </pre>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Features:</p>
+              <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
+                <li>• 4 variants: compact-hover, compact-click, full, minimal</li>
+                <li>• Hover-triggered and click-triggered popovers</li>
+                <li>• Expandable metadata sections (full variant only)</li>
+                <li>• Color-coded tags and risk badges</li>
+                <li>• Data-driven avatar colors</li>
+                <li>• LinkedIn and email links</li>
+              </ul>
+            </div>
+
+            <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Used in:</p>
+              <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
+                <li>• DealDetailPage.tsx (Stakeholders tab - full variant)</li>
+                <li>• PreCallBrief.tsx (attendee displays - compact-hover variant)</li>
+              </ul>
             </div>
           </CardContent>
         </Card>
