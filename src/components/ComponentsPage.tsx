@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AttendeeHoverCard } from '@/components/AttendeeHoverCard';
+import { ActionItem } from '@/components/ActionItem';
 import { ContactPill } from '@/components/ContactPill';
 import { DatePill } from '@/components/DatePill';
 import { MomentumPill } from '@/components/MomentumPill';
@@ -22,6 +23,79 @@ export default function ComponentsPage() {
           <h2 className="text-xl font-semibold mb-2">Custom Components</h2>
           <p className="text-sm text-muted-foreground mb-4">Reusable components built for ACRONYM</p>
         </div>
+
+        {/* ActionItem */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">ActionItem</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">A reusable action item component that displays a task with checkbox, assignee information, and optional copy/delete actions. Features hover effects and optional drag-and-drop support.</p>
+            <div className="bg-muted p-6 rounded-md border border-input space-y-3">
+              <div>
+                <p className="text-xs text-muted-foreground mb-3">Example action items:</p>
+                <div className="space-y-2">
+                  <ActionItem
+                    text="Send ROI model and three case studies of similar conversion lift examples"
+                    assignee="Jacob Francis"
+                    completed={false}
+                    onCompletedChange={(completed) => console.log('completed:', completed)}
+                    onCopy={() => console.log('copy')}
+                    onDelete={() => console.log('delete')}
+                  />
+                  <ActionItem
+                    text="Schedule follow-up call with Russell's team to validate proposal"
+                    assignee="Sarah Johnson"
+                    completed={true}
+                    onCompletedChange={(completed) => console.log('completed:', completed)}
+                    onCopy={() => console.log('copy')}
+                    onDelete={() => console.log('delete')}
+                  />
+                  <ActionItem
+                    text="Review budget approval from CFO"
+                    assignee="Mike Chen"
+                    completed={false}
+                    onCompletedChange={(completed) => console.log('completed:', completed)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Usage:</p>
+              <pre className="bg-slate-900 text-slate-100 p-3 rounded-md text-xs overflow-x-auto mt-2">
+{`<ActionItem
+  text="Send ROI model and case studies"
+  assignee="Jacob Francis (Flex)"
+  completed={false}
+  onCompletedChange={(completed) => setCompleted(completed)}
+  onCopy={() => copyItem()}
+  onDelete={() => deleteItem()}
+  isDraggable={true}
+  isDragging={false}
+  onDragStart={() => setDraggedIndex(index)}
+  onDragOver={(e) => e.preventDefault()}
+  onDrop={() => moveItem()}
+/>`}
+              </pre>
+            </div>
+            <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Features:</p>
+              <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
+                <li>• Checkbox for marking items complete with strikethrough</li>
+                <li>• Assignee display with colored avatar</li>
+                <li>• Copy and delete action buttons (hover-revealed)</li>
+                <li>• Optional drag-and-drop support for reordering</li>
+                <li>• Responsive visual feedback for completed state</li>
+              </ul>
+            </div>
+            <div className="pt-2">
+              <p className="text-xs font-medium text-muted-foreground">Used in:</p>
+              <ul className="text-xs text-muted-foreground mt-2 space-y-1 ml-4">
+                <li>• DealDetailPage.tsx (NextStepsSection)</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* AttendeeHoverCard */}
         <Card>

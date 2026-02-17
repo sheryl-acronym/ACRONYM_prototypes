@@ -181,9 +181,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/deals" replace />} />
             <Route path="/deals" element={<DealsPageRoute />} />
-            <Route path="/deals/:view" element={<DealsPageRoute />} />
             <Route path="/deals/:view/:dealId" element={<DealDetailRoute />} />
             <Route path="/deals/:dealId" element={<DealDetailRoute />} />
+            <Route path="/deals/:view" element={<DealsPageRoute />} />
             <Route path="/meetings" element={<UpcomingMeetingsPage meetings={upcomingMeetingsData} briefData={meetingBriefData} />} />
             <Route path="/meetings/um-001" element={<PreCallBriefRoute />} />
             <Route path="/meetings/um-001/:version" element={<PreCallBriefRoute />} />

@@ -49,6 +49,7 @@ import {
 interface DealDetailPageV2Props {
   data: DealDetailData;
   onVersionChange?: (version: 'v1' | 'v2') => void;
+  hideTopBar?: boolean;
 }
 
 const momentumConfig: Record<Momentum, { bg: string; text: string; border: string }> = {
@@ -1393,7 +1394,7 @@ const MeddicsSection: React.FC<{
   );
 };
 
-export const DealDetailPageV2: React.FC<DealDetailPageV2Props> = ({ data, onVersionChange }) => {
+export const DealDetailPageV2: React.FC<DealDetailPageV2Props> = ({ data, onVersionChange, hideTopBar = false }) => {
   const [dealName, setDealName] = React.useState(data.name);
   const [transcriptOpen, setTranscriptOpen] = React.useState(false);
   const [highlightQuote, setHighlightQuote] = React.useState<string | null>(null);
@@ -1418,11 +1419,13 @@ export const DealDetailPageV2: React.FC<DealDetailPageV2Props> = ({ data, onVers
     <TranscriptPanelContext.Provider value={contextValue}>
       <div className="flex flex-1 min-h-screen relative flex-col">
         {/* Full-width header - sticky */}
-        <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-slate-200">
-          <div className="flex-1 flex items-center">
-            <TopBar dealName={data.name} onVersionChange={onVersionChange} />
+        {!hideTopBar && (
+          <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-slate-200">
+            <div className="flex-1 flex items-center">
+              <TopBar dealName={data.name} onVersionChange={onVersionChange} />
+            </div>
           </div>
-        </div>
+        )}
         {/* Main content area */}
         <div className="flex flex-1 overflow-hidden">
           <div className="flex-1 bg-white overflow-y-auto">

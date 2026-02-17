@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   DealDetailData,
-  DealStage,
   Momentum,
   Verbatim,
   ReasoningWithVerbatims,
@@ -12,18 +11,17 @@ import {
   Building2,
   Calendar,
   ChevronsRight,
-  Diamond,
   Maximize2,
   MoreHorizontal,
   Upload,
   User,
-  Square,
+  SquareDot,
+  Layers,
   Sparkles,
   ThumbsUp,
   ThumbsDown,
-  Copy,
-  Trash2,
   BookOpen,
+  IterationCw,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -37,7 +35,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import {
   Select,
@@ -46,28 +43,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { StagePill } from '@/components/StagePill';
+import { MomentumPill } from '@/components/MomentumPill';
+import { ContactPill } from '@/components/ContactPill';
+import { ActionItem } from '@/components/ActionItem';
 
 interface DealDetailPageProps {
   data: DealDetailData;
   onVersionChange?: (version: 'v1' | 'v2' | '1st-call' | 'post-call-1') => void;
+  hideTopBar?: boolean;
+  collapseMeddic?: boolean;
 }
-
-const stageConfig: Record<DealStage, { bg: string; text: string; border: string }> = {
-  'First meeting scheduled': { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
-  'Discovery & Qualification': { bg: 'bg-violet-50', text: 'text-violet-900', border: 'border-violet-200' },
-  'Demo': { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200' },
-  'Proposal / Negotiation': { bg: 'bg-sky-50', text: 'text-sky-900', border: 'border-sky-200' },
-  'Closed Won': { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
-  'Closed Lost': { bg: 'bg-red-50', text: 'text-red-900', border: 'border-red-200' },
-};
-
-const momentumConfig: Record<Momentum, { bg: string; text: string; border: string }> = {
-  Strong: { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
-  Stalled: { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200' },
-  'At risk': { bg: 'bg-red-50', text: 'text-red-900', border: 'border-red-200' },
-  Closed: { bg: 'bg-gray-50', text: 'text-gray-800', border: 'border-gray-200' },
-  Active: { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
-};
 
 function formatShortDate(dateStr: string | null): string | null {
   if (!dateStr) return null;
@@ -352,37 +338,30 @@ const DealHeader: React.FC<{
 );
 
 const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
-  const stageStyle = stageConfig[data.stage_name];
-  const momentumStyle = momentumConfig[data.momentum];
-
   return (
     <div className="space-y-0">
       {/* Deal stage */}
-      <div className="flex items-center py-2.5">
+      <div className="flex items-center py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
-          <Diamond className="h-4 w-4" />
+          <Layers className="h-4 w-4" />
           Deal stage
         </span>
-        <div className={`inline-flex items-center h-5.5 rounded-full px-3 border ${stageStyle.bg} ${stageStyle.text} ${stageStyle.border}`}>
-          <span className="text-sm font-medium">{data.stage_name}</span>
-        </div>
+        <StagePill stage={data.stage_name} />
       </div>
 
       {/* Momentum */}
-      <div className="flex items-center py-2.5">
+      <div className="flex items-center py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
-          <Square className="h-4 w-4" />
+          <SquareDot className="h-4 w-4" />
           Momentum
         </span>
-        <div className={`inline-flex items-center h-5.5 rounded-full px-3 border ${momentumStyle.bg} ${momentumStyle.text} ${momentumStyle.border}`}>
-          <span className="text-sm font-medium">{data.momentum}</span>
-        </div>
+        <MomentumPill momentum={data.momentum} />
       </div>
 
       {/* Last meeting */}
-      <div className="flex items-center py-2.5">
+      <div className="flex items-center py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
-          <Calendar className="h-4 w-4" />
+          <IterationCw className="h-4 w-4" />
           Last meeting
         </span>
         {data.last_meeting ? (
@@ -396,7 +375,7 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
       </div>
 
       {/* Next meeting */}
-      <div className="flex items-center py-2.5">
+      <div className="flex items-center py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
           <Calendar className="h-4 w-4" />
           Next meeting
@@ -412,21 +391,16 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
       </div>
 
       {/* Owner */}
-      <div className="flex items-center py-2.5">
+      <div className="flex items-center py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
           <User className="h-4 w-4" />
           Owner
         </span>
-        <div className="flex items-center gap-2 text-sm text-foreground">
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-white text-[9px] font-semibold flex-shrink-0">
-            {data.owner_name.split(' ').map((n) => n[0]).join('').toUpperCase()}
-          </span>
-          {data.owner_name}
-        </div>
+        <ContactPill name={data.owner_name} />
       </div>
 
       {/* Company */}
-      <div className="flex items-center py-2.5">
+      <div className="flex items-center py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
           <Building2 className="h-4 w-4" />
           Company
@@ -469,12 +443,10 @@ const CurrentStateSection: React.FC<{
   momentum: Momentum;
   aceCloseConfidence?: 'Low' | 'Medium' | 'High';
 }> = ({ summary, momentum, aceCloseConfidence }) => {
-  const momentumStyle = momentumConfig[momentum];
-
   const confidenceStyles = {
-    Low: 'bg-red-50 text-red-900 border-red-200',
-    Medium: 'bg-amber-50 text-amber-900 border-amber-200',
-    High: 'bg-green-50 text-green-900 border-green-200',
+    Low: 'bg-red-100 text-red-900',
+    Medium: 'bg-amber-100 text-amber-900',
+    High: 'bg-green-100 text-green-900',
   };
 
   const confidenceDisplay = {
@@ -485,20 +457,18 @@ const CurrentStateSection: React.FC<{
 
   return (
     <div className="py-4 space-y-4">
-      <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
+      <div className="rounded-lg border border-gray-200 p-4 space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground/60">Momentum</h3>
-          <div className={`inline-flex items-center h-5.5 rounded-full px-3 border ${momentumStyle.bg} ${momentumStyle.text} ${momentumStyle.border}`}>
-            <span className="text-sm font-medium">{momentum}</span>
-          </div>
+          <MomentumPill momentum={momentum} />
         </div>
         <p className="text-sm text-foreground/80">{summary}</p>
         {aceCloseConfidence && (
           <div className="flex items-center gap-2">
             <span className="text-xs text-foreground">Predicted Close Confidence</span>
-            <Badge variant="outline" className={`rounded-full font-normal text-xs px-2.5 py-0.5 ${confidenceStyles[aceCloseConfidence]}`}>
+            <div className={`inline-flex items-center h-6 px-2.5 py-1 rounded-full font-normal text-xs ${confidenceStyles[aceCloseConfidence]}`}>
               {confidenceDisplay[aceCloseConfidence]}
-            </Badge>
+            </div>
           </div>
         )}
         <div className="pt-3 mt-1 border-t border-gray-200 space-y-2">
@@ -704,17 +674,28 @@ const NextStepsSection: React.FC<{
     setItems(updated);
   };
 
-  const ourSteps = items.filter((step) => step.assignee.includes('Flex'));
-  const theirSteps = items.filter((step) => step.assignee.includes('PROVEN'));
+  const ourSteps = items.filter((step) => step.assignee === 'Jacob Francis');
+  const theirSteps = items.filter((step) => step.assignee !== 'Jacob Francis');
 
   const renderSteps = (stepsToRender: typeof items) => (
     <div className="space-y-2">
       {stepsToRender.map((step, i) => {
         const originalIndex = items.indexOf(step);
         return (
-          <div
+          <ActionItem
             key={i}
-            draggable
+            text={step.text}
+            assignee={step.assignee}
+            completed={step.completed}
+            onCompletedChange={(checked) => {
+              const updated = [...items];
+              updated[originalIndex] = { ...updated[originalIndex], completed: checked };
+              setItems(updated);
+            }}
+            onCopy={() => copyItem(originalIndex)}
+            onDelete={() => deleteItem(originalIndex)}
+            isDraggable={true}
+            isDragging={draggedIndex === originalIndex}
             onDragStart={() => setDraggedIndex(originalIndex)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => {
@@ -723,54 +704,7 @@ const NextStepsSection: React.FC<{
                 setDraggedIndex(null);
               }
             }}
-            className={`group/step flex items-start gap-3 p-3 rounded-lg transition-colors ${
-              draggedIndex === originalIndex
-                ? 'bg-gray-100 opacity-50 cursor-move'
-                : 'hover:bg-gray-50 hover:cursor-move'
-            }`}
-          >
-            <Checkbox
-              checked={step.completed}
-              onCheckedChange={(checked) => {
-                const updated = [...items];
-                updated[originalIndex] = { ...updated[originalIndex], completed: !!checked };
-                setItems(updated);
-              }}
-              className="mt-0.5"
-            />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3">
-                <span className={`text-sm ${step.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
-                  {step.text}
-                </span>
-              </div>
-              {step.assignee && (
-                <div className="flex items-center gap-1.5 mt-1">
-                  <span className="w-4 h-4 rounded-full bg-gray-300 flex-shrink-0" />
-                  <span className="text-xs text-muted-foreground">{step.assignee}</span>
-                </div>
-              )}
-            </div>
-            <div className="flex items-center gap-1 flex-shrink-0 opacity-0 group-hover/step:opacity-100 transition-opacity">
-              {step.reasoning && (
-                <ReasoningPopover reasoning={step.reasoning} />
-              )}
-              <button
-                onClick={() => copyItem(originalIndex)}
-                className="p-1.5 hover:bg-gray-200 rounded transition-colors"
-                title="Copy"
-              >
-                <Copy className="h-4 w-4 text-gray-500" />
-              </button>
-              <button
-                onClick={() => deleteItem(originalIndex)}
-                className="p-1.5 hover:bg-gray-200 rounded transition-colors"
-                title="Delete"
-              >
-                <Trash2 className="h-4 w-4 text-gray-500" />
-              </button>
-            </div>
-          </div>
+          />
         );
       })}
     </div>
@@ -1077,9 +1011,10 @@ const statusIcon = (status: 'complete' | 'partial' | 'missing'): string => {
 
 const MeddicsSection: React.FC<{
   meddic?: DealDetailData['meddic'];
-}> = ({ meddic }) => {
+  collapsedByDefault?: boolean;
+}> = ({ meddic, collapsedByDefault = false }) => {
   const [expandedIndices, setExpandedIndices] = React.useState<Set<number>>(
-    () => new Set(meddic?.components.map((_, i) => i) ?? [])
+    () => collapsedByDefault ? new Set() : new Set(meddic?.components.map((_, i) => i) ?? [])
   );
 
   const toggleExpanded = (index: number) => {
@@ -1124,8 +1059,7 @@ const MeddicsSection: React.FC<{
                 </tr>
                 {expandedIndices.has(i) && comp.details && comp.details.length > 0 && (
                   <tr>
-                    <td colSpan={2}></td>
-                    <td colSpan={2} className="px-4 py-3">
+                    <td colSpan={4} className="px-4 py-3">
                       <ul className="space-y-2">
                         {comp.details.map((item, j) => (
                           <IntelBullet key={j} item={item} />
@@ -1143,7 +1077,7 @@ const MeddicsSection: React.FC<{
   );
 };
 
-export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionChange }) => {
+export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionChange, hideTopBar = false, collapseMeddic = false }) => {
   const [transcriptOpen, setTranscriptOpen] = React.useState(false);
   const [highlightQuote, setHighlightQuote] = React.useState<string | null>(null);
   const isNarrow = useIsNarrow(OVERLAY_BREAKPOINT);
@@ -1163,11 +1097,13 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
     <TranscriptPanelContext.Provider value={contextValue}>
       <div className="flex flex-1 min-h-screen relative flex-col">
         {/* Full-width header - sticky */}
-        <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-gray-200">
-          <div className="flex-1 flex items-center">
-            <TopBar dealName={data.name} onVersionChange={onVersionChange} />
+        {!hideTopBar && (
+          <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-gray-200">
+            <div className="flex-1 flex items-center">
+              <TopBar dealName={data.name} onVersionChange={onVersionChange} />
+            </div>
           </div>
-        </div>
+        )}
         {/* Main content area */}
         <div className="flex flex-1 overflow-hidden">
           <div className="flex-1 bg-white overflow-y-auto">
@@ -1310,7 +1246,7 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
               </TabsContent>
 
               <TabsContent value="meddic">
-                <MeddicsSection meddic={data.meddic} />
+                <MeddicsSection meddic={data.meddic} collapsedByDefault={collapseMeddic} />
               </TabsContent>
 
               <TabsContent value="stakeholders">
@@ -1345,21 +1281,6 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
         )}
         </div>
 
-        {/* Floating chat bar */}
-        <div className="fixed bottom-0 left-0 right-0 z-30 pointer-events-none flex items-center justify-center">
-          <div className="pb-6 pointer-events-auto w-full max-w-[720px] mx-4 px-8">
-            <div className="w-full bg-white rounded-full shadow-lg border border-gray-200 px-6 py-3 flex items-center gap-3">
-              <input
-                type="text"
-                placeholder="Ask ACE..."
-                className="flex-1 bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground"
-              />
-              <button className="flex-shrink-0 px-4 py-1.5 bg-slate-700 hover:bg-slate-800 text-white text-xs font-medium rounded-full transition-colors">
-                Send
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
     </TranscriptPanelContext.Provider>
   );

@@ -193,7 +193,7 @@ export const dealDetailDemoData: Record<string, DealDetailData> = {
         {
           text: 'Send ROI model and three case studies of similar conversion lift examples',
           due_date: '',
-          assignee: 'Jacob Francis (Flex)',
+          assignee: 'Jacob Francis',
           completed: false,
           reasoning: {
             text: 'Russell explicitly requested the ROI model to "do the math" personally and indicated he needs conversion lift case studies to justify the margin impact to his team.',
@@ -205,7 +205,7 @@ export const dealDetailDemoData: Record<string, DealDetailData> = {
         {
           text: 'Review ROI model and calculate internal unit economics',
           due_date: '',
-          assignee: 'Russell Harris (PROVEN)',
+          assignee: 'Russell Harris',
           completed: false,
           reasoning: {
             text: 'This is Russell\'s stated next step to validate if the acquisition lift outweighs the cost of the HSA/FSA subscription workaround and fee stack.',
@@ -217,7 +217,7 @@ export const dealDetailDemoData: Record<string, DealDetailData> = {
         {
           text: 'Schedule internal team discussion to review feasibility for Tuesday',
           due_date: '',
-          assignee: 'Russell Harris (PROVEN)',
+          assignee: 'Russell Harris',
           completed: false,
           reasoning: {
             text: 'Russell is taking ownership of the internal alignment required before moving forward. The subscription payment workaround needs internal buy-in from his team.',
@@ -226,7 +226,7 @@ export const dealDetailDemoData: Record<string, DealDetailData> = {
         {
           text: 'Provide FAQ templates and marketing copy for Theresa Bischof',
           due_date: '',
-          assignee: 'Jacob Francis (Flex)',
+          assignee: 'Jacob Francis',
           completed: false,
           reasoning: {
             text: 'Theresa\'s involvement signals serious intent to vet implementation details and prepare customer-facing materials, which is a positive signal of deal progress.',

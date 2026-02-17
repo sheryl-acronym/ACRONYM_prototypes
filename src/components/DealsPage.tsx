@@ -35,8 +35,8 @@ import {
   ArrowDown,
   Calendar,
   User,
-  LayoutGrid,
   Square,
+  Layers,
   MessageSquare,
   Building2,
   ChevronLeft,
@@ -55,6 +55,7 @@ import {
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import { dealDetailDemoData } from '@/deal-detail-demo-data';
 
 interface DealsPageProps {
   deals: Deal[];
@@ -399,10 +400,15 @@ export const DealsPage: React.FC<DealsPageProps> = ({
   const getSelectedDealData = React.useMemo(() => {
     if (!selectedDealId) return undefined;
 
+    // Try to get detailed data from dealDetailDemoData first
+    if (dealDetailDemoData[selectedDealId]) {
+      return dealDetailDemoData[selectedDealId];
+    }
+
+    // Fallback to building from base deal if detailed data not available
     const baseDeal = deals.find((d) => d.id === selectedDealId);
     if (!baseDeal) return undefined;
 
-    // Build fallback deal detail data from base deal
     const fallbackData: DealDetailData = {
       name: baseDeal.name,
       icon_color: baseDeal.icon_color,
@@ -610,7 +616,7 @@ export const DealsPage: React.FC<DealsPageProps> = ({
                   <TableHeader>
                     <TableRow className="hover:bg-transparent">
                       <TableHead>
-                        <SortableHeader label="Deal stage" icon={LayoutGrid} field="stage_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
+                        <SortableHeader label="Deal stage" icon={Layers} field="stage_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
                       </TableHead>
                       <TableHead>
                         <SortableHeader label="Company" icon={Building2} field="company_name" sortField={sortField} sortDir={sortDir} onSort={handleSort} />
