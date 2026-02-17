@@ -151,6 +151,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
   const [sortField, setSortField] = React.useState<SortField>('name');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
   const [selectedCompanyId, setSelectedCompanyId] = React.useState<string | null>(null);
+  const [selectedProfile, setSelectedProfile] = React.useState<string>('');
 
   // Update selected company ID from URL on mount and when URL changes
   React.useEffect(() => {
@@ -187,6 +188,11 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
       );
     }
 
+    // Customer profile filter
+    if (selectedProfile) {
+      list = list.filter((c) => c.customer_profile === selectedProfile);
+    }
+
     // Sort
     list.sort((a, b) => {
       const dir = sortDir === 'asc' ? 1 : -1;
@@ -205,7 +211,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
     });
 
     return list;
-  }, [companies, search, sortField, sortDir]);
+  }, [companies, search, selectedProfile, sortField, sortDir]);
 
   const totalPages = Math.ceil(filtered.length / rowsPerPage);
   const paginatedCompanies = filtered.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
@@ -213,7 +219,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
   // Reset to first page when filters change
   React.useEffect(() => {
     setPage(0);
-  }, [search]);
+  }, [search, selectedProfile]);
 
   return (
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
@@ -242,13 +248,28 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
             <h1 className="text-2xl font-bold text-foreground">Companies</h1>
           </div>
           {/* Filter bar */}
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-3 mb-6">
             <Input
               placeholder="Filter companies..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="h-8 w-56 text-sm"
             />
+            <Select value={selectedProfile} onValueChange={setSelectedProfile}>
+              <SelectTrigger className="h-8 w-56 text-sm">
+                <SelectValue placeholder="All Customer Profiles" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">All Customer Profiles</SelectItem>
+                <SelectItem value="Enterprise AI/ML">Enterprise AI/ML</SelectItem>
+                <SelectItem value="Enterprise Multi-Channel Advanced Operations">Enterprise Multi-Channel Advanced Operations</SelectItem>
+                <SelectItem value="Health Tech Growth-Stage Partnership-Ready">Health Tech Growth-Stage Partnership-Ready</SelectItem>
+                <SelectItem value="Mid-Market E-Commerce Growth Brands">Mid-Market E-Commerce Growth Brands</SelectItem>
+                <SelectItem value="Mid-Market Multi-Channel Operators">Mid-Market Multi-Channel Operators</SelectItem>
+                <SelectItem value="SMB DTC Health/Wellness Fast-Movers">SMB DTC Health/Wellness Fast-Movers</SelectItem>
+                <SelectItem value="SMB Productivity">SMB Productivity</SelectItem>
+              </SelectContent>
+            </Select>
             <div className="flex-1" />
           </div>
         </div>
