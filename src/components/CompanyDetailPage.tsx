@@ -35,7 +35,6 @@ import { MeetingCard } from '@/components/MeetingCard';
 
 interface CompanyDetailPageProps {
   company: Company;
-  onUpdate?: (company: Company) => void;
   hideTopBar?: boolean;
 }
 
@@ -507,7 +506,6 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
 
 export const CompanyDetailPage: React.FC<CompanyDetailPageProps> = ({
   company,
-  onUpdate,
   hideTopBar = false,
 }) => {
   if (hideTopBar) {

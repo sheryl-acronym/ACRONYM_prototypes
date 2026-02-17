@@ -1,5 +1,4 @@
 import { Company } from '@/components/CompaniesPage';
-import type { ContactCardData } from '@/types';
 
 export const companiesData: Company[] = [
   {

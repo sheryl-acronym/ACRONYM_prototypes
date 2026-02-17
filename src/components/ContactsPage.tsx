@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Table,
   TableBody,
@@ -131,7 +130,6 @@ export const ContactsPage: React.FC<ContactsPageProps> = ({
   onContactSelect,
   onCloseSidePanel,
 }) => {
-  const navigate = useNavigate();
   const [search, setSearch] = React.useState('');
   const [buyerPersonaFilter, setBuyerPersonaFilter] = React.useState('');
   const [companyFilter, setCompanyFilter] = React.useState('');

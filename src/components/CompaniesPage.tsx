@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { ContactCardData } from '@/types';
@@ -298,7 +297,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
                       className="cursor-pointer hover:bg-gray-50"
                       onClick={() => {
                         setSelectedCompanyId(company.id);
-                        const url = new URL(window.location);
+                        const url = new URL(window.location.href);
                         url.searchParams.set('company', company.id);
                         window.history.pushState({}, '', url);
                       }}
@@ -428,7 +427,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
           company={companies.find((c) => c.id === selectedCompanyId)!}
           onClose={() => {
             setSelectedCompanyId(null);
-            const url = new URL(window.location);
+            const url = new URL(window.location.href);
             url.searchParams.delete('company');
             window.history.pushState({}, '', url);
           }}

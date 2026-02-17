@@ -17,7 +17,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
@@ -28,14 +27,7 @@ import { DatePill } from '@/components/DatePill';
 
 interface ContactDetailPageProps {
   contact: Contact;
-  onUpdate?: (contact: Contact) => void;
   hideTopBar?: boolean;
-}
-
-function formatShortDate(dateStr: string | null): string | null {
-  if (!dateStr) return null;
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
 // LinkedIn Icon Component (filled square with rounded corners)
@@ -212,7 +204,6 @@ const MetadataRows: React.FC<{ contact: Contact }> = ({
 
 export const ContactDetailPage: React.FC<ContactDetailPageProps> = ({
   contact,
-  onUpdate,
   hideTopBar = false,
 }) => {
   if (hideTopBar) {
