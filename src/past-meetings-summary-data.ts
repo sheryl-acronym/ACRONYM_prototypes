@@ -19,7 +19,7 @@ const createBasicSummary = (
     company: {
       name: company,
     },
-    date_time: 'Feb 17, 11:09 AM',
+    date_time: 'Feb 17, 11:09 - 11:36 AM (27 minutes)',
     duration: '27 minutes',
     our_team: [],
     their_team: [],

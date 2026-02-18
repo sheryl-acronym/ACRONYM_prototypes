@@ -3,6 +3,7 @@ import { PostCallSummaryData } from '@/types';
 import {
   CheckCircle2,
   Zap,
+  Calendar,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -73,18 +74,21 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
             <Separator className="my-6" />
 
             {/* Meeting Metadata Section - Two Column Layout */}
-            <div className="grid grid-cols-2 gap-x-8 gap-y-6 mb-6">
-              <div>
-                <p className="text-xs font-medium text-muted-foreground mb-2">Company</p>
-                <p className="text-sm font-medium text-foreground">{data.metadata.company.name}</p>
+            <div className="space-y-4 mb-6">
+              <div className="grid grid-cols-2 gap-x-8">
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground mb-2">Company</p>
+                  <p className="text-sm font-medium text-foreground">{data.metadata.company.name}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-medium text-muted-foreground mb-2">Date and time</p>
-                <p className="text-sm font-medium text-foreground">{data.metadata.date_time}</p>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-muted-foreground mb-2">Duration</p>
-                <p className="text-sm font-medium text-foreground">{data.metadata.duration}</p>
+              <div className="grid grid-cols-2 gap-x-8">
+                <div className="flex items-start gap-2">
+                  <Calendar className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <p className="text-xs font-medium text-muted-foreground">Date and Time</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">{data.metadata.date_time}</p>
+                </div>
               </div>
             </div>
 
