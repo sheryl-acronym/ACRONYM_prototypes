@@ -201,7 +201,7 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
                     <SortableHeader label="Company" />
                   </TableHead>
                   <TableHead>
-                    <SortableHeader label="Attendees" />
+                    <SortableHeader label="Invitees" />
                   </TableHead>
                   <TableHead>
                     <SortableHeader label="Team" />
