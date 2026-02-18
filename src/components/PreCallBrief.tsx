@@ -557,10 +557,10 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo }> = ({ data 
   </div>
 );
 
-const NoBrief: React.FC = () => (
-  <div className="flex flex-col items-center justify-center min-h-screen py-16 px-4">
-    <Clock className="h-16 w-16 text-muted-foreground mb-4" />
-    <h2 className="text-2xl font-semibold text-foreground mb-2">Upcoming meeting</h2>
+const NoBriefContent: React.FC = () => (
+  <div className="flex flex-col items-center justify-center flex-1 py-16 px-4 border border-dashed border-slate-200 rounded-lg bg-slate-50/50 my-4">
+    <Clock className="h-12 w-12 text-muted-foreground mb-3" />
+    <h2 className="text-xl font-semibold text-foreground mb-2">Upcoming meeting</h2>
     <p className="text-sm text-muted-foreground mb-6">This meeting is scheduled to occur in about 2 hours.</p>
     <div className="flex gap-3">
       <Button variant="outline" size="sm">
@@ -584,9 +584,6 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
           </div>
         </div>
       )}
-      {currentVersion === 'no-brief' ? (
-        <NoBrief />
-      ) : (
       <div className="w-full max-w-[700px] mx-auto px-8 py-4 flex-1 overflow-y-auto">
       <MeetingHeader
         meetingType={data.meeting_type}
@@ -595,6 +592,9 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
       />
       <MetadataRows metadata={data.metadata} />
       <Separator className="my-4" />
+      {currentVersion === 'no-brief' ? (
+        <NoBriefContent />
+      ) : (
       <div className="py-4">
         <MeetingObjectivesSection key={JSON.stringify(data.brief.meeting_objectives)} data={data.brief.meeting_objectives} />
         <WhoYoureTalkingToSection key={JSON.stringify(data.brief.who_youre_talking_to)} data={data.brief.who_youre_talking_to} />
