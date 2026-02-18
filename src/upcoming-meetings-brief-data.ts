@@ -4,7 +4,8 @@ const createBasicBrief = (
   title: string,
   company: string,
   dealId: string,
-  dealName?: string
+  dealName?: string,
+  dateTime?: string
 ): PreCallBriefData => ({
   breadcrumb: ['Meetings', title],
   meeting_type: {
@@ -20,7 +21,7 @@ const createBasicBrief = (
       name: company,
     },
     customer_profile: 'Mid-Market E-Commerce Growth Brands',
-    date_time: 'TBD',
+    date_time: dateTime || 'TBD',
     our_team: [],
     their_team: [],
   },
@@ -70,13 +71,13 @@ const createBasicBrief = (
 });
 
 export const upcomingMeetingsBriefData: Record<string, PreCallBriefData> = {
-  'um-001': createBasicBrief('PROVEN <> Flex', 'PROVEN Skincare', 'deal-005', 'Deal with proven.com'),
-  'um-002': createBasicBrief('Glossier <> Flex Follow-up', 'Glossier', 'deal-006', 'Glossier HSA/FSA'),
-  'um-003': createBasicBrief('Hims & Hers Quarterly Review', 'Hims & Hers', 'deal-007', 'Hims & Hers Enterprise'),
-  'um-004': createBasicBrief('Peloton Demo Walkthrough', 'Peloton', 'deal-008', 'Peloton Platform Integration'),
-  'um-005': createBasicBrief('Oura Integration Planning', 'Oura', 'deal-009', 'Oura Health API'),
-  'um-006': createBasicBrief('Warby Parker Proposal Review', 'Warby Parker', 'deal-010', 'Warby Parker Expansion'),
-  'um-007': createBasicBrief('Allbirds Contract Negotiation', 'Allbirds', 'deal-011', 'Allbirds Partnership'),
-  'um-008': createBasicBrief('Cal AI Weekly Sync', 'Cal AI', 'deal-012', 'Cal AI HSA Integration'),
-  'um-009': createBasicBrief('Bombas <> Flex Closing Call', 'Bombas', 'deal-013', 'Bombas Platform Deal'),
+  'um-001': createBasicBrief('PROVEN <> Flex', 'PROVEN Skincare', 'deal-005', 'Deal with proven.com', 'Feb 16, 5:00 - 6:00 PM (1 hour)'),
+  'um-002': createBasicBrief('Glossier <> Flex Follow-up', 'Glossier', 'deal-006', 'Glossier HSA/FSA', 'Feb 17, 2:00 - 3:00 PM (1 hour)'),
+  'um-003': createBasicBrief('Hims & Hers Quarterly Review', 'Hims & Hers', 'deal-007', 'Hims & Hers Enterprise', 'Feb 18, 10:00 - 11:30 AM (1.5 hours)'),
+  'um-004': createBasicBrief('Peloton Demo Walkthrough', 'Peloton', 'deal-008', 'Peloton Platform Integration', 'Feb 19, 3:00 - 4:00 PM (1 hour)'),
+  'um-005': createBasicBrief('Oura Integration Planning', 'Oura', 'deal-009', 'Oura Health API', 'Feb 20, 11:00 AM - 12:00 PM (1 hour)'),
+  'um-006': createBasicBrief('Warby Parker Proposal Review', 'Warby Parker', 'deal-010', 'Warby Parker Expansion', 'Feb 21, 1:00 - 2:00 PM (1 hour)'),
+  'um-007': createBasicBrief('Allbirds Contract Negotiation', 'Allbirds', 'deal-011', 'Allbirds Partnership', 'Feb 23, 9:00 - 10:00 AM (1 hour)'),
+  'um-008': createBasicBrief('Cal AI Weekly Sync', 'Cal AI', 'deal-012', 'Cal AI HSA Integration', 'Feb 24, 4:00 - 4:30 PM (30 minutes)'),
+  'um-009': createBasicBrief('Bombas <> Flex Closing Call', 'Bombas', 'deal-013', 'Bombas Platform Deal', 'Feb 25, 2:00 - 3:00 PM (1 hour)'),
 };
