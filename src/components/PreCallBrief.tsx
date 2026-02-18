@@ -253,7 +253,7 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
   <div className="space-y-0">
     {/* Deal */}
     {metadata.deal_name && (
-      <div className="flex items-center py-2.5">
+      <div className="flex items-center py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
           <Box className="h-4 w-4" />
           Deal
@@ -265,7 +265,7 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
     )}
 
     {/* Company */}
-    <div className="flex items-center py-2.5">
+    <div className="flex items-center py-1.5">
       <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
         <Building2 className="h-4 w-4" />
         Company
@@ -280,7 +280,7 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
 
     {/* Customer profile */}
     {metadata.customer_profile && (
-      <div className="flex items-center py-2.5">
+      <div className="flex items-center py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
           <FileText className="h-4 w-4" />
           Customer profile
@@ -292,7 +292,7 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
     )}
 
     {/* Date and time */}
-    <div className="flex items-center py-2.5">
+    <div className="flex items-center py-1.5">
       <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
         <Calendar className="h-4 w-4" />
         Date and time
@@ -302,7 +302,7 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
 
     {/* Team */}
     {(metadata.team && metadata.team.length > 0) && (
-      <div className="flex items-start py-2.5">
+      <div className="flex items-start py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2 mt-0.5">
           <Users2 className="h-4 w-4" />
           Team
@@ -321,7 +321,7 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
 
     {/* Participants */}
     {(metadata.their_team && metadata.their_team.length > 0) && (
-      <div className="flex items-start py-2.5">
+      <div className="flex items-start py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2 mt-0.5">
           <Users className="h-4 w-4" />
           Participants
