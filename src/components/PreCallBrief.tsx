@@ -21,7 +21,7 @@ import {
   ShieldMinus,
   Box,
   Users2,
-  Clock,
+  CalendarClock,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -558,7 +558,7 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo }> = ({ data 
 
 const NoBriefContent: React.FC = () => (
   <div className="flex flex-col items-center justify-center flex-1 py-16 px-4 border border-dashed border-slate-200 rounded-lg bg-slate-50/50 my-4">
-    <Clock className="h-12 w-12 text-muted-foreground mb-3" />
+    <CalendarClock className="h-8 w-8 text-muted-foreground mb-3" />
     <h2 className="text-xl font-semibold text-foreground mb-2">Upcoming meeting</h2>
     <p className="text-sm text-muted-foreground mb-6">This meeting is scheduled to occur in about 2 hours.</p>
     <div className="flex gap-3">
