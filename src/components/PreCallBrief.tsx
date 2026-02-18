@@ -313,6 +313,7 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
               key={i}
               name={p.name}
               avatarColor={p.avatar_color}
+              isTeamMember={true}
             />
           ))}
         </div>

@@ -6,6 +6,7 @@ interface ContactPillProps {
   className?: string;
   avatarColor?: string;
   avatarUrl?: string;
+  isTeamMember?: boolean;
 }
 
 // Get initials from name
@@ -45,7 +46,23 @@ const getAvatarColor = (color?: string): string => {
   return avatarColorConfig[color] || color;
 };
 
-export const ContactPill: React.FC<ContactPillProps> = ({ name, className = '', avatarColor, avatarUrl }) => {
+export const ContactPill: React.FC<ContactPillProps> = ({ name, className = '', avatarColor, avatarUrl, isTeamMember = false }) => {
+  // Team member variant - shows Flex logo
+  if (isTeamMember) {
+    return (
+      <div
+        className={`inline-flex items-center gap-2 h-6 px-1.5 py-1 rounded-sm border border-input bg-background text-sm font-medium text-foreground whitespace-nowrap ${className}`}
+      >
+        <img
+          src="/flexlogo.png"
+          alt="Flex"
+          className="h-4 w-4 flex-shrink-0"
+        />
+        <span className="truncate">{name}</span>
+      </div>
+    );
+  }
+
   // Photo variant - shows actual avatar image
   if (avatarUrl) {
     return (
