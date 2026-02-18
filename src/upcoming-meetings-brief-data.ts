@@ -70,7 +70,7 @@ const createBasicBrief = (
 });
 
 export const upcomingMeetingsBriefData: Record<string, PreCallBriefData> = {
-  'um-001': createBasicBrief('PROVEN <> Flex', 'PROVEN Skincare', 'deal-005', 'Integration Partnership'),
+  'um-001': createBasicBrief('PROVEN <> Flex', 'PROVEN Skincare', 'deal-005', 'Deal with proven.com'),
   'um-002': createBasicBrief('Glossier <> Flex Follow-up', 'Glossier', 'deal-006', 'Glossier HSA/FSA'),
   'um-003': createBasicBrief('Hims & Hers Quarterly Review', 'Hims & Hers', 'deal-007', 'Hims & Hers Enterprise'),
   'um-004': createBasicBrief('Peloton Demo Walkthrough', 'Peloton', 'deal-008', 'Peloton Platform Integration'),
