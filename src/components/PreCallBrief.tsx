@@ -332,7 +332,7 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
             <ContactPill
               key={i}
               name={p.name}
-              avatarColor={p.avatar_color}
+              showIconOnly={true}
             />
           ))}
         </div>

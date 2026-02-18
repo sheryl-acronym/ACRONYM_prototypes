@@ -7,6 +7,7 @@ interface ContactPillProps {
   avatarColor?: string;
   avatarUrl?: string;
   isTeamMember?: boolean;
+  showIconOnly?: boolean;
 }
 
 // Get initials from name
@@ -46,7 +47,7 @@ const getAvatarColor = (color?: string): string => {
   return avatarColorConfig[color] || color;
 };
 
-export const ContactPill: React.FC<ContactPillProps> = ({ name, className = '', avatarColor, avatarUrl, isTeamMember = false }) => {
+export const ContactPill: React.FC<ContactPillProps> = ({ name, className = '', avatarColor, avatarUrl, isTeamMember = false, showIconOnly = false }) => {
   // Team member variant - shows Flex logo
   if (isTeamMember) {
     return (
@@ -58,6 +59,18 @@ export const ContactPill: React.FC<ContactPillProps> = ({ name, className = '', 
           alt="Flex"
           className="h-4 w-4 rounded flex-shrink-0"
         />
+        <span className="truncate">{name}</span>
+      </div>
+    );
+  }
+
+  // Icon only variant - shows user icon (for external participants)
+  if (showIconOnly) {
+    return (
+      <div
+        className={`inline-flex items-center gap-2 h-6 px-1.5 py-1 rounded-sm border border-input bg-background text-sm font-medium text-foreground whitespace-nowrap ${className}`}
+      >
+        <User className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
         <span className="truncate">{name}</span>
       </div>
     );
