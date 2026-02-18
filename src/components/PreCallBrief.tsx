@@ -21,6 +21,7 @@ import {
   ShieldMinus,
   Box,
   Users2,
+  Clock,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -44,8 +45,8 @@ import { ContactPill } from '@/components/ContactPill';
 interface PreCallBriefProps {
   data: PreCallBriefData;
   hideTopBar?: boolean;
-  onVersionChange?: (version: 'call-1' | 'call-2') => void;
-  currentVersion?: 'call-1' | 'call-2';
+  onVersionChange?: (version: 'call-1' | 'call-2' | 'no-brief') => void;
+  currentVersion?: 'call-1' | 'call-2' | 'no-brief';
 }
 
 const EditableText: React.FC<{
@@ -193,7 +194,7 @@ const EditableBullet: React.FC<{
   );
 };
 
-const TopBar: React.FC<{ breadcrumb: string[]; onVersionChange?: (version: 'call-1' | 'call-2') => void; currentVersion?: 'call-1' | 'call-2' }> = ({ breadcrumb, onVersionChange, currentVersion = 'call-1' }) => (
+const TopBar: React.FC<{ breadcrumb: string[]; onVersionChange?: (version: 'call-1' | 'call-2' | 'no-brief') => void; currentVersion?: 'call-1' | 'call-2' | 'no-brief' }> = ({ breadcrumb, onVersionChange, currentVersion = 'call-1' }) => (
   <div className="flex items-center justify-between">
     <Breadcrumb>
       <BreadcrumbList>
@@ -213,13 +214,14 @@ const TopBar: React.FC<{ breadcrumb: string[]; onVersionChange?: (version: 'call
     </Breadcrumb>
     <div className="flex items-center gap-2">
       {onVersionChange && (
-        <Select value={currentVersion} onValueChange={(v) => onVersionChange(v as 'call-1' | 'call-2')}>
+        <Select value={currentVersion} onValueChange={(v) => onVersionChange(v as 'call-1' | 'call-2' | 'no-brief')}>
           <SelectTrigger className="w-32 h-8">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="call-1">Call 1</SelectItem>
             <SelectItem value="call-2">Call 2</SelectItem>
+            <SelectItem value="no-brief">No Brief</SelectItem>
           </SelectContent>
         </Select>
       )}
@@ -555,7 +557,24 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo }> = ({ data 
   </div>
 );
 
-export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = false, onVersionChange, currentVersion }) => {
+const NoBrief: React.FC = () => (
+  <div className="flex flex-col items-center justify-center min-h-screen py-16 px-4">
+    <Clock className="h-16 w-16 text-muted-foreground mb-4" />
+    <h2 className="text-2xl font-semibold text-foreground mb-2">Upcoming meeting</h2>
+    <p className="text-sm text-muted-foreground mb-6">This meeting is scheduled to occur in about 2 hours.</p>
+    <div className="flex gap-3">
+      <Button variant="outline" size="sm">
+        Ignore
+      </Button>
+      <Button size="sm" className="gap-2 bg-foreground text-background hover:bg-foreground/90">
+        <Sparkles className="h-4 w-4" />
+        Generate Brief
+      </Button>
+    </div>
+  </div>
+);
+
+export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = false, onVersionChange, currentVersion = 'call-1' }) => {
   return (
     <div className="flex flex-col min-h-screen bg-white overflow-hidden">
       {!hideTopBar && (
@@ -565,6 +584,9 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
           </div>
         </div>
       )}
+      {currentVersion === 'no-brief' ? (
+        <NoBrief />
+      ) : (
       <div className="w-full max-w-[700px] mx-auto px-8 py-4 flex-1 overflow-y-auto">
       <MeetingHeader
         meetingType={data.meeting_type}
@@ -626,6 +648,7 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
         </div>
       </div>
       </div>
+      )}
     </div>
   );
 };
