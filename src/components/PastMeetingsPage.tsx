@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PastMeeting } from '@/types';
+import { PastMeeting, PostCallSummaryData } from '@/types';
 import {
   Table,
   TableBody,
@@ -32,9 +32,11 @@ import {
 import { ContactPill } from '@/components/ContactPill';
 import { DealPill } from '@/components/DealPill';
 import { CompanyPill } from '@/components/CompanyPill';
+import { MeetingSummaryDetailSidePanel } from '@/components/MeetingSummaryDetailSidePanel';
 
 interface PastMeetingsPageProps {
   meetings: PastMeeting[];
+  summaryData?: Record<string, PostCallSummaryData>;
 }
 
 function filterAttendeesByRole(
@@ -73,9 +75,22 @@ function SortableHeader({ label }: { label: string }) {
   );
 }
 
-export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) => {
+export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings, summaryData = {} }) => {
   const navigate = useNavigate();
   const [search, setSearch] = React.useState('');
+  const [selectedMeetingId, setSelectedMeetingId] = React.useState<string | null>(null);
+
+  // Update selected meeting ID from URL on mount and when URL changes
+  React.useEffect(() => {
+    const updateSelectedId = () => {
+      const params = new URLSearchParams(window.location.search);
+      setSelectedMeetingId(params.get('meeting'));
+    };
+
+    updateSelectedId();
+    window.addEventListener('popstate', updateSelectedId);
+    return () => window.removeEventListener('popstate', updateSelectedId);
+  }, []);
 
   const filtered = React.useMemo(() => {
     if (!search) return meetings;
@@ -95,10 +110,11 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
   );
 
   return (
-    <div className="flex-1 bg-sidebar h-screen flex flex-col p-3 overflow-hidden">
-        <div className="bg-white rounded-lg shadow-md flex flex-col flex-1 overflow-hidden">
-      {/* Full-width header */}
-      <div className="flex-shrink-0 h-[50px] flex items-center px-3 gap-2">
+    <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
+      {/* Main table area */}
+      <div className="flex-1 min-w-0 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
+      {/* Full-width header - sticky */}
+      <div className="z-20 bg-white h-[50px] flex items-center px-3 gap-2 border-b border-slate-200 flex-shrink-0">
         <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
           <PanelLeft className="h-4 w-4" />
         </SidebarTrigger>
@@ -124,11 +140,8 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
           </Breadcrumb>
         </div>
       </div>
-      <div className="px-3">
-        <div className="border-t border-slate-200"></div>
-      </div>
       {/* Page header */}
-      <div className="px-8 pt-8 pb-0">
+      <div className="px-8 pt-8 pb-0 flex-shrink-0">
         {/* Title */}
         <div className="flex items-center gap-2.5 mb-6">
           <Calendar className="h-5 w-5 text-foreground" />
@@ -160,7 +173,7 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
 
       {/* Table */}
       <div className="px-8 pt-8 pb-8 flex-1 overflow-y-auto flex flex-col">
-        <div className="border border-slate-200 rounded-lg overflow-hidden flex-shrink-0">
+        <div className="border border-slate-200 rounded-lg overflow-hidden flex-shrink-0" style={{ maxHeight: '100%' }}>
           <Table>
             <TableHeader>
               <TableRow className="hover:bg-transparent">
@@ -200,8 +213,29 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                     </TableCell>
                   </TableRow>
                   {/* Meetings in this group */}
-                  {grouped[dateKey].map((meeting) => (
-                    <TableRow key={meeting.id} className="cursor-pointer h-fit">
+                  {grouped[dateKey].map((meeting) => {
+                    const hasSummary = !!summaryData[meeting.id];
+                    const isSelected = selectedMeetingId === meeting.id;
+                    return (
+                    <TableRow
+                      key={meeting.id}
+                      className={`cursor-pointer ${isSelected ? 'bg-muted/60' : ''} h-fit`}
+                      onClick={() => {
+                        if (hasSummary) {
+                          if (isSelected) {
+                            setSelectedMeetingId(null);
+                            const url = new URL(window.location.href);
+                            url.searchParams.delete('meeting');
+                            window.history.pushState({}, '', url);
+                          } else {
+                            setSelectedMeetingId(meeting.id);
+                            const url = new URL(window.location.href);
+                            url.searchParams.set('meeting', meeting.id);
+                            window.history.pushState({}, '', url);
+                          }
+                        }
+                      }}
+                    >
                       <TableCell className="py-2 px-3">
                         <DealPill deal={meeting.deal_name} momentum={meeting.momentum} />
                       </TableCell>
@@ -242,7 +276,8 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                         </div>
                       </TableCell>
                     </TableRow>
-                  ))}
+                    );
+                  })}
                 </React.Fragment>
               ))
             )}
@@ -251,6 +286,20 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
         </div>
       </div>
       </div>
+
+      {/* Detail Side Panel */}
+      {selectedMeetingId && summaryData[selectedMeetingId] && (
+        <MeetingSummaryDetailSidePanel
+          meetingId={selectedMeetingId}
+          summaryData={summaryData[selectedMeetingId]}
+          onClose={() => {
+            setSelectedMeetingId(null);
+            const url = new URL(window.location.href);
+            url.searchParams.delete('meeting');
+            window.history.pushState({}, '', url);
+          }}
+        />
+      )}
     </div>
   );
 };

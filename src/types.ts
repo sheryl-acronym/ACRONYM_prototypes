@@ -260,3 +260,34 @@ export interface DealDetailData {
   key_stakeholders: KeyStakeholder[];
   meetings?: Meeting[];
 }
+
+export interface PostCallSummaryData {
+  breadcrumb: string[];
+  meeting_type: {
+    label: string;
+    color: string;
+  };
+  title: string;
+  momentum: {
+    status: Momentum;
+    description: string;
+  };
+  metadata: {
+    company: {
+      name: string;
+      icon_color?: string;
+      logo_url?: string;
+    };
+    date_time: string;
+    duration: string;
+    our_team: Participant[];
+    their_team: Participant[];
+  };
+  meeting_summary: string;
+  key_discussion_points?: string[];
+  next_steps?: {
+    text: string;
+    due_date: string;
+    assignee: string;
+  }[];
+}

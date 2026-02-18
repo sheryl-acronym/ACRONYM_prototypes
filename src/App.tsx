@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import PreCallBrief from '@/components/PreCallBrief';
+import PostCallSummary from '@/components/PostCallSummary';
 import DealsPage from '@/components/DealsPage';
 import DealDetailPage from '@/components/DealDetailPage';
 import DealDetailPageV2 from '@/components/DealDetailPageV2';
@@ -25,6 +26,7 @@ import { dealDetailDemoData } from '@/deal-detail-demo-data';
 import { pastMeetingsData } from '@/past-meetings-data';
 import { upcomingMeetingsData } from '@/upcoming-meetings-data';
 import { upcomingMeetingsBriefData } from '@/upcoming-meetings-brief-data';
+import { pastMeetingsSummaryData } from '@/past-meetings-summary-data';
 import { companiesData } from '@/companies-demo-data';
 import { contactsData } from '@/contacts-demo-data';
 import { customerProfilesData } from '@/customer-profiles-demo-data';
@@ -34,6 +36,7 @@ import { faqs } from '@/faqs-demo-data';
 import { objectionsData } from '@/objections-demo-data';
 
 const meetingBriefData = upcomingMeetingsBriefData;
+const meetingSummaryData = pastMeetingsSummaryData;
 
 function PreCallBriefRoute() {
   const { meetingId: urlMeetingId, version: urlVersion } = useParams<{ meetingId?: string; version?: 'call-1' | 'call-2' }>();
@@ -51,6 +54,25 @@ function PreCallBriefRoute() {
   }, [urlMeetingId]);
 
   return <PreCallBrief data={briefData} onVersionChange={handleVersionChange} currentVersion={version} />;
+}
+
+function PostCallSummaryRoute() {
+  const { meetingId: urlMeetingId } = useParams<{ meetingId?: string }>();
+
+  // Get summary data for the meeting
+  const summaryData = urlMeetingId && meetingSummaryData[urlMeetingId]
+    ? meetingSummaryData[urlMeetingId]
+    : null;
+
+  if (!summaryData) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-muted-foreground">
+        Meeting summary not found.
+      </div>
+    );
+  }
+
+  return <PostCallSummary data={summaryData} />;
 }
 
 function DealsPageRoute() {
@@ -253,7 +275,8 @@ function App() {
             <Route path="/deals/:dealId" element={<DealDetailRoute />} />
             <Route path="/deals/:view" element={<DealsPageRoute />} />
             <Route path="/meetings" element={<UpcomingMeetingsPage meetings={upcomingMeetingsData} briefData={meetingBriefData} />} />
-            <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} />} />
+            <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} summaryData={meetingSummaryData} />} />
+            <Route path="/meetings/past/:meetingId" element={<PostCallSummaryRoute />} />
             <Route path="/meetings/:meetingId/:version" element={<PreCallBriefRoute />} />
             <Route path="/meetings/:meetingId" element={<PreCallBriefRoute />} />
             <Route path="/companies" element={<CompaniesPage companies={companiesData} />} />
