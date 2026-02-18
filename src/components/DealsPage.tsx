@@ -6,6 +6,8 @@ import { MomentumPill } from '@/components/MomentumPill';
 import { StagePill } from '@/components/StagePill';
 import { CompanyPill } from '@/components/CompanyPill';
 import { DealDetailSidePanel } from '@/components/DealDetailSidePanel';
+import { CompanyDetailSidePanel } from '@/components/CompanyDetailSidePanel';
+import { Company } from '@/components/CompaniesPage';
 import {
   Table,
   TableBody,
@@ -59,6 +61,7 @@ import { dealDetailDemoData } from '@/deal-detail-demo-data';
 
 interface DealsPageProps {
   deals: Deal[];
+  companies?: Company[];
   initialView?: 'board' | 'table';
   onViewChange?: (view: 'board' | 'table') => void;
   selectedDealId?: string;
@@ -301,6 +304,7 @@ function KanbanBoardView({ deals, onDealClick }: { deals: Deal[]; onDealClick: (
 
 export const DealsPage: React.FC<DealsPageProps> = ({
   deals,
+  companies = [],
   initialView = 'table',
   onViewChange,
   selectedDealId,
@@ -315,6 +319,7 @@ export const DealsPage: React.FC<DealsPageProps> = ({
   const [sortField, setSortField] = React.useState<SortField>('last_meeting');
   const [sortDir, setSortDir] = React.useState<SortDir>('desc');
   const [viewMode, setViewMode] = React.useState<'table' | 'board'>(initialView);
+  const [selectedCompanyId, setSelectedCompanyId] = React.useState<string | null>(null);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -395,6 +400,49 @@ export const DealsPage: React.FC<DealsPageProps> = ({
   React.useEffect(() => {
     setPage(0);
   }, [search, stageFilters, momentumFilters]);
+
+  // Get selected company data - find by company name from deals
+  const getSelectedCompanyData = React.useMemo(() => {
+    if (!selectedCompanyId) return undefined;
+
+    // First try to find exact match
+    const company = companies.find((c) => c.id === selectedCompanyId);
+    if (company) return company;
+
+    // If not found, try to find by company name from deals
+    const selectedDeal = deals.find((d) => selectedCompanyId === `deal-company-${d.company_name}`);
+    if (selectedDeal) {
+      // Create a minimal company object from deal data
+      const minimalCompany: Company = {
+        id: selectedCompanyId,
+        name: selectedDeal.company_name,
+        domain: '',
+        icon_color: selectedDeal.company_icon_color,
+        logo_url: selectedDeal.company_logo_url,
+        last_meeting: null,
+        next_meeting: null,
+        customer_profile: null,
+        employee_count: null,
+        est_revenue: null,
+        summary: null,
+        total_funding_raised: null,
+        num_funding_rounds: null,
+        latest_funding_stage: null,
+        latest_funding_round: null,
+        deal: null,
+        deal_momentum: null,
+        primary_contact: null,
+        linkedin_url: null,
+        industry: null,
+        company_type: null,
+        location: null,
+        tech_stack: null,
+      };
+      return minimalCompany;
+    }
+
+    return undefined;
+  }, [selectedCompanyId, companies, deals]);
 
   // Get selected deal data (function to build fallback deal data)
   const getSelectedDealData = React.useMemo(() => {
@@ -655,6 +703,16 @@ export const DealsPage: React.FC<DealsPageProps> = ({
                             <CompanyPill
                               company_name={deal.company_name}
                               company_logo_url={deal.company_logo_url}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                const company = companies.find((c) => c.name === deal.company_name);
+                                if (company) {
+                                  setSelectedCompanyId(company.id);
+                                } else {
+                                  // Use a namespaced ID for companies not in the companies list
+                                  setSelectedCompanyId(`deal-company-${deal.company_name}`);
+                                }
+                              }}
                             />
                           </TableCell>
                           <TableCell>
@@ -775,6 +833,15 @@ export const DealsPage: React.FC<DealsPageProps> = ({
           dealId={selectedDealId}
           deal={getSelectedDealData}
           onClose={onCloseSidePanel || (() => {})}
+        />
+      )}
+
+      {/* Company Detail Side Panel */}
+      {selectedCompanyId && getSelectedCompanyData && (
+        <CompanyDetailSidePanel
+          companyId={selectedCompanyId}
+          company={getSelectedCompanyData}
+          onClose={() => setSelectedCompanyId(null)}
         />
       )}
     </div>

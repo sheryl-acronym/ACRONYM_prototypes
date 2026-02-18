@@ -24,6 +24,7 @@ import { dealsData } from '@/deals-demo-data';
 import { dealDetailDemoData } from '@/deal-detail-demo-data';
 import { pastMeetingsData } from '@/past-meetings-data';
 import { upcomingMeetingsData } from '@/upcoming-meetings-data';
+import { upcomingMeetingsBriefData } from '@/upcoming-meetings-brief-data';
 import { companiesData } from '@/companies-demo-data';
 import { contactsData } from '@/contacts-demo-data';
 import { customerProfilesData } from '@/customer-profiles-demo-data';
@@ -32,23 +33,24 @@ import { discoveryQuestionsData } from '@/discovery-questions-demo-data';
 import { faqs } from '@/faqs-demo-data';
 import { objectionsData } from '@/objections-demo-data';
 
-const meetingBriefData: Record<string, typeof provenDemoData> = {
-  'um-001': provenDemoData,
-};
+const meetingBriefData = upcomingMeetingsBriefData;
 
 function PreCallBriefRoute() {
-  const { version: urlVersion } = useParams<{ version?: 'call-1' | 'call-2' }>();
+  const { meetingId: urlMeetingId, version: urlVersion } = useParams<{ meetingId?: string; version?: 'call-1' | 'call-2' }>();
   const [version, setVersion] = React.useState<'call-1' | 'call-2'>(urlVersion || 'call-1');
 
-  const data = version === 'call-2' ? provenDemoDataCall2 : provenDemoData;
+  // Get brief data for the meeting, with fallback to PROVEN data for um-001
+  const briefData = urlMeetingId && meetingBriefData[urlMeetingId]
+    ? meetingBriefData[urlMeetingId]
+    : (urlMeetingId === 'um-001' && version === 'call-2' ? provenDemoDataCall2 : provenDemoData);
 
   const handleVersionChange = React.useCallback((newVersion: 'call-1' | 'call-2') => {
     setVersion(newVersion);
     // Update URL when version changes
-    window.history.pushState(null, '', `/meetings/um-001/${newVersion}`);
-  }, []);
+    window.history.pushState(null, '', `/meetings/${urlMeetingId || 'um-001'}/${newVersion}`);
+  }, [urlMeetingId]);
 
-  return <PreCallBrief data={data} onVersionChange={handleVersionChange} currentVersion={version} />;
+  return <PreCallBrief data={briefData} onVersionChange={handleVersionChange} currentVersion={version} />;
 }
 
 function DealsPageRoute() {
@@ -78,6 +80,7 @@ function DealsPageRoute() {
   return (
     <DealsPage
       deals={dealsData}
+      companies={companiesData}
       initialView={view}
       onViewChange={handleViewChange}
       selectedDealId={selectedDealId}
@@ -250,9 +253,9 @@ function App() {
             <Route path="/deals/:dealId" element={<DealDetailRoute />} />
             <Route path="/deals/:view" element={<DealsPageRoute />} />
             <Route path="/meetings" element={<UpcomingMeetingsPage meetings={upcomingMeetingsData} briefData={meetingBriefData} />} />
-            <Route path="/meetings/um-001" element={<PreCallBriefRoute />} />
-            <Route path="/meetings/um-001/:version" element={<PreCallBriefRoute />} />
             <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} />} />
+            <Route path="/meetings/:meetingId/:version" element={<PreCallBriefRoute />} />
+            <Route path="/meetings/:meetingId" element={<PreCallBriefRoute />} />
             <Route path="/companies" element={<CompaniesPage companies={companiesData} />} />
             <Route path="/companies/:companyId" element={<CompanyDetailRoute />} />
             <Route path="/contacts" element={<ContactsRoute />} />

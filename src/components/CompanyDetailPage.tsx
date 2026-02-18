@@ -29,7 +29,6 @@ import { Company } from '@/components/CompaniesPage';
 import { CustomerProfilePill } from '@/components/CustomerProfilePill';
 import { DatePill } from '@/components/DatePill';
 import { DealPill } from '@/components/DealPill';
-import { ContactPill } from '@/components/ContactPill';
 import { UnifiedContactCard } from '@/components/UnifiedContactCard';
 import { MeetingCard } from '@/components/MeetingCard';
 

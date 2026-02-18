@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PastMeeting, Momentum, PreCallBriefData } from '@/types';
+import { PastMeeting, PreCallBriefData } from '@/types';
 import {
   Table,
   TableBody,
@@ -21,26 +21,16 @@ import {
 } from '@/components/ui/breadcrumb';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import {
   Calendar,
   PlusCircle,
   ChevronsUpDown,
   SlidersHorizontal,
-  ChevronsRight,
-  Maximize2,
-  MoreHorizontal,
-  Upload,
   PanelLeft,
 } from 'lucide-react';
-import PreCallBrief from '@/components/PreCallBrief';
 import { ContactPill } from '@/components/ContactPill';
-
-const OVERLAY_BREAKPOINT = 1200;
+import { DealPill } from '@/components/DealPill';
+import { CompanyPill } from '@/components/CompanyPill';
+import { MeetingDetailSidePanel } from '@/components/MeetingDetailSidePanel';
 
 function filterAttendeesByRole(
   attendees: { name: string; email?: string; role?: string; contact_role?: 'buyer' | 'seller' }[],
@@ -52,22 +42,6 @@ function filterAttendeesByRole(
 interface UpcomingMeetingsPageProps {
   meetings: PastMeeting[];
   briefData?: Record<string, PreCallBriefData>;
-}
-
-function useIsNarrow(breakpoint: number) {
-  const [isNarrow, setIsNarrow] = React.useState(
-    () => typeof window !== 'undefined' && window.innerWidth < breakpoint
-  );
-
-  React.useEffect(() => {
-    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
-    const handler = (e: MediaQueryListEvent) => setIsNarrow(e.matches);
-    mq.addEventListener('change', handler);
-    setIsNarrow(mq.matches);
-    return () => mq.removeEventListener('change', handler);
-  }, [breakpoint]);
-
-  return isNarrow;
 }
 
 function formatTimeRange(dateStr: string, duration: string): string {
@@ -94,13 +68,6 @@ function groupByDate(meetings: PastMeeting[]): Record<string, PastMeeting[]> {
   return groups;
 }
 
-const momentumDot: Record<Momentum, string> = {
-  Strong: 'bg-green-200',
-  Stalled: 'bg-amber-200',
-  'At risk': 'bg-red-200',
-  Closed: 'bg-gray-200',
-  Active: 'bg-blue-200',
-};
 
 function SortableHeader({ label }: { label: string }) {
   return (
@@ -115,7 +82,18 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
   const [search, setSearch] = React.useState('');
   const [selectedMeetingId, setSelectedMeetingId] = React.useState<string | null>(null);
   const navigate = useNavigate();
-  const isNarrow = useIsNarrow(OVERLAY_BREAKPOINT);
+
+  // Update selected meeting ID from URL on mount and when URL changes
+  React.useEffect(() => {
+    const updateSelectedId = () => {
+      const params = new URLSearchParams(window.location.search);
+      setSelectedMeetingId(params.get('meeting'));
+    };
+
+    updateSelectedId();
+    window.addEventListener('popstate', updateSelectedId);
+    return () => window.removeEventListener('popstate', updateSelectedId);
+  }, []);
 
   const filtered = React.useMemo(() => {
     if (!search) return meetings;
@@ -144,49 +122,8 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
   const activeBrief = selectedMeetingId ? briefData[selectedMeetingId] : null;
   const panelOpen = !!activeBrief && !!selectedMeetingId;
 
-  const panelContent = panelOpen && (
-    <>
-      {/* Panel toolbar */}
-      <div className="sticky top-0 z-10 bg-white flex items-center justify-between px-4 py-2">
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-7 w-7"
-            onClick={() => setSelectedMeetingId(null)}
-            title="Close panel"
-          >
-            <ChevronsRight className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-7 w-7"
-            onClick={() => navigate(`/meetings/${selectedMeetingId}`)}
-            title="Open full page"
-          >
-            <Maximize2 className="h-3.5 w-3.5" />
-          </Button>
-        </div>
-        <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon" className="h-7 w-7">
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-7 w-7">
-            <Upload className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-      {/* Brief content */}
-      <div className="[&>div]:pt-2 [&>div]:min-h-0">
-        <PreCallBrief data={activeBrief!} hideTopBar />
-      </div>
-    </>
-  );
-
   return (
-    <TooltipProvider>
-      <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
+    <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
         {/* Main table area */}
         <div className="flex-1 min-w-0 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
         {/* Full-width header - sticky */}
@@ -296,30 +233,30 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
                       return (
                         <TableRow
                           key={meeting.id}
-                          className={`cursor-pointer ${isSelected ? 'bg-muted/60' : ''}`}
+                          className={`cursor-pointer ${isSelected ? 'bg-muted/60' : ''} h-fit`}
                           onClick={() => {
                             if (hasBrief) {
-                              setSelectedMeetingId(isSelected ? null : meeting.id);
+                              if (isSelected) {
+                                setSelectedMeetingId(null);
+                                const url = new URL(window.location.href);
+                                url.searchParams.delete('meeting');
+                                window.history.pushState({}, '', url);
+                              } else {
+                                setSelectedMeetingId(meeting.id);
+                                const url = new URL(window.location.href);
+                                url.searchParams.set('meeting', meeting.id);
+                                window.history.pushState({}, '', url);
+                              }
                             }
                           }}
                         >
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <span className={`w-4 h-4 rounded-full flex-shrink-0 ${momentumDot[meeting.momentum]} cursor-help`} />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>{meeting.momentum}</p>
-                                </TooltipContent>
-                              </Tooltip>
-                              <span className="text-sm">{meeting.deal_name}</span>
-                            </div>
+                          <TableCell className="py-2 px-3">
+                            <DealPill deal={meeting.deal_name} momentum={meeting.momentum} />
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="py-2 px-3">
                             <div className="flex flex-col gap-0.5">
                               <span className="text-sm font-medium">{meeting.name}</span>
-                              <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
+                              <span className="text-sm text-muted-foreground inline-flex items-center gap-1">
                                 {meeting.status === 'Now' && (
                                   <span className="text-green-600 font-medium">Now</span>
                                 )}
@@ -334,32 +271,20 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
                               </span>
                             </div>
                           </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              {meeting.company_logo_url ? (
-                                <img
-                                  src={meeting.company_logo_url}
-                                  alt={meeting.company_name}
-                                  className="w-4 h-4 rounded object-contain flex-shrink-0"
-                                  onError={(e) => {
-                                    const target = e.currentTarget;
-                                    target.style.display = 'none';
-                                    target.nextElementSibling?.classList.remove('hidden');
-                                  }}
-                                />
-                              ) : null}
-                              <span className={`w-4 h-4 rounded flex-shrink-0 ${meeting.company_icon_color} ${meeting.company_logo_url ? 'hidden' : ''}`} />
-                              <span className="text-sm">{meeting.company_name}</span>
-                            </div>
+                          <TableCell className="py-2 px-3">
+                            <CompanyPill
+                              company_name={meeting.company_name}
+                              company_logo_url={meeting.company_logo_url}
+                            />
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="py-2 px-3">
                             <div className="flex items-center gap-2">
                               {filterAttendeesByRole(meeting.attendees, 'buyer').map((attendee, i) => (
                                 <ContactPill key={i} name={attendee.name} />
                               ))}
                             </div>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="py-2 px-3">
                             <div className="flex items-center gap-2">
                               {filterAttendeesByRole(meeting.attendees, 'seller').map((attendee, i) => (
                                 <ContactPill key={i} name={attendee.name} />
@@ -378,29 +303,20 @@ export const UpcomingMeetingsPage: React.FC<UpcomingMeetingsPageProps> = ({ meet
         </div>
       </div>
 
-      {/* Side panel — inline mode (wide screens) */}
-      {panelOpen && !isNarrow && (
-        <div className="w-[620px] flex-shrink-0 border-l bg-white min-h-screen overflow-y-auto animate-in slide-in-from-right-4 duration-200">
-          {panelContent}
-        </div>
+      {/* Detail Side Panel */}
+      {panelOpen && activeBrief && (
+        <MeetingDetailSidePanel
+          meetingId={selectedMeetingId!}
+          briefData={activeBrief}
+          onClose={() => {
+            setSelectedMeetingId(null);
+            const url = new URL(window.location.href);
+            url.searchParams.delete('meeting');
+            window.history.pushState({}, '', url);
+          }}
+        />
       )}
-
-      {/* Side panel — overlay mode (narrow screens) */}
-      {panelOpen && isNarrow && (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 z-40 bg-black/20 animate-in fade-in duration-200"
-            onClick={() => setSelectedMeetingId(null)}
-          />
-          {/* Overlay panel */}
-          <div className="fixed top-0 right-0 z-50 h-full w-[620px] max-w-[90vw] bg-white shadow-xl overflow-y-auto animate-in slide-in-from-right duration-200">
-            {panelContent}
-          </div>
-        </>
-      )}
-      </div>
-    </TooltipProvider>
+    </div>
   );
 };
 

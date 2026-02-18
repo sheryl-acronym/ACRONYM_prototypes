@@ -151,7 +151,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
   const [sortField, setSortField] = React.useState<SortField>('name');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
   const [selectedCompanyId, setSelectedCompanyId] = React.useState<string | null>(null);
-  const [selectedProfile, setSelectedProfile] = React.useState<string>('');
+  const [selectedProfile, setSelectedProfile] = React.useState<string>('all');
 
   // Update selected company ID from URL on mount and when URL changes
   React.useEffect(() => {
@@ -189,7 +189,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
     }
 
     // Customer profile filter
-    if (selectedProfile) {
+    if (selectedProfile && selectedProfile !== 'all') {
       list = list.filter((c) => c.customer_profile === selectedProfile);
     }
 
@@ -260,7 +260,7 @@ export const CompaniesPage: React.FC<CompaniesPageProps> = ({ companies }) => {
                 <SelectValue placeholder="All Customer Profiles" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Customer Profiles</SelectItem>
+                <SelectItem value="all">All Customer Profiles</SelectItem>
                 <SelectItem value="Enterprise AI/ML">Enterprise AI/ML</SelectItem>
                 <SelectItem value="Enterprise Multi-Channel Advanced Operations">Enterprise Multi-Channel Advanced Operations</SelectItem>
                 <SelectItem value="Health Tech Growth-Stage Partnership-Ready">Health Tech Growth-Stage Partnership-Ready</SelectItem>

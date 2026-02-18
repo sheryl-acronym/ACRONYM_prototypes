@@ -4,18 +4,21 @@ interface CompanyPillProps {
   company_name: string;
   company_logo_url?: string;
   className?: string;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export const CompanyPill: React.FC<CompanyPillProps> = ({
   company_name,
   company_logo_url,
   className = '',
+  onClick,
 }) => {
   const [logoError, setLogoError] = React.useState(false);
 
   return (
     <div
-      className={`inline-flex items-center bg-background rounded-md border border-input h-6 overflow-hidden ${className}`}
+      onClick={onClick}
+      className={`inline-flex items-center bg-background rounded-md border border-input h-6 overflow-hidden ${onClick ? 'cursor-pointer hover:border-foreground/50 transition-colors' : ''} ${className}`}
     >
       {company_logo_url && !logoError ? (
         <img

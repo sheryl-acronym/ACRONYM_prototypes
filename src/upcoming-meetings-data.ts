@@ -8,7 +8,6 @@ export const upcomingMeetingsData: PastMeeting[] = [
     deal_name: 'PROVEN Skincare',
     momentum: 'Strong',
     name: 'PROVEN <> Flex',
-    status: 'Recording',
     start_time: '2026-02-16T17:00:00',
     duration: '60m',
     company_name: 'PROVEN Skincare',
