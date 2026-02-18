@@ -3,6 +3,9 @@ import { PostCallSummaryData } from '@/types';
 import {
   CheckCircle2,
   Zap,
+  Building2,
+  Calendar,
+  Clock,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -72,19 +75,28 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
 
             <Separator className="my-6" />
 
-            {/* Meeting Metadata Section */}
-            <div className="grid grid-cols-3 gap-6 mb-6">
-              <div>
-                <p className="text-xs font-medium text-muted-foreground mb-1">COMPANY</p>
-                <p className="text-sm font-medium text-foreground">{data.metadata.company.name}</p>
+            {/* Meeting Metadata Section - Vertical Layout */}
+            <div className="space-y-4 mb-6">
+              <div className="flex items-start gap-3">
+                <Building2 className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Company</p>
+                  <p className="text-sm font-medium text-foreground">{data.metadata.company.name}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-medium text-muted-foreground mb-1">DATE & TIME</p>
-                <p className="text-sm font-medium text-foreground">{data.metadata.date_time}</p>
+              <div className="flex items-start gap-3">
+                <Calendar className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Date and time</p>
+                  <p className="text-sm font-medium text-foreground">{data.metadata.date_time}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-medium text-muted-foreground mb-1">DURATION</p>
-                <p className="text-sm font-medium text-foreground">{data.metadata.duration}</p>
+              <div className="flex items-start gap-3">
+                <Clock className="h-5 w-5 text-muted-foreground mt-0.5 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-muted-foreground mb-1">Duration</p>
+                  <p className="text-sm font-medium text-foreground">{data.metadata.duration}</p>
+                </div>
               </div>
             </div>
 
