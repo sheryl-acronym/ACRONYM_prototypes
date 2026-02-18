@@ -38,6 +38,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { DealPill } from '@/components/DealPill';
 import { CompanyPill } from '@/components/CompanyPill';
 import { CustomerProfilePill } from '@/components/CustomerProfilePill';
+import { ContactPill } from '@/components/ContactPill';
 
 interface PreCallBriefProps {
   data: PreCallBriefData;
@@ -299,23 +300,23 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
     </div>
 
     {/* Participants */}
-    <div className="flex items-start py-2.5">
-      <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2 mt-0.5">
-        <Users className="h-4 w-4" />
-        Participants
-      </span>
-      <div className="flex items-center gap-2 flex-wrap">
-        {[...metadata.our_team, ...metadata.their_team].map((p, i) => (
-          <span
-            key={i}
-            className="inline-flex items-center gap-1.5 rounded-md border bg-transparent pl-1 pr-3 py-0.5 text-sm text-foreground"
-          >
-            <span className={`h-5 w-5 rounded-full flex-shrink-0 ${p.avatar_color || 'bg-gray-300'}`} />
-            {p.email || p.name}
-          </span>
-        ))}
+    {([...metadata.our_team, ...metadata.their_team].length > 0) && (
+      <div className="flex items-start py-2.5">
+        <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2 mt-0.5">
+          <Users className="h-4 w-4" />
+          Participants
+        </span>
+        <div className="flex items-center gap-2 flex-wrap">
+          {[...metadata.our_team, ...metadata.their_team].map((p, i) => (
+            <ContactPill
+              key={i}
+              name={p.name}
+              avatarColor={p.avatar_color}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    )}
   </div>
 );
 
