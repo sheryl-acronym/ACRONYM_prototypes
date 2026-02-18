@@ -61,7 +61,7 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
       {/* Main content area */}
       <div className="flex flex-1 overflow-hidden">
         <div className="flex-1 bg-white overflow-y-auto">
-          <div className="max-w-[1040px] mx-auto px-8 py-4 pb-24 w-full">
+          <div className="max-w-[760px] mx-auto px-8 py-4 pb-24 w-full">
             {/* Title and Momentum Header */}
             <div className="mb-6">
               <h1 className="text-2xl font-bold text-foreground mb-3">{data.title}</h1>
