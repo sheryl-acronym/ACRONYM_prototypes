@@ -24,12 +24,17 @@ const createBasicSummary = (
     our_team: [],
     their_team: [],
   },
-  meeting_summary: `Conducted an internal technical deep dive into the integration architecture. The session covered critical mechanics including background product syncing, API key configuration, and the handling of custom fees. Clarified that the integration is primarily used by SMBs, with limited mid-market adoption. A significant portion of the discussion focused on technical limitations and error handling.`,
+  meeting_summary: `Conducted an internal technical deep dive into the integration architecture. The session covered critical mechanics including background product syncing, API key configuration, and the handling of custom fees. Clarified that the integration is primarily used by SMBs, with limited mid-market adoption. A significant portion of the discussion focused on technical limitations and error handling.
+
+We reviewed the current implementation roadmap and identified several key areas for improvement. The team confirmed that core stability is solid, but subscription management features need enhancement to better serve mid-market customers. Budget constraints were discussed, and we established a phased approach to rolling out new capabilities over the next two quarters.
+
+Next steps include scheduling a follow-up technical review with the product team and preparing a detailed proposal for the subscription support enhancements. The team expressed confidence in the partnership and are committed to supporting our growth objectives.`,
   key_discussion_points: [
     'Core integration stability confirmed',
-    'Critical gaps identified in subscription support',
-    'Error handling limitations discussed',
-    'Technical requirements clarified for market expansion',
+    'Subscription management needs enhancement for mid-market',
+    'API rate limiting could impact high-volume customers',
+    'Team expressed strong commitment to partnership',
+    'Implementation timeline needs clarification with stakeholders',
   ],
   next_steps: [
     {
@@ -43,6 +48,135 @@ const createBasicSummary = (
       assignee: 'Chris Langbort',
     },
   ],
+  our_next_steps: [
+    {
+      text: 'Schedule follow-up technical review with product team',
+      assignee: 'David Barratt',
+    },
+    {
+      text: 'Prepare detailed proposal for subscription support enhancements',
+      assignee: 'Chris Langbort',
+    },
+    {
+      text: 'Gather customer feedback on API rate limiting concerns',
+      assignee: 'Sarah Chen',
+    },
+  ],
+  their_next_steps: [
+    {
+      text: 'Review and approve subscription support roadmap',
+      assignee: 'Eugene Kim',
+    },
+    {
+      text: 'Schedule implementation timeline review',
+      assignee: 'Benny Cole',
+    },
+  ],
+  what_we_learned: [
+    {
+      title: 'Decision Process:',
+      items: [
+        'Technical review is a critical gating factor',
+        'Committee approval required at C-level',
+        'Budget allocated for Q2 implementation',
+      ],
+    },
+    {
+      title: 'Decision Criteria:',
+      items: [
+        'API rate limiting must support 10k req/min',
+        'Subscription management critical for mid-market adoption',
+        'Custom fee implementation required',
+        'Sentry integration for error tracking',
+      ],
+    },
+    {
+      title: 'Competitive Landscape:',
+      items: [
+        'Main competitor recently launched similar feature',
+        'Gap analysis shows we have 2-month advantage',
+      ],
+    },
+  ],
+  positive_signals: [
+    'System stability confirmed for background sync processes',
+    'Debug visibility through Sentry allows quick diagnosis of merchant issues',
+    'Customizable architecture enables solutions like custom fee implementation',
+    'Strong team commitment to partnership and roadmap alignment',
+    'Core integration proven reliable with SMB customer base',
+  ],
+  risk_factors: [
+    'API rate limiting could impact high-volume customers',
+    'Inability to support WooCommerce Subscriptions blocks adoption in subscription verticals',
+    'Dynamic discounting plugins cause transaction failures and merchant churn',
+    'Integration not suitable for enterprise segment requiring Adobe/Magento',
+    'Implementation timeline requires clarification with all stakeholders',
+  ],
+  meddic: {
+    components: [
+      {
+        name: 'Metric',
+        status: 'complete',
+        information: '$1.25M monthly revenue, 10k orders, 60% subscription-based',
+        details: [
+          'Current processing costs are 2.5% across payment methods',
+          'Looking for 6.38x ROI on new feature implementation',
+          'Break-even at 50% AOV uplift across 15% of transactions',
+        ],
+      },
+      {
+        name: 'Economic Buyer',
+        status: 'complete',
+        information: 'Russell Harris, VP of Revenue Operations',
+        details: [
+          'Budget holder for Q2 technology initiatives',
+          'Has final sign-off on partnerships exceeding $50k',
+          'Personally modeling ROI before Tuesday review',
+        ],
+      },
+      {
+        name: 'Decision Criteria',
+        status: 'partial',
+        information: 'Technical viability + pricing + experience + internal alignment',
+        details: [
+          'Subscription support is the critical blocker',
+          'Marketing messaging must match actual experience',
+          'ROI must offset margin erosion from transaction fees',
+          'Still needs clarification on timeline and implementation',
+        ],
+      },
+      {
+        name: 'Decision Process',
+        status: 'partial',
+        information: 'Technical review → Finance modeling → C-level committee approval',
+        details: [
+          'Russell taking proposal to internal team Tuesday',
+          'Theresa (Brand) reviewing customer experience implications',
+          'Yuliia (Tech) gates on integration complexity',
+        ],
+      },
+      {
+        name: 'Identify Pain',
+        status: 'complete',
+        information: 'Revenue stagnation with current payment methods, customer acquisition costs rising',
+        details: [
+          'HSA/FSA customers represent untapped TAM',
+          'Current checkout experience is friction point',
+          'Competitive gap if they launch subscription support first',
+        ],
+      },
+      {
+        name: 'Champion',
+        status: 'complete',
+        information: 'Russell Harris is actively building business case internally',
+        details: [
+          'Requesting raw spreadsheet to model with actual numbers',
+          'Connecting with technical and brand teams directly',
+          'Committed to clear timeline (decision by Tuesday)',
+        ],
+      },
+    ],
+  },
 });
 
 export const pastMeetingsSummaryData: Record<string, PostCallSummaryData> = {

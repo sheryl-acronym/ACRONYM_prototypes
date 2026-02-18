@@ -290,4 +290,26 @@ export interface PostCallSummaryData {
     due_date: string;
     assignee: string;
   }[];
+  our_next_steps?: {
+    text: string;
+    assignee: string;
+  }[];
+  their_next_steps?: {
+    text: string;
+    assignee: string;
+  }[];
+  what_we_learned?: {
+    title: string;
+    items: string[];
+  }[];
+  positive_signals?: string[];
+  risk_factors?: string[];
+  meddic?: {
+    components: {
+      name: string;
+      status: 'complete' | 'partial' | 'missing';
+      information: string;
+      details?: string[];
+    }[];
+  };
 }

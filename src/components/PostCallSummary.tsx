@@ -1,9 +1,13 @@
 import React from 'react';
 import { PostCallSummaryData } from '@/types';
 import {
-  CheckCircle2,
   Zap,
   Calendar,
+  Users,
+  Link as LinkIcon,
+  FileText,
+  Building,
+  Box,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -17,6 +21,9 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ContactPill } from '@/components/ContactPill';
+import { CompanyPill } from '@/components/CompanyPill';
+import { DealPill } from '@/components/DealPill';
+import { ActionItem } from '@/components/ActionItem';
 
 interface PostCallSummaryProps {
   data: PostCallSummaryData;
@@ -29,6 +36,17 @@ const momentumConfig = {
   Stalled: { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200', badge: 'bg-amber-100 text-amber-800 border-amber-200' },
   'At risk': { bg: 'bg-red-50', text: 'text-red-900', border: 'border-red-200', badge: 'bg-red-100 text-red-800 border-red-200' },
   Closed: { bg: 'bg-gray-50', text: 'text-gray-800', border: 'border-gray-200', badge: 'bg-gray-100 text-gray-800 border-gray-200' },
+};
+
+const statusIcon = (status: 'complete' | 'partial' | 'missing'): string => {
+  switch (status) {
+    case 'complete':
+      return '⬤';
+    case 'partial':
+      return '◐';
+    case 'missing':
+      return '⚪';
+  }
 };
 
 export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopBar = false }) => {
@@ -67,25 +85,32 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
             {/* Title and Momentum Header */}
             <div className="mb-6">
               <h1 className="text-2xl font-bold text-foreground mb-3">{data.title}</h1>
-              <div className="flex items-center gap-3">
-                <Badge className={`${colors.badge} border`}>{data.momentum.status}</Badge>
-              </div>
             </div>
-
-            <Separator className="my-6" />
 
             {/* Meeting Metadata Section - Two Column Layout */}
             <div className="space-y-4 mb-6">
-              <div className="grid grid-cols-2 gap-x-8">
-                <div className="w-fit">
-                  <p className="text-xs font-medium text-muted-foreground mb-2">Company</p>
-                  <p className="text-sm font-medium text-foreground">{data.metadata.company.name}</p>
+              <div className="grid gap-x-8" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div className="flex items-start gap-2 w-fit">
+                  <Box className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <p className="text-sm font-medium text-muted-foreground">Deal</p>
                 </div>
                 <div className="text-left">
-                  {/* Spacer for alignment */}
+                  <DealPill deal="Integration Partnership" momentum="Strong" />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-x-8">
+              <div className="grid gap-x-8" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div className="flex items-start gap-2 w-fit">
+                  <Building className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <p className="text-sm font-medium text-muted-foreground">Company</p>
+                </div>
+                <div className="text-left">
+                  <CompanyPill
+                    company_name={data.metadata.company.name}
+                    company_logo_url={data.metadata.company.logo_url}
+                  />
+                </div>
+              </div>
+              <div className="grid gap-x-8" style={{ gridTemplateColumns: '120px 1fr' }}>
                 <div className="flex items-start gap-2 w-fit">
                   <Calendar className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <p className="text-sm font-medium text-muted-foreground">Date and Time</p>
@@ -94,14 +119,27 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
                   <p className="text-sm font-medium text-foreground">{data.metadata.date_time}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-x-8">
-                <div className="w-fit">
-                  <p className="text-xs font-medium text-muted-foreground mb-2">Participants</p>
+              <div className="grid gap-x-8" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div className="flex items-start gap-2 w-fit">
+                  <Users className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <p className="text-sm font-medium text-muted-foreground">Participants</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <ContactPill name="Alex Martinez" avatarColor="blue-400" />
                   <ContactPill name="Jamie Chen" avatarColor="green-400" />
                   <ContactPill name="Morgan Davis" avatarColor="purple-400" />
+                </div>
+              </div>
+              <div className="grid gap-x-8" style={{ gridTemplateColumns: '120px 1fr' }}>
+                <div className="flex items-start gap-2 w-fit">
+                  <FileText className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                  <p className="text-sm font-medium text-muted-foreground">Transcript</p>
+                </div>
+                <div className="text-left">
+                  <button className="inline-flex items-center gap-2 h-6 px-3 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50 transition-colors">
+                    <LinkIcon className="h-4 w-4 text-foreground" />
+                    <span className="text-sm font-medium text-foreground">Copy link</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -112,8 +150,11 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
             <div className={`border rounded-lg p-4 mb-6 ${colors.bg} ${colors.border}`}>
               <div className="flex items-start gap-2">
                 <Zap className={`h-5 w-5 ${colors.text} mt-0.5 flex-shrink-0`} />
-                <div>
-                  <p className={`text-sm font-semibold ${colors.text} mb-1`}>Momentum</p>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className={`text-sm font-semibold ${colors.text}`}>Momentum</p>
+                    <Badge className={`${colors.badge} border`}>{data.momentum.status}</Badge>
+                  </div>
                   <p className={`text-sm ${colors.text} leading-relaxed`}>{data.momentum.description}</p>
                 </div>
               </div>
@@ -129,10 +170,16 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
                   Summary
                 </TabsTrigger>
                 <TabsTrigger
-                  value="next-steps"
+                  value="intel"
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors pb-2.5 pt-2 text-sm font-medium px-0 mr-6"
                 >
-                  Next Steps
+                  Intel
+                </TabsTrigger>
+                <TabsTrigger
+                  value="meddic"
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-foreground data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground text-muted-foreground hover:text-foreground transition-colors pb-2.5 pt-2 text-sm font-medium px-0 mr-6"
+                >
+                  MEDDIC
                 </TabsTrigger>
               </TabsList>
 
@@ -142,7 +189,11 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
                   {/* Meeting Summary */}
                   <div>
                     <h2 className="text-sm font-semibold text-foreground mb-3">Meeting Summary</h2>
-                    <p className="text-sm text-foreground leading-relaxed">{data.meeting_summary}</p>
+                    <div className="space-y-3">
+                      {data.meeting_summary.split('\n\n').map((paragraph, i) => (
+                        <p key={i} className="text-sm text-foreground leading-relaxed">{paragraph}</p>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Key Discussion Points */}
@@ -150,12 +201,118 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
                     <>
                       <Separator />
                       <div>
-                        <h2 className="text-sm font-semibold text-foreground mb-3">Key Discussion Points</h2>
+                        <h2 className="text-sm font-semibold text-foreground mb-3">Key signals this call</h2>
                         <ul className="space-y-2">
-                          {data.key_discussion_points.map((point, i) => (
-                            <li key={i} className="flex items-start gap-2 group">
-                              <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
-                              <span className="text-sm text-foreground">{point}</span>
+                          {data.key_discussion_points.map((point, i) => {
+                            const colors = ['bg-green-500', 'bg-yellow-500', 'bg-red-500'];
+                            const bgColor = colors[i % colors.length];
+                            return (
+                              <li key={i} className="flex items-start gap-2 group">
+                                <div className={`h-2.5 w-2.5 rounded-full flex-shrink-0 mt-1.5 ${bgColor}`} />
+                                <span className="text-sm text-foreground">{point}</span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Our Next Steps */}
+                  {data.our_next_steps && data.our_next_steps.length > 0 && (
+                    <>
+                      <Separator />
+                      <div>
+                        <h2 className="text-sm font-semibold text-foreground mb-3">Our next steps</h2>
+                        <div className="space-y-2">
+                          {data.our_next_steps.map((step, i) => (
+                            <ActionItem
+                              key={i}
+                              text={step.text}
+                              assignee={step.assignee}
+                              completed={false}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Their Next Steps */}
+                  {data.their_next_steps && data.their_next_steps.length > 0 && (
+                    <>
+                      <Separator />
+                      <div>
+                        <h2 className="text-sm font-semibold text-foreground mb-3">Their next steps</h2>
+                        <div className="space-y-2">
+                          {data.their_next_steps.map((step, i) => (
+                            <ActionItem
+                              key={i}
+                              text={step.text}
+                              assignee={step.assignee}
+                              completed={false}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </TabsContent>
+
+              {/* Intel Tab */}
+              <TabsContent value="intel" className="mt-6">
+                <div className="space-y-6">
+                  {/* What We Learned This Call */}
+                  {data.what_we_learned && data.what_we_learned.length > 0 && (
+                    <div>
+                      <h2 className="text-sm font-semibold text-foreground mb-3">What we learned this call</h2>
+                      <div className="space-y-4">
+                        {data.what_we_learned.map((section, i) => (
+                          <div key={i}>
+                            <h3 className="text-sm font-medium text-foreground mb-2">{section.title}</h3>
+                            <ul className="space-y-2 ml-2">
+                              {section.items.map((item, j) => (
+                                <li key={j} className="flex items-start gap-2">
+                                  <span className="text-sm text-foreground leading-relaxed">• {item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Positive Signals */}
+                  {data.positive_signals && data.positive_signals.length > 0 && (
+                    <>
+                      <Separator />
+                      <div>
+                        <h2 className="text-sm font-semibold text-foreground mb-3">Positive signals</h2>
+                        <ul className="space-y-2">
+                          {data.positive_signals.map((item, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <span className="text-green-600 font-bold flex-shrink-0">✓</span>
+                              <span className="text-sm text-foreground leading-relaxed">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </>
+                  )}
+
+                  {/* Risk Factors */}
+                  {data.risk_factors && data.risk_factors.length > 0 && (
+                    <>
+                      <Separator />
+                      <div>
+                        <h2 className="text-sm font-semibold text-foreground mb-3">Risk factors</h2>
+                        <ul className="space-y-2">
+                          {data.risk_factors.map((item, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <span className="text-red-600 font-bold flex-shrink-0">⚠</span>
+                              <span className="text-sm text-foreground leading-relaxed">{item}</span>
                             </li>
                           ))}
                         </ul>
@@ -165,22 +322,49 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
                 </div>
               </TabsContent>
 
-              {/* Next Steps Tab */}
-              <TabsContent value="next-steps" className="mt-6">
-                {data.next_steps && data.next_steps.length > 0 ? (
-                  <div className="space-y-3">
-                    {data.next_steps.map((step, i) => (
-                      <div key={i} className="border border-slate-200 rounded-lg p-4 hover:bg-slate-50/50 transition-colors">
-                        <p className="text-sm font-medium text-foreground mb-3">{step.text}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-medium text-muted-foreground">Due {step.due_date}</span>
-                          <span className="text-xs font-medium text-muted-foreground">{step.assignee}</span>
-                        </div>
-                      </div>
-                    ))}
+              {/* MEDDIC Tab */}
+              <TabsContent value="meddic" className="mt-6">
+                {data.meddic && data.meddic.components.length > 0 ? (
+                  <div className="space-y-6">
+                    <div className="overflow-x-auto border border-slate-200 rounded-lg">
+                      <table className="w-full text-sm">
+                        <thead className="bg-slate-50">
+                          <tr>
+                            <th className="text-left px-4 py-3 font-medium text-foreground w-8">Status</th>
+                            <th className="text-left px-4 py-3 font-medium text-foreground w-48">Component</th>
+                            <th className="text-left px-4 py-3 font-medium text-foreground">Information Captured</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y">
+                          {data.meddic.components.map((comp, i) => (
+                            <tr key={i} className="hover:bg-slate-50 transition-colors">
+                              <td className="px-4 py-3 text-center">{statusIcon(comp.status)}</td>
+                              <td className="px-4 py-3 text-foreground font-medium">{comp.name}</td>
+                              <td className="px-4 py-3 text-foreground/80">
+                                <div>
+                                  <p className="mb-2">{comp.information}</p>
+                                  {comp.details && comp.details.length > 0 && (
+                                    <ul className="space-y-1">
+                                      {comp.details.map((detail, j) => (
+                                        <li key={j} className="flex items-start gap-2 text-sm text-foreground/70">
+                                          <span className="text-slate-400 flex-shrink-0 mt-0.5">•</span>
+                                          <span>{detail}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 ) : (
-                  <p className="text-sm text-muted-foreground">No next steps recorded.</p>
+                  <div className="py-12 text-center text-sm text-muted-foreground">
+                    MEDDIC data not available for this meeting.
+                  </div>
                 )}
               </TabsContent>
             </Tabs>
