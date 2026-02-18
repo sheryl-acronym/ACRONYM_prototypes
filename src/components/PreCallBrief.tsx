@@ -37,6 +37,7 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DealPill } from '@/components/DealPill';
 import { CompanyPill } from '@/components/CompanyPill';
+import { CustomerProfilePill } from '@/components/CustomerProfilePill';
 
 interface PreCallBriefProps {
   data: PreCallBriefData;
@@ -282,9 +283,9 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
           <FileText className="h-4 w-4" />
           Customer profile
         </span>
-        <Badge variant="outline" className="rounded-md font-normal text-sm px-3 py-1">
-          {metadata.customer_profile}
-        </Badge>
+        <div className="text-left">
+          <CustomerProfilePill profile={metadata.customer_profile} />
+        </div>
       </div>
     )}
 
