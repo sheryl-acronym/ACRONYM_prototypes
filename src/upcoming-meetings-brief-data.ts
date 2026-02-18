@@ -3,7 +3,8 @@ import { PreCallBriefData } from './types';
 const createBasicBrief = (
   title: string,
   company: string,
-  dealId: string
+  dealId: string,
+  dealName?: string
 ): PreCallBriefData => ({
   breadcrumb: ['Meetings', title],
   meeting_type: {
@@ -14,6 +15,7 @@ const createBasicBrief = (
   join_button_label: 'Join & Start',
   deal_id: dealId,
   metadata: {
+    deal_name: dealName,
     company: {
       name: company,
     },
@@ -68,13 +70,13 @@ const createBasicBrief = (
 });
 
 export const upcomingMeetingsBriefData: Record<string, PreCallBriefData> = {
-  'um-001': createBasicBrief('PROVEN <> Flex', 'PROVEN Skincare', 'deal-005'),
-  'um-002': createBasicBrief('Glossier <> Flex Follow-up', 'Glossier', 'deal-006'),
-  'um-003': createBasicBrief('Hims & Hers Quarterly Review', 'Hims & Hers', 'deal-007'),
-  'um-004': createBasicBrief('Peloton Demo Walkthrough', 'Peloton', 'deal-008'),
-  'um-005': createBasicBrief('Oura Integration Planning', 'Oura', 'deal-009'),
-  'um-006': createBasicBrief('Warby Parker Proposal Review', 'Warby Parker', 'deal-010'),
-  'um-007': createBasicBrief('Allbirds Contract Negotiation', 'Allbirds', 'deal-011'),
-  'um-008': createBasicBrief('Cal AI Weekly Sync', 'Cal AI', 'deal-012'),
-  'um-009': createBasicBrief('Bombas <> Flex Closing Call', 'Bombas', 'deal-013'),
+  'um-001': createBasicBrief('PROVEN <> Flex', 'PROVEN Skincare', 'deal-005', 'Integration Partnership'),
+  'um-002': createBasicBrief('Glossier <> Flex Follow-up', 'Glossier', 'deal-006', 'Glossier HSA/FSA'),
+  'um-003': createBasicBrief('Hims & Hers Quarterly Review', 'Hims & Hers', 'deal-007', 'Hims & Hers Enterprise'),
+  'um-004': createBasicBrief('Peloton Demo Walkthrough', 'Peloton', 'deal-008', 'Peloton Platform Integration'),
+  'um-005': createBasicBrief('Oura Integration Planning', 'Oura', 'deal-009', 'Oura Health API'),
+  'um-006': createBasicBrief('Warby Parker Proposal Review', 'Warby Parker', 'deal-010', 'Warby Parker Expansion'),
+  'um-007': createBasicBrief('Allbirds Contract Negotiation', 'Allbirds', 'deal-011', 'Allbirds Partnership'),
+  'um-008': createBasicBrief('Cal AI Weekly Sync', 'Cal AI', 'deal-012', 'Cal AI HSA Integration'),
+  'um-009': createBasicBrief('Bombas <> Flex Closing Call', 'Bombas', 'deal-013', 'Bombas Platform Deal'),
 };

@@ -53,6 +53,7 @@ export interface GameplanData {
 }
 
 export interface MeetingMetadata {
+  deal_name?: string;
   company: {
     name: string;
     icon_color?: string;

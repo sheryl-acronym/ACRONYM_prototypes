@@ -19,6 +19,7 @@ import {
   ArrowUpRight,
   BadgeHelp,
   ShieldMinus,
+  Box,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -34,6 +35,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DealPill } from '@/components/DealPill';
 
 interface PreCallBriefProps {
   data: PreCallBriefData;
@@ -260,6 +262,19 @@ const MeetingHeader: React.FC<{
 
 const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => (
   <div className="space-y-0">
+    {/* Deal */}
+    {metadata.deal_name && (
+      <div className="flex items-center py-2.5">
+        <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
+          <Box className="h-4 w-4" />
+          Deal
+        </span>
+        <div className="text-left">
+          <DealPill deal={metadata.deal_name} momentum="Strong" />
+        </div>
+      </div>
+    )}
+
     {/* Company */}
     <div className="flex items-center py-2.5">
       <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
