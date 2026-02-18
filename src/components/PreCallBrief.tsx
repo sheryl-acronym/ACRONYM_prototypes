@@ -235,21 +235,6 @@ const MeetingHeader: React.FC<{
   companyDealId?: string;
 }> = ({ meetingType, title, companyDealId }) => (
   <div className="mb-6">
-    <div className="flex items-center gap-1.5 mb-3">
-      <span className={`w-2.5 h-2.5 rounded-full ${meetingType.color}`} />
-      <span className="text-sm text-muted-foreground">
-        {companyDealId ? (
-          <a
-            href={`/deals/${companyDealId}`}
-            className="text-muted-foreground hover:text-foreground border-b border-dotted border-muted-foreground hover:border-foreground transition-colors"
-          >
-            {meetingType.label}
-          </a>
-        ) : (
-          meetingType.label
-        )}
-      </span>
-    </div>
     <div className="flex items-center justify-between">
       <h1 className="text-2xl font-bold text-foreground">{title}</h1>
       <Button variant="outline" size="sm" className="gap-2">
