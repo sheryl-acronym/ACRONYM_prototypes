@@ -80,13 +80,16 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
                   <p className="text-xs font-medium text-muted-foreground mb-2">Company</p>
                   <p className="text-sm font-medium text-foreground">{data.metadata.company.name}</p>
                 </div>
+                <div className="text-left">
+                  {/* Spacer for alignment */}
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-x-8">
                 <div className="flex items-start gap-2 w-[150px]">
                   <Calendar className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                   <p className="text-sm font-medium text-muted-foreground">Date and Time</p>
                 </div>
-                <div>
+                <div className="text-left">
                   <p className="text-sm font-medium text-foreground">{data.metadata.date_time}</p>
                 </div>
               </div>
