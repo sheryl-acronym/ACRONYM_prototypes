@@ -564,7 +564,7 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
           </div>
         </div>
       )}
-      <div className="w-full max-w-[1040px] mx-auto px-8 py-4 flex-1 overflow-y-auto">
+      <div className="w-full max-w-[700px] mx-auto px-8 py-4 flex-1 overflow-y-auto">
       <MeetingHeader
         meetingType={data.meeting_type}
         title={data.title}
