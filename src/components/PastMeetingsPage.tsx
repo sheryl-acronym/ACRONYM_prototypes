@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PastMeeting, Momentum } from '@/types';
+import { PastMeeting } from '@/types';
 import {
   Table,
   TableBody,
@@ -21,12 +21,6 @@ import {
 } from '@/components/ui/breadcrumb';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import {
   Calendar,
   PlusCircle,
   ChevronsUpDown,
@@ -36,6 +30,8 @@ import {
   PanelLeft,
 } from 'lucide-react';
 import { ContactPill } from '@/components/ContactPill';
+import { DealPill } from '@/components/DealPill';
+import { CompanyPill } from '@/components/CompanyPill';
 
 interface PastMeetingsPageProps {
   meetings: PastMeeting[];
@@ -68,14 +64,6 @@ function groupByDate(meetings: PastMeeting[]): Record<string, PastMeeting[]> {
   return groups;
 }
 
-const momentumDot: Record<Momentum, string> = {
-  Strong: 'bg-green-200',
-  Stalled: 'bg-amber-200',
-  'At risk': 'bg-red-200',
-  Closed: 'bg-gray-200',
-  Active: 'bg-blue-200',
-};
-
 function SortableHeader({ label }: { label: string }) {
   return (
     <button className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-foreground transition-colors">
@@ -107,8 +95,7 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
   );
 
   return (
-    <TooltipProvider>
-      <div className="flex-1 bg-sidebar h-screen flex flex-col p-3 overflow-hidden">
+    <div className="flex-1 bg-sidebar h-screen flex flex-col p-3 overflow-hidden">
         <div className="bg-white rounded-lg shadow-md flex flex-col flex-1 overflow-hidden">
       {/* Full-width header */}
       <div className="flex-shrink-0 h-[50px] flex items-center px-3 gap-2">
@@ -214,24 +201,14 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                   </TableRow>
                   {/* Meetings in this group */}
                   {grouped[dateKey].map((meeting) => (
-                    <TableRow key={meeting.id} className="cursor-pointer">
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <span className={`w-4 h-4 rounded-full flex-shrink-0 ${momentumDot[meeting.momentum]} cursor-help`} />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>{meeting.momentum}</p>
-                            </TooltipContent>
-                          </Tooltip>
-                          <span className="text-sm">{meeting.deal_name}</span>
-                        </div>
+                    <TableRow key={meeting.id} className="cursor-pointer h-fit">
+                      <TableCell className="py-2 px-3">
+                        <DealPill deal={meeting.deal_name} momentum={meeting.momentum} />
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="py-2 px-3">
                         <div className="flex flex-col gap-0.5">
                           <span className="text-sm font-medium">{meeting.name}</span>
-                          <span className="text-xs text-muted-foreground inline-flex items-center gap-1.5">
+                          <span className="text-sm text-muted-foreground inline-flex items-center gap-1.5">
                             {meeting.status === 'Processing' ? (
                               <Loader2 className="h-3 w-3" />
                             ) : meeting.status === 'Error' ? (
@@ -244,20 +221,20 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
                           </span>
                         </div>
                       </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <span className={`w-4 h-4 rounded flex-shrink-0 ${meeting.company_icon_color}`} />
-                          <span className="text-sm">{meeting.company_name}</span>
-                        </div>
+                      <TableCell className="py-2 px-3">
+                        <CompanyPill
+                          company_name={meeting.company_name}
+                          company_logo_url={meeting.company_logo_url}
+                        />
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="py-2 px-3">
                         <div className="flex items-center gap-2">
                           {filterAttendeesByRole(meeting.attendees, 'buyer').map((attendee, i) => (
                             <ContactPill key={i} name={attendee.name} />
                           ))}
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="py-2 px-3">
                         <div className="flex items-center gap-2">
                           {filterAttendeesByRole(meeting.attendees, 'seller').map((attendee, i) => (
                             <ContactPill key={i} name={attendee.name} />
@@ -274,8 +251,7 @@ export const PastMeetingsPage: React.FC<PastMeetingsPageProps> = ({ meetings }) 
         </div>
       </div>
       </div>
-      </div>
-    </TooltipProvider>
+    </div>
   );
 };
 
