@@ -36,6 +36,7 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DealPill } from '@/components/DealPill';
+import { CompanyPill } from '@/components/CompanyPill';
 
 interface PreCallBriefProps {
   data: PreCallBriefData;
@@ -266,13 +267,11 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
         <Building2 className="h-4 w-4" />
         Company
       </span>
-      <div className="flex items-center gap-2 text-sm text-foreground">
-        {metadata.company.logo_url ? (
-          <img src={metadata.company.logo_url} alt={metadata.company.name} className="h-5 w-5 rounded object-contain" />
-        ) : (
-          <span className={`w-5 h-5 rounded ${metadata.company.icon_color || 'bg-gray-300'}`} />
-        )}
-        {metadata.company.name}
+      <div className="text-left">
+        <CompanyPill
+          company_name={metadata.company.name}
+          company_logo_url={metadata.company.logo_url}
+        />
       </div>
     </div>
 
