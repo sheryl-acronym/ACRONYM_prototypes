@@ -63,6 +63,7 @@ export interface MeetingMetadata {
   date_time: string;
   our_team: Participant[];
   their_team: Participant[];
+  team?: Participant[]; // Our team members
 }
 
 export interface PreCallBriefData {

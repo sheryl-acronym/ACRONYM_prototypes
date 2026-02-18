@@ -20,6 +20,7 @@ import {
   BadgeHelp,
   ShieldMinus,
   Box,
+  Users2,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -299,15 +300,34 @@ const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => 
       <span className="text-sm text-foreground">{metadata.date_time}</span>
     </div>
 
+    {/* Team */}
+    {(metadata.team && metadata.team.length > 0) && (
+      <div className="flex items-start py-2.5">
+        <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2 mt-0.5">
+          <Users2 className="h-4 w-4" />
+          Team
+        </span>
+        <div className="flex items-center gap-2 flex-wrap">
+          {metadata.team.map((p, i) => (
+            <ContactPill
+              key={i}
+              name={p.name}
+              avatarColor={p.avatar_color}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+
     {/* Participants */}
-    {([...metadata.our_team, ...metadata.their_team].length > 0) && (
+    {(metadata.their_team && metadata.their_team.length > 0) && (
       <div className="flex items-start py-2.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2 mt-0.5">
           <Users className="h-4 w-4" />
           Participants
         </span>
         <div className="flex items-center gap-2 flex-wrap">
-          {[...metadata.our_team, ...metadata.their_team].map((p, i) => (
+          {metadata.their_team.map((p, i) => (
             <ContactPill
               key={i}
               name={p.name}

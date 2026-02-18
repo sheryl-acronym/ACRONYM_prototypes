@@ -26,6 +26,7 @@ const createBasicBrief = (
     date_time: dateTime || 'TBD',
     our_team: ourTeam || [],
     their_team: theirTeam || [],
+    team: ourTeam || [],
   },
   brief: {
     meeting_objectives: {
