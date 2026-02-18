@@ -16,6 +16,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { ContactPill } from '@/components/ContactPill';
 
 interface PostCallSummaryProps {
   data: PostCallSummaryData;
@@ -91,6 +92,16 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
                 </div>
                 <div className="text-left">
                   <p className="text-sm font-medium text-foreground">{data.metadata.date_time}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-x-8">
+                <div className="w-fit">
+                  <p className="text-xs font-medium text-muted-foreground mb-2">Participants</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <ContactPill name="Alex Martinez" avatarColor="blue-400" />
+                  <ContactPill name="Jamie Chen" avatarColor="green-400" />
+                  <ContactPill name="Morgan Davis" avatarColor="purple-400" />
                 </div>
               </div>
             </div>
