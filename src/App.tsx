@@ -39,15 +39,15 @@ const meetingBriefData = upcomingMeetingsBriefData;
 const meetingSummaryData = pastMeetingsSummaryData;
 
 function PreCallBriefRoute() {
-  const { meetingId: urlMeetingId, version: urlVersion } = useParams<{ meetingId?: string; version?: 'call-1' | 'call-2' }>();
-  const [version, setVersion] = React.useState<'call-1' | 'call-2'>(urlVersion || 'call-1');
+  const { meetingId: urlMeetingId, version: urlVersion } = useParams<{ meetingId?: string; version?: 'call-1' | 'call-2' | 'no-brief' }>();
+  const [version, setVersion] = React.useState<'call-1' | 'call-2' | 'no-brief'>(urlVersion || 'call-1');
 
   // Get brief data for the meeting, with fallback to PROVEN data for um-001
   const briefData = urlMeetingId && meetingBriefData[urlMeetingId]
     ? meetingBriefData[urlMeetingId]
     : (urlMeetingId === 'um-001' && version === 'call-2' ? provenDemoDataCall2 : provenDemoData);
 
-  const handleVersionChange = React.useCallback((newVersion: 'call-1' | 'call-2') => {
+  const handleVersionChange = React.useCallback((newVersion: 'call-1' | 'call-2' | 'no-brief') => {
     setVersion(newVersion);
     // Update URL when version changes
     window.history.pushState(null, '', `/meetings/${urlMeetingId || 'um-001'}/${newVersion}`);

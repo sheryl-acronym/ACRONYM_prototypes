@@ -31,7 +31,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -239,7 +238,7 @@ const MeetingHeader: React.FC<{
   meetingType: { label: string; color: string };
   title: string;
   companyDealId?: string;
-}> = ({ meetingType, title, companyDealId }) => (
+}> = ({ title }) => (
   <div className="mb-6">
     <div className="flex items-center justify-between">
       <h1 className="text-2xl font-bold text-foreground">{title}</h1>
@@ -647,8 +646,8 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
           )}
         </div>
       </div>
-      </div>
       )}
+      </div>
     </div>
   );
 };
