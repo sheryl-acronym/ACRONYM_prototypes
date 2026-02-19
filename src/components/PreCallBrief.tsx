@@ -473,7 +473,13 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo; currentVersi
 
   const displayedIntel = currentVersion === 'call-2' ? call2QuickIntel : data.company.company_research || [];
   const displayedAttendees = currentVersion === 'call-2'
-    ? [...data.attendees, ...call2AdditionalParticipants]
+    ? [
+        ...data.attendees.map(attendee => ({
+          ...attendee,
+          tags: ['Champion', 'Economic Buyer'],
+        })),
+        ...call2AdditionalParticipants,
+      ]
     : data.attendees;
 
   return (
