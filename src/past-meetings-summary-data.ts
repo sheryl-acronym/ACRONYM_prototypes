@@ -99,18 +99,48 @@ Next steps include scheduling a follow-up technical review with the product team
     },
   ],
   positive_signals: [
-    'System stability confirmed for background sync processes',
-    'Debug visibility through Sentry allows quick diagnosis of merchant issues',
-    'Customizable architecture enables solutions like custom fee implementation',
-    'Strong team commitment to partnership and roadmap alignment',
-    'Core integration proven reliable with SMB customer base',
+    {
+      title: 'Data Transparency',
+      description: 'Russell provided sensitive financial metrics (ARR and split AOV) immediately upon request to speed up the sales cycle',
+      evidence: 'Shared detailed financial models without hesitation',
+      quote: 'I think this year, Proven will probably do around $15 million in ARR [00:09:12]',
+    },
+    {
+      title: 'Enthusiastic Validation',
+      description: 'Russell reacted strongly to the value proposition once eligibility was confirmed',
+      evidence: 'Immediate positive response to key finding',
+      quote: 'If I can use my HSA or FSA to buy these products, like, hell yeah, right? [00:07:41]',
+    },
+    {
+      title: 'Solution Fit',
+      description: 'The "95% eligibility" assessment removed the primary product blocker',
+      evidence: 'Clear identification of critical success factor',
+      quote: 'Honestly, what I needed to hear was that 95% of our products would be eligible [00:06:56]',
+    },
+    {
+      title: 'Efficient Progression',
+      description: 'Russell proactively requested the next meeting to review the demo and close out pricing',
+      evidence: 'Self-initiated timeline acceleration',
+      quote: 'Can we schedule maybe just like another 15 minutes next week... give me a quick look at the checkout process [00:06:44]',
+    },
   ],
   risk_factors: [
-    'API rate limiting could impact high-volume customers',
-    'Inability to support WooCommerce Subscriptions blocks adoption in subscription verticals',
-    'Dynamic discounting plugins cause transaction failures and merchant churn',
-    'Integration not suitable for enterprise segment requiring Adobe/Magento',
-    'Implementation timeline requires clarification with all stakeholders',
+    {
+      title: 'Budget Constraints',
+      description: 'No confirmed budget allocation beyond current operational spend',
+      evidence: 'Needs to present to finance committee for approval',
+      quote: 'I need to take this back to the team and get some numbers modeled [00:15:23]',
+    },
+    {
+      title: 'Implementation Complexity',
+      description: 'Technical integration timeline unclear and dependent on internal resource availability',
+      evidence: 'Multiple teams require sign-off before commitment',
+    },
+    {
+      title: 'Competitive Pressure',
+      description: 'Main competitor potentially launching similar capability within 2-3 months',
+      evidence: 'Market window for differentiation is narrowing',
+    },
   ],
   meddic: {
     components: [
