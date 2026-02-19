@@ -152,6 +152,8 @@ export const upcomingMeetingsBriefData: Record<string, PreCallBriefData> = {
               'AI-powered personalized care manufacturer, >$35M run rate',
               'What they need: Strategies to increase Average Order Value (AOV) and conversion rates',
               'Timeline: Strategic pivot to profitability drives urgency for high-margin revenue',
+              'In the News: Raised Series B funding ($28M) in Q3 2024 led by Sequoia Capital',
+              'Expanded to 150+ SKUs across skincare, wellness, and supplements - now in 500+ specialty retailers',
             ],
             company_profile_url: '/company/proven-skincare',
           },

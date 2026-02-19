@@ -477,11 +477,11 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo; currentVersi
   return (
     <div className="py-4">
       <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-4">
-        Who you're talking to
+        Who you're meeting with
       </h2>
 
       {/* Company info */}
-      <div className="mb-3">
+      <div className="mb-4">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3 flex-1 min-w-0">
             {data.company.logo_url && (
@@ -521,13 +521,6 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo; currentVersi
         </div>
       </div>
 
-      {/* Deal summary */}
-      {data.company.deal_summary && (
-        <p className="text-sm text-slate-700 mb-4 leading-relaxed">
-          {data.company.deal_summary}
-        </p>
-      )}
-
       {/* Customer profile */}
       {data.company.customer_profile && (
         <div className="mb-4">
@@ -535,10 +528,16 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo; currentVersi
         </div>
       )}
 
+      {/* Deal summary */}
+      {data.company.deal_summary && (
+        <p className="text-sm text-slate-700 mb-4 leading-relaxed">
+          {data.company.deal_summary}
+        </p>
+      )}
+
       {/* Company research / Quick Intel */}
       {displayedIntel.length > 0 && (
         <div className="mb-4">
-          <p className="text-xs font-medium text-slate-700 mb-2">Quick Intel</p>
           <ul className="space-y-1 text-sm text-slate-700">
             {displayedIntel.map((b, i) => (
               <li key={i} className="flex gap-2">
@@ -551,7 +550,7 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo; currentVersi
       )}
 
       {/* Participants */}
-      <h3 className="text-sm font-semibold text-foreground mb-3">Participants</h3>
+      <h3 className="text-sm font-semibold text-foreground mb-3">People in this meeting</h3>
       <div className="space-y-2">
         {displayedAttendees.map((attendee, i) => {
           // Convert attendee to ContactCardData format for UnifiedContactCard
