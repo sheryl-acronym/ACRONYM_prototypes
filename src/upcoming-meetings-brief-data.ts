@@ -7,11 +7,12 @@ const createBasicBrief = (
   dealName?: string,
   dateTime?: string,
   ourTeam?: { name: string; avatar_color?: string }[],
-  theirTeam?: { name: string; avatar_color?: string }[]
+  theirTeam?: { name: string; avatar_color?: string }[],
+  meetingDescription?: string
 ): PreCallBriefData => ({
   breadcrumb: ['Meetings', title],
   meeting_type: {
-    label: `Meeting with ${company}`,
+    label: meetingDescription || `Meeting with ${company}`,
     color: 'bg-blue-400',
   },
   title,
@@ -32,9 +33,10 @@ const createBasicBrief = (
     meeting_objectives: {
       description: `Upcoming meeting with ${company}`,
       objectives: [
-        'Understand business priorities and challenges',
-        'Validate fit and alignment',
-        'Explore partnership opportunities',
+        'Assess HSA/FSA familiarity and determine their current capabilities',
+        'Validate technical stack and platform compatibility with our integration',
+        'Understand their business model and revenue mix (subscription vs. one-time)',
+        'Qualify their volume and financial metrics against our thresholds',
       ],
       what_we_need_to_learn: [
         'Current business priorities',
@@ -47,20 +49,36 @@ const createBasicBrief = (
       company: {
         name: company,
         icon_color: 'bg-blue-500',
+        logo_url: `/${company.toLowerCase().replace(/\s+/g, '-')}.png`,
+        domain: `${company.toLowerCase().replace(/\s+/g, '')}.com`,
+        customer_profile: 'Mid-Market E-Commerce Growth Brands',
+        deal_summary: `${company} is a growth-stage company looking to expand their current business model. They have immediate interest in strategic solutions that can unlock new revenue streams and improve operational efficiency.`,
+        company_research: [
+          'Growth-stage company with scalability needs',
+          'Looking for solutions to support business expansion',
+          'Strategic priorities focused on operational efficiency',
+        ],
+        company_profile_url: `/company/${company.toLowerCase().replace(/\s+/g, '-')}`,
         bullets: [
           'Growth-stage company with scalability needs',
           'Looking for solutions to support business expansion',
           'Strategic priorities focused on operational efficiency',
         ],
       },
-      attendees: [],
+      attendees: [
+        {
+          name: 'Russell Harris',
+          avatar_color: 'bg-blue-500',
+          buyer_persona: 'Technical Founder/Decision Maker',
+        },
+      ],
     },
     suggested_discovery_questions: [
-      'What are your top business priorities for the next 12 months?',
-      'What challenges are you currently facing?',
-      'How do you currently handle this process?',
-      'What would success look like for your business?',
-      'What is your timeline for making a decision?',
+      'What is your current checkout platform and payment processor?',
+      'What is your average order value and annual transaction volume?',
+      'What percentage of your customer base would qualify for HSA/FSA?',
+      'How do you currently manage compliance and payment workflows?',
+      'What is your timeline and budget for implementing new payment solutions?',
     ],
   },
   gameplan: {
@@ -68,28 +86,73 @@ const createBasicBrief = (
     meeting_objective: `Understand ${company}'s needs and explore partnership opportunities`,
     agenda: [],
     sections: [],
-    anticipated_questions: [],
-    anticipated_objections: [],
+    anticipated_questions: [
+      { text: 'What is the implementation timeline and how long will it take to go live?', isAI: true },
+      { text: 'How does your solution handle data security and compliance requirements?', isAI: true },
+      { text: 'What support and training will be provided during and after implementation?', isAI: true },
+      { text: 'Can you provide references from similar companies in our industry?', isAI: true },
+      { text: 'How does pricing scale as our business grows?', isAI: true },
+    ],
+    anticipated_objections: [
+      { text: 'Concerns about integration complexity and timeline', isAI: true },
+      { text: 'Questions about pricing and ROI justification', isAI: true },
+      { text: 'Need to validate technical compatibility with existing systems', isAI: true },
+    ],
   },
 });
 
 export const upcomingMeetingsBriefData: Record<string, PreCallBriefData> = {
-  'um-001': createBasicBrief(
-    'PROVEN <> Flex',
-    'PROVEN Skincare',
-    'deal-005',
-    'Deal with proven.com',
-    'Feb 16, 5:00 - 6:00 PM (1 hour)',
-    [
-      { name: 'Jacob Francis', avatar_color: 'blue-500' },
-      { name: 'Sarah Chen', avatar_color: 'purple-500' },
-    ],
-    [
-      { name: 'Russell Harris', avatar_color: 'amber-500' },
-      { name: 'Theresa Bischof', avatar_color: 'pink-500' },
-      { name: 'Yuliia Pyrohova', avatar_color: 'green-500' },
-    ]
-  ),
+  'um-001': (() => {
+    const base = createBasicBrief(
+      'PROVEN <> Flex',
+      'PROVEN Skincare',
+      'deal-005',
+      'Deal with proven.com',
+      'Feb 16, 5:00 - 6:00 PM (1 hour)',
+      [
+        { name: 'Jacob Francis', avatar_color: 'blue-500' },
+        { name: 'Sarah Chen', avatar_color: 'purple-500' },
+      ],
+      [
+        { name: 'Russell Harris', avatar_color: 'amber-500' },
+      ],
+      'This is the first meeting with PROVEN Skincare — a referral via Skio. Russell champions internally but we need to prove unit economics.'
+    );
+    // Override company info with PROVEN-specific details
+    return {
+      ...base,
+      brief: {
+        ...base.brief,
+        who_youre_talking_to: {
+          ...base.brief.who_youre_talking_to,
+          company: {
+            ...base.brief.who_youre_talking_to.company,
+            deal_summary: 'PROVEN is a $35M+ AI-powered skincare company pivoting to profitability. They\'re stuck at current AOV and need high-margin revenue — HSA/FSA could unlock 15-20% uplift. Russell\'s championing internally, but unit economics has to work with their margin structure.',
+            company_research: [
+              'AI-powered personalized care manufacturer, >$35M run rate',
+              'What they need: Strategies to increase Average Order Value (AOV) and conversion rates',
+              'Timeline: Strategic pivot to profitability drives urgency for high-margin revenue',
+            ],
+            company_profile_url: '/company/proven-skincare',
+          },
+          attendees: [
+            {
+              name: 'Russell Harris',
+              avatar_color: 'bg-blue-500',
+              role: 'Head of Product/Tech',
+              buyer_persona: 'Technical Founder/Decision Maker',
+              linkedin_url: 'linkedin.com/in/russell-harris',
+              bio: [
+                "Leads product/tech; previously VP Product at Harry's and Carvana",
+                'Scaled businesses from $0 to $100M+; experienced with AI lifecycles',
+                'Approach: Engage on API-first architecture and impact on unit economics',
+              ],
+            },
+          ],
+        },
+      },
+    };
+  })(),
   'um-002': createBasicBrief(
     'Glossier <> Flex Follow-up',
     'Glossier',

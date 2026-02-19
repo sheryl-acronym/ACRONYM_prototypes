@@ -1,6 +1,6 @@
 import React from 'react';
 import { ContactCardData } from '@/types';
-import { Mail } from 'lucide-react';
+import { Mail, ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
@@ -218,7 +218,7 @@ const CompactContent: React.FC<{ contact: ContactCardData }> = ({
   contact,
 }) => {
   return (
-    <div className="rounded-lg border bg-card p-4 w-full">
+    <div className="rounded-lg border bg-card p-4 w-full hover:bg-muted/30 transition-colors group cursor-pointer">
       {/* Header Row */}
       <div className="flex items-start gap-3">
         <Avatar name={contact.name} color={contact.avatar_color} size="md" avatarUrl={contact.avatar_url} />
@@ -276,8 +276,19 @@ const CompactContent: React.FC<{ contact: ContactCardData }> = ({
                 <PersonaPill persona={contact.persona} />
               </div>
             )}
+            {contact.bio && contact.bio.length > 0 && (
+              <ul className="space-y-1 mt-2">
+                {contact.bio.map((note, idx) => (
+                  <li key={idx} className="flex gap-2">
+                    <span className="text-foreground/40 flex-shrink-0 text-sm">•</span>
+                    <span className="text-sm text-foreground/70 leading-relaxed">{note}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
+        <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0 group-hover:text-foreground transition-colors mt-0.5" />
       </div>
     </div>
   );

@@ -12,6 +12,12 @@ export interface Participant {
 export interface Company {
   name: string;
   icon_color?: string;
+  logo_url?: string;
+  domain?: string;
+  customer_profile?: string;
+  deal_summary?: string;
+  company_research?: string[];
+  company_profile_url?: string;
   bullets: string[];
 }
 
@@ -196,6 +202,7 @@ export interface ContactCardData {
   key_concerns?: string;
   communication_style?: string;
   personal_markers?: string;
+  bio?: string[];
 }
 
 export interface Meeting {

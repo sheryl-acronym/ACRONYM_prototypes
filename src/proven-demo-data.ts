@@ -35,9 +35,10 @@ export const provenDemoData: PreCallBriefData = {
     meeting_objectives: {
       description: 'First meeting with PROVEN Skincare - referral via Skio.',
       objectives: [
-        'Qualify for HSA/FSA eligibility based on skincare/wellness product mix',
-        'Validate technical compatibility with their e-commerce stack',
-        'Establish value prop tied to AOV lift and profitability goals',
+        'Assess HSA/FSA familiarity and determine their current capabilities',
+        'Validate technical stack and platform compatibility with our integration',
+        'Understand their business model and revenue mix (subscription vs. one-time)',
+        'Qualify their volume and financial metrics against our thresholds',
       ],
       what_we_need_to_learn: [
         'HSA/FSA familiarity and current capabilities',
@@ -50,6 +51,16 @@ export const provenDemoData: PreCallBriefData = {
       company: {
         name: 'PROVEN Skincare',
         icon_color: 'bg-blue-500',
+        logo_url: '/proven.png',
+        domain: 'proven.com',
+        customer_profile: 'Mid-Market E-Commerce Growth Brands',
+        deal_summary: 'PROVEN is a $35M+ AI-powered skincare company pivoting to profitability. They\'re stuck at current AOV and need high-margin revenue — HSA/FSA could unlock 15-20% uplift. Russell\'s championing internally, but unit economics has to work with their margin structure.',
+        company_research: [
+          'AI-powered personalized care manufacturer, >$35M run rate',
+          'What they need: Strategies to increase Average Order Value (AOV) and conversion rates',
+          'Timeline: Strategic pivot to profitability drives urgency for high-margin revenue',
+        ],
+        company_profile_url: '/company/proven-skincare',
         bullets: [
           'AI-powered personalized care manufacturer, >$35M run rate',
           'What they need: Strategies to increase Average Order Value (AOV) and conversion rates',
@@ -205,6 +216,7 @@ export const provenDemoDataCall2: PreCallBriefData = {
       company: {
         name: 'PROVEN Skincare',
         icon_color: 'bg-blue-500',
+        customer_profile: 'Mid-Market E-Commerce Growth Brands',
         bullets: [
           'AI-powered personalized care manufacturer utilizing data from 19M assessments',
           'What they need: Unlock HSA/FSA spending to increase conversion and AOV on ~$15M ARR',
