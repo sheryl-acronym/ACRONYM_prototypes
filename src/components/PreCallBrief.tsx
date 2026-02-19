@@ -545,7 +545,7 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo; currentVersi
 
       {/* Company research / Quick Intel */}
       {displayedIntel.length > 0 && (
-        <div className="mb-4">
+        <div className="mb-6">
           <ul className="space-y-1 text-sm text-slate-700">
             {displayedIntel.map((b, i) => (
               <li key={i} className="flex gap-2">
