@@ -8,6 +8,7 @@ import {
   PanelLeft,
   MoreHorizontal,
   Calendar,
+  MapPin,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -20,14 +21,28 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Contact } from '@/components/ContactsPage';
 import { PersonaPill } from '@/components/PersonaPill';
 import { CompanyPill } from '@/components/CompanyPill';
 import { DatePill } from '@/components/DatePill';
+import { DealPill } from '@/components/DealPill';
+import { MeetingCard } from '@/components/MeetingCard';
 
 interface ContactDetailPageProps {
   contact: Contact;
   hideTopBar?: boolean;
+}
+
+// Helper function to get initials from name
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 }
 
 // LinkedIn Icon Component (filled square with rounded corners)
@@ -76,17 +91,27 @@ const TopBar: React.FC<{ contactName: string }> = ({ contactName }) => {
   );
 };
 
-const ContactHeader: React.FC<{ contactName: string; buyerPersona?: string | null }> = ({
+const ContactHeader: React.FC<{ contactName: string; jobTitle?: string | null }> = ({
   contactName,
-  buyerPersona,
+  jobTitle,
 }) => (
-  <div className="mb-6">
-    {buyerPersona && (
-      <div className="mb-2">
-        <PersonaPill persona={buyerPersona} />
+  <div className="mb-6 flex items-start justify-between gap-4">
+    <div className="flex items-start gap-4">
+      <Avatar className="h-12 w-12 mt-1">
+        <AvatarFallback className="bg-slate-200 text-sm font-semibold">
+          {getInitials(contactName)}
+        </AvatarFallback>
+      </Avatar>
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">{contactName}</h1>
+        {jobTitle && (
+          <p className="text-sm text-muted-foreground mt-1">{jobTitle}</p>
+        )}
       </div>
-    )}
-    <h1 className="text-2xl font-bold text-foreground">{contactName}</h1>
+    </div>
+    <Button variant="outline" size="sm">
+      View in Hubspot
+    </Button>
   </div>
 );
 
@@ -95,24 +120,6 @@ const MetadataRows: React.FC<{ contact: Contact }> = ({
 }) => {
   return (
     <>
-      {/* Personal markers - full width */}
-      {contact.personal_markers && contact.personal_markers.length > 0 && (
-        <>
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-muted-foreground mb-2">Personal markers</h3>
-            <ul className="text-sm text-foreground space-y-1">
-              {contact.personal_markers.map((marker, idx) => (
-                <li key={idx} className="flex items-start gap-2">
-                  <span className="text-muted-foreground">•</span>
-                  <span>{marker}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <Separator className="mb-6" />
-        </>
-      )}
-
       {/* Two-column layout: field names on left, values on right (left-aligned) */}
       <div className="space-y-3">
         {/* Company */}
@@ -139,6 +146,35 @@ const MetadataRows: React.FC<{ contact: Contact }> = ({
           </div>
         )}
 
+        {/* Location */}
+        {contact.location && (
+          <div className="grid grid-cols-[130px_1fr] gap-6">
+            <div className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium text-muted-foreground">Location</span>
+            </div>
+            <p className="text-sm text-foreground">
+              {contact.location}{' '}
+              <span className="text-muted-foreground">
+                [{new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}]
+              </span>
+            </p>
+          </div>
+        )}
+
+        {/* Buyer Persona */}
+        {contact.buyer_persona && (
+          <div className="grid grid-cols-[130px_1fr] gap-6">
+            <div className="flex items-center gap-2">
+              <User className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium text-muted-foreground">Buyer Persona</span>
+            </div>
+            <div className="flex items-center">
+              <PersonaPill persona={contact.buyer_persona} />
+            </div>
+          </div>
+        )}
+
         {/* Reports to */}
         {contact.reports_to && (
           <div className="grid grid-cols-[130px_1fr] gap-6">
@@ -147,19 +183,6 @@ const MetadataRows: React.FC<{ contact: Contact }> = ({
               <span className="text-sm font-medium text-muted-foreground">Reports to</span>
             </div>
             <p className="text-sm text-foreground">{contact.reports_to}</p>
-          </div>
-        )}
-
-        {/* Last meeting */}
-        {contact.last_meeting && (
-          <div className="grid grid-cols-[130px_1fr] gap-6">
-            <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-muted-foreground">Last meeting</span>
-            </div>
-            <div className="flex items-center">
-              <DatePill date={contact.last_meeting} />
-            </div>
           </div>
         )}
 
@@ -197,6 +220,110 @@ const MetadataRows: React.FC<{ contact: Contact }> = ({
           </div>
         )}
       </div>
+
+      {/* Tabs Section */}
+      <Separator className="mt-6 mb-6" />
+      <Tabs defaultValue="overview" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="meetings">Meetings</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview">
+          {/* Activity Summary */}
+          {contact.activity_summary && (
+            <div className="mb-6">
+              <h3 className="text-sm font-medium text-muted-foreground mb-2">Latest activity</h3>
+              <p className="text-sm text-foreground">{contact.activity_summary}</p>
+            </div>
+          )}
+
+          {/* Associated deals */}
+          <div className="mb-6">
+            <div className="grid grid-cols-[130px_1fr] gap-6">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-muted-foreground">Associated deals</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {contact.associated_deals && contact.associated_deals.length > 0 ? (
+                  contact.associated_deals.map((deal, idx) => (
+                    <DealPill key={idx} deal={deal.name} momentum={deal.momentum} />
+                  ))
+                ) : (
+                  <span className="text-sm text-muted-foreground">No deals found</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Last meeting */}
+          <div className="space-y-3">
+            {contact.last_meeting && (
+              <div className="grid grid-cols-[130px_1fr] gap-6">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium text-muted-foreground">Last meeting</span>
+                </div>
+                <div className="flex items-center">
+                  <DatePill date={contact.last_meeting} />
+                </div>
+              </div>
+            )}
+
+            {/* Next meeting */}
+            <div className="grid grid-cols-[130px_1fr] gap-6 pt-2">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium text-muted-foreground">Next meeting</span>
+              </div>
+              <div className="flex items-center">
+                {contact.next_meeting ? (
+                  <DatePill date={contact.next_meeting} />
+                ) : (
+                  <span className="text-sm text-foreground">Unknown</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Personal markers */}
+          {contact.personal_markers && contact.personal_markers.length > 0 && (
+            <>
+              <Separator className="mt-6 mb-6" />
+              <div className="mb-6">
+                <h3 className="text-sm font-medium text-muted-foreground mb-2">Personal markers</h3>
+                <ul className="text-sm text-foreground space-y-1">
+                  {contact.personal_markers.map((marker, idx) => (
+                    <li key={idx} className="flex items-start gap-2">
+                      <span className="text-muted-foreground">•</span>
+                      <span>{marker}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
+          )}
+        </TabsContent>
+
+        <TabsContent value="meetings">
+          <div className="space-y-3">
+            {contact.last_meeting ? (
+              <MeetingCard
+                date={new Date(contact.last_meeting).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase().split(' ').join(' ')}
+                title="Past Meeting"
+                variant="past"
+                startTime="2:00 PM"
+                endTime="2:45 PM"
+                duration="45 mins"
+                attendees={[{ name: contact.name }]}
+              />
+            ) : null}
+            {!contact.last_meeting && (
+              <div className="text-sm text-muted-foreground">No meetings recorded</div>
+            )}
+          </div>
+        </TabsContent>
+      </Tabs>
     </>
   );
 };
@@ -213,7 +340,7 @@ export const ContactDetailPage: React.FC<ContactDetailPageProps> = ({
           <div className="px-6 py-4 w-full">
             <ContactHeader
               contactName={contact.name}
-              buyerPersona={contact.buyer_persona}
+              jobTitle={contact.job_title}
             />
 
             <MetadataRows contact={contact} />
@@ -242,7 +369,7 @@ export const ContactDetailPage: React.FC<ContactDetailPageProps> = ({
           <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
             <ContactHeader
               contactName={contact.name}
-              buyerPersona={contact.buyer_persona}
+              jobTitle={contact.job_title}
             />
 
             <MetadataRows contact={contact} />

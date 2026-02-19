@@ -62,11 +62,11 @@ export const MeetingCard: React.FC<MeetingCardProps> = ({
               {title}
             </h3>
             {isPast ? (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 {startTime} – {endTime} • {duration}
               </p>
             ) : (
-              <p className="text-xs text-muted-foreground">{time}</p>
+              <p className="text-sm text-muted-foreground">{time}</p>
             )}
           </div>
         </div>

@@ -57,8 +57,12 @@ export interface Contact {
   company?: string | null;
   job_title?: string | null;
   reports_to?: string | null;
+  location?: string | null;
   linkedin_url?: string | null;
+  activity_summary?: string | null;
+  next_meeting?: string | null;
   personal_markers?: string[] | null;
+  associated_deals?: Array<{ name: string; momentum?: 'Strong' | 'Stalled' | 'At risk' | 'Closed' | 'Active' }> | null;
 }
 
 interface ContactsPageProps {
