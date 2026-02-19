@@ -111,6 +111,17 @@ const MeetingHeader: React.FC<{
   </div>
 );
 
+const getMeddicStatusIcon = (status: 'complete' | 'partial' | 'missing') => {
+  switch (status) {
+    case 'complete':
+      return <div className="w-2 h-2 rounded-full bg-green-500" />;
+    case 'partial':
+      return <div className="w-2 h-2 rounded-full bg-yellow-500" />;
+    case 'missing':
+      return <div className="w-2 h-2 rounded-full bg-slate-300" />;
+  }
+};
+
 const MetadataRows: React.FC<{ metadata: MeetingMetadata }> = ({ metadata }) => (
   <div className="space-y-0">
     {/* Deal */}
@@ -667,9 +678,35 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
                   {data.metadata.meddic_completion && (
                     <div className="flex items-center gap-1.5">
                       <span>MEDDIC status:</span>
-                      <span className="font-medium underline decoration-dotted decoration-1 underline-offset-2 cursor-pointer hover:text-slate-700">
-                        {data.metadata.meddic_completion.complete}/{data.metadata.meddic_completion.complete + data.metadata.meddic_completion.partial + data.metadata.meddic_completion.missing} complete
-                      </span>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <span className="font-medium underline decoration-dotted decoration-1 underline-offset-2 cursor-pointer hover:text-slate-700">
+                            {data.metadata.meddic_completion.complete}/{data.metadata.meddic_completion.complete + data.metadata.meddic_completion.partial + data.metadata.meddic_completion.missing} complete
+                          </span>
+                        </PopoverTrigger>
+                        <PopoverContent side="right" align="start" className="w-80 p-0">
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-xs">
+                              <thead className="bg-slate-50">
+                                <tr>
+                                  <th className="text-left px-3 py-2 font-medium text-foreground w-4"></th>
+                                  <th className="text-left px-3 py-2 font-medium text-foreground w-24">Component</th>
+                                  <th className="text-left px-3 py-2 font-medium text-foreground">Information</th>
+                                </tr>
+                              </thead>
+                              <tbody className="divide-y">
+                                {data.metadata.meddic_detail?.map((item, i) => (
+                                  <tr key={i} className="hover:bg-slate-50 transition-colors">
+                                    <td className="px-3 py-2 text-center">{getMeddicStatusIcon(item.status)}</td>
+                                    <td className="px-3 py-2 text-foreground font-medium">{item.name}</td>
+                                    <td className="px-3 py-2 text-foreground/80">{item.information}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
                     </div>
                   )}
                 </div>

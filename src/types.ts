@@ -76,6 +76,11 @@ export interface MeetingMetadata {
     missing: number;
     gaps?: string[];
   };
+  meddic_detail?: {
+    name: string;
+    status: 'complete' | 'partial' | 'missing';
+    information: string;
+  }[];
 }
 
 export interface PreCallBriefData {

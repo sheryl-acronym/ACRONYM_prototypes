@@ -129,6 +129,14 @@ export const upcomingMeetingsBriefData: Record<string, PreCallBriefData> = {
           missing: 1,
           gaps: ['Budget timeline unclear', 'Decision process not fully mapped'],
         },
+        meddic_detail: [
+          { name: 'Metrics', status: 'complete', information: '$35M+ ARR, 95% eligibility' },
+          { name: 'Economic Buyer', status: 'complete', information: 'Russell Harris confirmed' },
+          { name: 'Decision Process', status: 'partial', information: 'Main process known, approval workflow unclear' },
+          { name: 'Champion', status: 'complete', information: 'Russell is self-advocate' },
+          { name: 'Identified Pain', status: 'complete', information: 'AOV stagnation, margin pressure' },
+          { name: 'Budget', status: 'missing', information: 'Not yet discussed' },
+        ],
       },
       brief: {
         ...base.brief,
