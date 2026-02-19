@@ -54,151 +54,6 @@ interface PreCallBriefProps {
   currentVersion?: 'call-1' | 'call-2' | 'no-brief';
 }
 
-const EditableText: React.FC<{
-  value: string;
-  className?: string;
-  onChange?: (value: string) => void;
-}> = ({ value, className, onChange }) => {
-  const [editing, setEditing] = React.useState(false);
-  const [text, setText] = React.useState(value);
-
-  React.useEffect(() => {
-    setText(value);
-  }, [value]);
-
-  const handleBlur = () => {
-    setEditing(false);
-    onChange?.(text);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      setEditing(false);
-      onChange?.(text);
-    }
-    if (e.key === 'Escape') {
-      setText(value);
-      setEditing(false);
-    }
-  };
-
-  if (editing) {
-    return (
-      <Input
-        autoFocus
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onBlur={handleBlur}
-        onKeyDown={handleKeyDown}
-        className={`h-auto py-1 px-2 text-sm border-transparent bg-muted/40 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 ${className || ''}`}
-      />
-    );
-  }
-
-  return (
-    <span
-      onClick={() => setEditing(true)}
-      className={`cursor-text rounded px-1 -mx-1 py-0.5 hover:bg-muted/50 transition-colors ${className || ''}`}
-    >
-      {text}
-    </span>
-  );
-};
-
-const EditableBullet: React.FC<{
-  value: string;
-  icon?: React.ReactNode | 'bullet';
-  onChange?: (value: string) => void;
-  onDelete?: () => void;
-  onSparkle?: () => void;
-  reasoning?: string;
-  readOnly?: boolean;
-  autoEdit?: boolean;
-}> = ({ value, icon, onChange, onDelete, onSparkle, reasoning, readOnly = false, autoEdit = false }) => {
-  const [editing, setEditing] = React.useState(autoEdit);
-  const [text, setText] = React.useState(value);
-
-  const handleBlur = () => {
-    setEditing(false);
-    onChange?.(text);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      setEditing(false);
-      onChange?.(text);
-    }
-    if (e.key === 'Escape') {
-      setText(value);
-      setEditing(false);
-    }
-  };
-
-  const bulletNode = icon === 'bullet'
-    ? <span className="text-slate-400 leading-none select-none">&bull;</span>
-    : icon;
-
-  return (
-    <li className="group/bullet flex items-start gap-2 text-sm text-foreground/80">
-      <span className="flex-shrink-0 mt-0.5">{bulletNode}</span>
-      {editing && !readOnly ? (
-        <Input
-          autoFocus
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
-          className="flex-1 h-auto py-0.5 px-2 text-sm border-transparent bg-muted/40 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
-        />
-      ) : (
-        <span
-          onClick={readOnly ? undefined : () => setEditing(true)}
-          className={`flex-1 rounded px-1 -mx-1 py-0.5 ${readOnly ? '' : 'cursor-text hover:bg-muted/50'} transition-colors`}
-        >
-          {text}
-        </span>
-      )}
-      {!editing && (onSparkle || reasoning || onDelete) && (
-        <span className="flex items-center gap-0.5 flex-shrink-0 opacity-0 group-hover/bullet:opacity-100 transition-opacity">
-          {reasoning ? (
-            <Popover>
-              <PopoverTrigger asChild>
-                <button
-                  className="mt-0.5 p-0.5 rounded hover:bg-amber-50 text-muted-foreground hover:text-amber-500 transition-colors"
-                >
-                  <Sparkles className="h-3.5 w-3.5" />
-                </button>
-              </PopoverTrigger>
-              <PopoverContent side="right" align="start" className="w-72 p-3">
-                <div className="flex items-center gap-1.5 mb-2">
-                  <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-                  <span className="text-xs font-semibold text-foreground">AI Reasoning</span>
-                </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">{reasoning}</p>
-              </PopoverContent>
-            </Popover>
-          ) : onSparkle ? (
-            <button
-              onClick={onSparkle}
-              className="mt-0.5 p-0.5 rounded hover:bg-amber-50 text-muted-foreground hover:text-amber-500 transition-colors"
-            >
-              <Sparkles className="h-3.5 w-3.5" />
-            </button>
-          ) : null}
-          {onDelete && (
-            <button
-              onClick={onDelete}
-              className="mt-0.5 p-0.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <X className="h-3 w-3" />
-            </button>
-          )}
-        </span>
-      )}
-    </li>
-  );
-};
-
 const TopBar: React.FC<{ breadcrumb: string[]; onVersionChange?: (version: 'call-1' | 'call-2' | 'no-brief') => void; currentVersion?: 'call-1' | 'call-2' | 'no-brief' }> = ({ breadcrumb, onVersionChange, currentVersion = 'call-1' }) => (
   <div className="flex items-center justify-between">
     <Breadcrumb>
@@ -356,13 +211,6 @@ const objectiveReasonings: Record<number, string> = {
   3: 'Transaction volume determines pricing tier and validates whether the deal meets our minimum thresholds for profitability.',
 };
 
-const learnReasonings: Record<number, string> = {
-  0: 'Understanding their baseline knowledge of HSA/FSA helps calibrate the pitch — are we educating or accelerating?',
-  1: 'Need to confirm Shopify Plus version and any custom middleware that could affect integration timeline.',
-  2: 'Subscription vs. one-time mix affects HSA/FSA eligibility rules and potential revenue impact calculation.',
-  3: 'Transaction volume determines tier pricing and validates whether the deal meets minimum thresholds.',
-};
-
 const anticipatedObjectionReasonings: Record<number, string> = {
   0: 'Russell\'s background at Carvana and Harry\'s means he\'s familiar with payment stack complexity. Integration concerns are legitimate — need to emphasize API-first architecture and implementation support.',
   1: 'PROVEN is pivoting to profitability. Pricing objections will center on ROI — Russell will want to see margin lift that justifies our fees vs. Shopify Payments.',
@@ -445,7 +293,7 @@ const useMeetingObjectivesState = (data: MeetingObjectives): MeetingObjectivesSe
   return { objectives, learnItems, setObjectives, setLearnItems, addObjective, addLearnItem };
 };
 
-const MeetingObjectivesSection: React.FC<{ data: MeetingObjectives; state: MeetingObjectivesSectionState }> = ({ data, state }) => {
+const MeetingObjectivesSection: React.FC<{ data: MeetingObjectives; state: MeetingObjectivesSectionState }> = ({ state }) => {
   const { objectives, setObjectives, addObjective } = state;
 
   return (
@@ -547,56 +395,6 @@ const MeetingObjectivesSection: React.FC<{ data: MeetingObjectives; state: Meeti
       </div>
     </div>
   );
-};
-
-const WhatWeNeedToLearnSection: React.FC<{
-  learnItems: BulletItem[];
-  setLearnItems: (items: BulletItem[]) => void;
-  addLearnItem: () => void;
-}> = ({ learnItems, setLearnItems, addLearnItem }) => (
-  <div className="py-4">
-    <div className="flex items-center justify-between mb-3">
-      <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60">What we need to learn</h2>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-6 w-6 text-muted-foreground hover:text-foreground"
-        onClick={addLearnItem}
-      >
-        <Plus className="h-3.5 w-3.5" />
-      </Button>
-    </div>
-    <ul className="space-y-1">
-      {learnItems.map((item, i) => (
-        <EditableBullet
-          key={i}
-          value={item.text}
-          icon="bullet"
-          onChange={(val) => {
-            const updated = [...learnItems];
-            updated[i] = { ...updated[i], text: val };
-            setLearnItems(updated);
-          }}
-          onDelete={() => setLearnItems(learnItems.filter((_, idx) => idx !== i))}
-          reasoning={item.isAI ? learnReasonings[i] : undefined}
-          autoEdit={item.text === ''}
-        />
-      ))}
-    </ul>
-  </div>
-);
-
-const companyBulletReasonings: Record<number, string> = {
-  0: 'Sourced from Crunchbase and recent earnings coverage — confirms PROVEN operates at scale with AI-driven personalization.',
-  1: 'Pulled from the Skio referral notes and PROVEN\'s investor deck — AOV and conversion are their top growth levers.',
-  2: 'Based on CEO interview in Modern Retail — profitability pivot signals urgency and budget availability.',
-};
-
-const attendeeBioReasonings: Record<string, Record<number, string>> = {
-  'Russell Harris': {
-    0: 'Sourced from LinkedIn — his product leadership at Harry\'s and Carvana shows he understands DTC at scale.',
-    1: 'Based on his Crunchbase profile and podcast appearances — he\'s built and scaled multiple businesses through key growth phases.',
-  },
 };
 
 const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo }> = ({ data }) => (
