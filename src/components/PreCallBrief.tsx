@@ -293,8 +293,21 @@ const useMeetingObjectivesState = (data: MeetingObjectives): MeetingObjectivesSe
   return { objectives, learnItems, setObjectives, setLearnItems, addObjective, addLearnItem };
 };
 
-const MeetingObjectivesSection: React.FC<{ data: MeetingObjectives; state: MeetingObjectivesSectionState }> = ({ state }) => {
+const MeetingObjectivesSection: React.FC<{ data: MeetingObjectives; state: MeetingObjectivesSectionState; currentVersion?: 'call-1' | 'call-2' | 'no-brief' }> = ({ state, currentVersion = 'call-1' }) => {
   const { objectives, setObjectives, addObjective } = state;
+
+  // Call 2 specific objectives
+  const call2Objectives = [
+    'Technical validation: Confirm "Hidden SKU" handling meets Yuliia\'s QA standards',
+    'Success criteria: Specific margin hurdle rate required for approval',
+    'Brand alignment: Ensure checkout flow meets Theresa\'s premium standards',
+    'Timeline: Implementation target date or urgency drivers beyond "immediate interest"',
+  ];
+
+  // Use Call 2 objectives if in Call 2 mode, otherwise use existing objectives
+  const displayedObjectives = currentVersion === 'call-2' && call2Objectives.length > 0
+    ? call2Objectives.map(t => ({ text: t, isAI: true, completed: false }))
+    : objectives;
 
   return (
     <div className="py-4">
@@ -312,7 +325,7 @@ const MeetingObjectivesSection: React.FC<{ data: MeetingObjectives; state: Meeti
 
       {/* Objectives Grid */}
       <div className="grid grid-cols-1 gap-3 mb-8">
-        {objectives.map((obj, i) => (
+        {displayedObjectives.map((obj, i) => (
           <div
             key={i}
             className="group/objective rounded-lg border border-slate-200 bg-white p-4 hover:border-slate-300 hover:shadow-md transition-all hover:bg-slate-50"
@@ -559,7 +572,7 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
             }
           </p>
 
-          <MeetingObjectivesSection key={JSON.stringify(data.brief.meeting_objectives)} data={data.brief.meeting_objectives} state={objectivesState} />
+          <MeetingObjectivesSection key={JSON.stringify(data.brief.meeting_objectives)} data={data.brief.meeting_objectives} state={objectivesState} currentVersion={currentVersion} />
           <Separator className="my-2" />
           <WhoYoureTalkingToSection key={JSON.stringify(data.brief.who_youre_talking_to)} data={data.brief.who_youre_talking_to} />
         </TabsContent>
