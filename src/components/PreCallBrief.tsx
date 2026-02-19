@@ -244,6 +244,13 @@ const discoveryQuestionReasonings: Record<number, string> = {
   4: 'Russell is ROI-focused. Timeline and budget signals urgency and whether this is a strategic priority or exploratory conversation.',
 };
 
+const call2DiscoveryQuestionReasonings: Record<number, string> = {
+  0: 'Subscription mix impacts implementation complexity and integration scope. High subscription percentage determines integration approach with Stripe billing.',
+  1: 'Critical for Yuliia\'s QA validation. SKU count directly impacts "Hidden SKU" handling testing and catalog review timeline for HSA/FSA eligibility.',
+  2: 'Gauge product familiarity and demo readiness. Determines how much education vs. advanced feature discussion is needed in this call.',
+  3: 'Timeline and go-live urgency aligns with profitability pivot strategy. Understanding implementation readiness helps scope this deal\'s momentum and dependencies.',
+};
+
 const anticipatedQuestionReasonings: Record<number, string> = {
   0: 'Founders moving fast typically want to know we can keep pace with their timeline. Speed often becomes a deal-maker or breaker.',
   1: 'Companies handling sensitive health data typically ask about security upfront. It\'s table stakes for compliance-sensitive verticals.',
@@ -712,112 +719,145 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
               </div>
 
             {/* Suggested Discovery Questions */}
-            {data.brief.suggested_discovery_questions && data.brief.suggested_discovery_questions.length > 0 && (
+            {(data.brief.suggested_discovery_questions?.length || 0) > 0 && (
               <div className="space-y-2">
                 <h3 className="text-sm font-semibold text-foreground/90">Suggested discovery questions</h3>
             <div className="grid grid-cols-1 gap-2">
-              {data.brief.suggested_discovery_questions.map((q, i) => {
-                const meddic = discoveryQuestionMEDDIC[i];
-                const styles = meddic ? getMEDDICStyles(meddic) : null;
-                const reasoning = discoveryQuestionReasonings[i];
-                return (
-                  <div
-                    key={i}
-                    className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-slate-300 hover:shadow-md transition-all hover:bg-slate-50"
-                  >
-                    <div className="flex items-start gap-3">
-                      <BadgeHelp className="h-4 w-4 text-slate-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-foreground/80 flex-1">{q}</span>
-                      {meddic && styles && (
-                        <div className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0 ${styles.bg} ${styles.text}`}>
-                          {meddic}
-                        </div>
+              {(() => {
+                const questionsToDisplay = currentVersion === 'call-2'
+                  ? [
+                      'What\'s your revenue mix between subscription and one-time purchases?',
+                      'How many SKUs/products do you have?',
+                      'Have you seen our solution before or had a chance to look at it?',
+                      'What\'s your timeline for implementation and going live?',
+                    ]
+                  : data.brief.suggested_discovery_questions || [];
+
+                return questionsToDisplay.map((q, i) => {
+                  const meddic = currentVersion === 'call-2' ? undefined : discoveryQuestionMEDDIC[i];
+                  const styles = meddic ? getMEDDICStyles(meddic) : null;
+                  const reasoning = currentVersion === 'call-2' ? call2DiscoveryQuestionReasonings[i] : discoveryQuestionReasonings[i];
+                  return (
+                    <div
+                      key={i}
+                      className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-slate-300 hover:shadow-md transition-all hover:bg-slate-50"
+                    >
+                      <div className="flex items-start gap-3">
+                        <BadgeHelp className="h-4 w-4 text-slate-600 flex-shrink-0 mt-0.5" />
+                        <span className="text-sm text-foreground/80 flex-1">{q}</span>
+                        {meddic && styles && (
+                          <div className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0 ${styles.bg} ${styles.text}`}>
+                            {meddic}
+                          </div>
+                        )}
+                      </div>
+                      {reasoning && (
+                        <p className="text-xs text-muted-foreground ml-7">{reasoning}</p>
                       )}
                     </div>
-                    {reasoning && (
-                      <p className="text-xs text-muted-foreground ml-7">{reasoning}</p>
-                    )}
-                  </div>
-                );
-              })}
+                  );
+                });
+              })()}
             </div>
           </div>
         )}
 
         {/* Anticipated Questions */}
-        {data.gameplan.anticipated_questions && data.gameplan.anticipated_questions.length > 0 && (
+        {(data.gameplan.anticipated_questions?.length || 0) > 0 && (
           <div className="space-y-2 mt-6">
             <h3 className="text-sm font-semibold text-foreground/90">Anticipated questions</h3>
             <div className="grid grid-cols-1 gap-2">
-              {data.gameplan.anticipated_questions.map((q, i) => (
-                <div
-                  key={i}
-                  className="group/question flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-slate-300 hover:shadow-md transition-all hover:bg-slate-50"
-                >
-                  <div className="flex items-start gap-3">
-                    <BadgeHelp className="h-4 w-4 text-slate-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm text-foreground/80 flex-1">{q.text}</span>
-                    {q.isAI && anticipatedQuestionReasonings[i] && (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <button className="p-0.5 rounded hover:bg-blue-50 text-muted-foreground hover:text-blue-500 transition-colors flex-shrink-0 opacity-0 group-hover/question:opacity-100">
-                            <Sparkles className="h-3.5 w-3.5" />
-                          </button>
-                        </PopoverTrigger>
-                        <PopoverContent side="right" align="start" className="w-72 p-3">
-                          <div className="flex items-center gap-1.5 mb-2">
-                            <Sparkles className="h-3.5 w-3.5 text-blue-500" />
-                            <span className="text-xs font-semibold text-foreground">Why we think they'll ask</span>
-                          </div>
-                          <p className="text-xs text-muted-foreground leading-relaxed">{anticipatedQuestionReasonings[i]}</p>
-                        </PopoverContent>
-                      </Popover>
+              {(() => {
+                const questionsToDisplay = currentVersion === 'call-2'
+                  ? [
+                      { text: 'How long does implementation take from signing to going live?', isAI: true, reasoning: 'Timeline is critical for Theresa\'s brand launch planning. PROVEN wants to understand go-live speed and how it aligns with their profitability pivot schedule.' },
+                      { text: 'What level of technical development is required to integrate with your platform?', isAI: true, reasoning: 'Yuliia needs to understand integration scope and effort. Understanding whether we require custom development vs. native integration affects her technical roadmap and resource planning.' },
+                      { text: 'What support and documentation resources are available to us?', isAI: true, reasoning: 'Implementation team and stakeholders want to know what support during launch. QA validation and brand alignment testing may require direct engineering support.' },
+                      { text: 'What products are eligible for HSA/FSA, and how is eligibility determined?', isAI: true, reasoning: 'Critical for "Hidden SKU" validation. Yuliia needs to understand how our eligibility review process works and whether it meets her QA standards for product categorization.' },
+                      { text: 'How does the payment processing fee work with mixed carts?', isAI: true, reasoning: 'Direct ROI calculation for Russell. Understanding fee structure on mixed carts (eligible + ineligible items) is essential for margin lift modeling.' },
+                    ]
+                  : data.gameplan.anticipated_questions || [];
+
+                return questionsToDisplay.map((q, i) => (
+                  <div
+                    key={i}
+                    className="group/question flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-slate-300 hover:shadow-md transition-all hover:bg-slate-50"
+                  >
+                    <div className="flex items-start gap-3">
+                      <BadgeHelp className="h-4 w-4 text-slate-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-foreground/80 flex-1">{q.text}</span>
+                      {q.isAI && ((currentVersion === 'call-2' && q.reasoning) || (currentVersion !== 'call-2' && anticipatedQuestionReasonings[i])) && (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button className="p-0.5 rounded hover:bg-blue-50 text-muted-foreground hover:text-blue-500 transition-colors flex-shrink-0 opacity-0 group-hover/question:opacity-100">
+                              <Sparkles className="h-3.5 w-3.5" />
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent side="right" align="start" className="w-72 p-3">
+                            <div className="flex items-center gap-1.5 mb-2">
+                              <Sparkles className="h-3.5 w-3.5 text-blue-500" />
+                              <span className="text-xs font-semibold text-foreground">Why we think they'll ask</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{currentVersion === 'call-2' ? q.reasoning : anticipatedQuestionReasonings[i]}</p>
+                          </PopoverContent>
+                        </Popover>
+                      )}
+                    </div>
+                    {q.isAI && ((currentVersion === 'call-2' && q.reasoning) || (currentVersion !== 'call-2' && anticipatedQuestionReasonings[i])) && (
+                      <p className="text-xs text-muted-foreground ml-7">{currentVersion === 'call-2' ? q.reasoning : anticipatedQuestionReasonings[i]}</p>
                     )}
                   </div>
-                  {q.isAI && anticipatedQuestionReasonings[i] && (
-                    <p className="text-xs text-muted-foreground ml-7">{anticipatedQuestionReasonings[i]}</p>
-                  )}
-                </div>
-              ))}
+                ));
+              })()}
             </div>
           </div>
         )}
 
         {/* Anticipated Objections */}
-        {data.gameplan.anticipated_objections && data.gameplan.anticipated_objections.length > 0 && (
+        {(data.gameplan.anticipated_objections?.length || 0) > 0 && (
           <div className="space-y-2 mt-6">
             <h3 className="text-sm font-semibold text-foreground/90">Anticipated objections</h3>
             <div className="grid grid-cols-1 gap-2">
-              {data.gameplan.anticipated_objections.map((obj, i) => (
-                <div
-                  key={i}
-                  className="group/objection flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-slate-300 hover:shadow-md transition-all hover:bg-slate-50"
-                >
-                  <div className="flex items-start gap-3">
-                    <ShieldMinus className="h-4 w-4 text-slate-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm text-foreground/80 flex-1">{obj.text}</span>
-                    {obj.isAI && anticipatedObjectionReasonings[i] && (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <button className="p-0.5 rounded hover:bg-amber-50 text-muted-foreground hover:text-amber-500 transition-colors flex-shrink-0 opacity-0 group-hover/objection:opacity-100">
-                            <Sparkles className="h-3.5 w-3.5" />
-                          </button>
-                        </PopoverTrigger>
-                        <PopoverContent side="right" align="start" className="w-72 p-3">
-                          <div className="flex items-center gap-1.5 mb-2">
-                            <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-                            <span className="text-xs font-semibold text-foreground">Why this matters</span>
-                          </div>
-                          <p className="text-xs text-muted-foreground leading-relaxed">{anticipatedObjectionReasonings[i]}</p>
-                        </PopoverContent>
-                      </Popover>
+              {(() => {
+                const objectionsToDisplay = currentVersion === 'call-2'
+                  ? [
+                      { text: 'Product Eligibility and Classification Uncertainty', isAI: true, reasoning: 'Yuliia will push back on how we handle "Hidden SKU" classification. She needs assurance our process is rigorous enough for audit and compliance.' },
+                      { text: 'Pricing: Transaction Fee and Margin Concerns', isAI: true, reasoning: 'Russell will challenge whether the 5% + $0.30 fee on HSA/FSA volume justifies the margin impact. Need to model unit economics against the AOV lift potential.' },
+                      { text: 'Technical Integration & Payment Flow Mechanics', isAI: true, reasoning: 'Yuliia will want technical deep-dive on integration complexity, error handling, and refund flows. Theresa may have concerns about checkout UX impact on conversion.' },
+                    ]
+                  : data.gameplan.anticipated_objections || [];
+
+                return objectionsToDisplay.map((obj, i) => (
+                  <div
+                    key={i}
+                    className="group/objection flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-slate-300 hover:shadow-md transition-all hover:bg-slate-50"
+                  >
+                    <div className="flex items-start gap-3">
+                      <ShieldMinus className="h-4 w-4 text-slate-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-foreground/80 flex-1">{obj.text}</span>
+                      {obj.isAI && ((currentVersion === 'call-2' && obj.reasoning) || (currentVersion !== 'call-2' && anticipatedObjectionReasonings[i])) && (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button className="p-0.5 rounded hover:bg-amber-50 text-muted-foreground hover:text-amber-500 transition-colors flex-shrink-0 opacity-0 group-hover/objection:opacity-100">
+                              <Sparkles className="h-3.5 w-3.5" />
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent side="right" align="start" className="w-72 p-3">
+                            <div className="flex items-center gap-1.5 mb-2">
+                              <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                              <span className="text-xs font-semibold text-foreground">Why this matters</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground leading-relaxed">{currentVersion === 'call-2' ? obj.reasoning : anticipatedObjectionReasonings[i]}</p>
+                          </PopoverContent>
+                        </Popover>
+                      )}
+                    </div>
+                    {obj.isAI && ((currentVersion === 'call-2' && obj.reasoning) || (currentVersion !== 'call-2' && anticipatedObjectionReasonings[i])) && (
+                      <p className="text-xs text-muted-foreground ml-7">{currentVersion === 'call-2' ? obj.reasoning : anticipatedObjectionReasonings[i]}</p>
                     )}
                   </div>
-                  {obj.isAI && anticipatedObjectionReasonings[i] && (
-                    <p className="text-xs text-muted-foreground ml-7">{anticipatedObjectionReasonings[i]}</p>
-                  )}
-                </div>
-              ))}
+                ));
+              })()}
             </div>
           </div>
             )}
