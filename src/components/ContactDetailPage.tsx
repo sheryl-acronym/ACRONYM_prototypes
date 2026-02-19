@@ -45,6 +45,13 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
+// Helper function to format date as "Jan 19"
+function formatDateShort(dateStr: string | null): string | null {
+  if (!dateStr) return null;
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
 // LinkedIn Icon Component (filled square with rounded corners)
 const LinkedInIcon: React.FC<{ className?: string }> = ({ className = 'h-4 w-4' }) => (
   <svg
@@ -265,7 +272,7 @@ const MetadataRows: React.FC<{ contact: Contact }> = ({
                   <span className="text-sm font-medium text-muted-foreground">Last meeting</span>
                 </div>
                 <div className="flex items-center">
-                  <DatePill date={contact.last_meeting} />
+                  <DatePill date={formatDateShort(contact.last_meeting) || ''} />
                 </div>
               </div>
             )}
@@ -278,7 +285,7 @@ const MetadataRows: React.FC<{ contact: Contact }> = ({
               </div>
               <div className="flex items-center">
                 {contact.next_meeting ? (
-                  <DatePill date={contact.next_meeting} />
+                  <DatePill date={formatDateShort(contact.next_meeting) || ''} />
                 ) : (
                   <span className="text-sm text-foreground">Unknown</span>
                 )}
