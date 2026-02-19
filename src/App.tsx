@@ -16,6 +16,7 @@ import BuyerPersonasPage from '@/components/BuyerPersonasPage';
 import DiscoveryQuestionsPage from '@/components/DiscoveryQuestionsPage';
 import FAQsPage from '@/components/FAQsPage';
 import ObjectionsPage from '@/components/ObjectionsPage';
+import ObjectionDetailPage from '@/components/ObjectionDetailPage';
 import PlaybookPositioningPage from '@/components/PlaybookPositioningPage';
 import ComponentsPage from '@/components/ComponentsPage';
 import AppSidebar from '@/components/AppSidebar';
@@ -262,6 +263,25 @@ function CompanyDetailRoute() {
   return <CompanyDetailPage company={company} />;
 }
 
+function ObjectionDetailRoute() {
+  const { objectionId } = useParams<{ objectionId: string }>();
+
+  const objection = React.useMemo(() => {
+    if (!objectionId) return undefined;
+    return objectionsData.find((o) => o.id === objectionId);
+  }, [objectionId]);
+
+  if (!objection) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-muted-foreground">
+        Objection not found.
+      </div>
+    );
+  }
+
+  return <ObjectionDetailPage objection={objection} />;
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -288,6 +308,7 @@ function App() {
             <Route path="/discovery-questions" element={<DiscoveryQuestionsPage questions={discoveryQuestionsData} />} />
             <Route path="/faqs" element={<FAQsPage faqs={faqs} />} />
             <Route path="/objections" element={<ObjectionsPage objections={objectionsData} />} />
+            <Route path="/objections/:objectionId" element={<ObjectionDetailRoute />} />
             <Route path="/playbook/positioning" element={<PlaybookPositioningPage />} />
             <Route path="/components" element={<ComponentsPage />} />
           </Routes>

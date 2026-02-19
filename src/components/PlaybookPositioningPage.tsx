@@ -25,18 +25,18 @@ const parseMarkdown = (text: string): React.ReactNode[] => {
       const parts = line.split(/\*\*(.*?)\*\*/);
       const rendered = parts.map((part, idx) => (idx % 2 === 1 ? <strong key={idx}>{part}</strong> : part));
       elements.push(
-        <div key={i} className="mb-2">
+        <span key={i} className="block mb-2">
           {rendered}
-        </div>
+        </span>
       );
     }
     // Bullet points (- text)
     else if (line.startsWith('- ')) {
       elements.push(
-        <div key={i} className="flex items-start gap-2 mb-2">
+        <span key={i} className="flex items-start gap-2 mb-2">
           <span className="flex-shrink-0 text-slate-400">&bull;</span>
           <span>{line.slice(2)}</span>
-        </div>
+        </span>
       );
     }
     // Headings (# text)
@@ -56,14 +56,14 @@ const parseMarkdown = (text: string): React.ReactNode[] => {
     }
     // Empty lines
     else if (line.trim() === '') {
-      elements.push(<div key={i} className="mb-2" />);
+      elements.push(<span key={i} className="block mb-2" />);
     }
     // Regular text
     else {
       elements.push(
-        <div key={i} className="mb-2">
+        <span key={i} className="block mb-2">
           {line}
-        </div>
+        </span>
       );
     }
 
@@ -124,12 +124,12 @@ const EditableText: React.FC<{
   }
 
   return (
-    <div
+    <span
       onClick={() => setEditing(true)}
-      className={`cursor-text rounded px-1 -mx-1 py-0.5 hover:bg-muted/50 transition-colors ${className || ''}`}
+      className={`cursor-text rounded px-1 -mx-1 py-0.5 hover:bg-muted/50 transition-colors inline ${className || ''}`}
     >
       {parseMarkdown(text)}
-    </div>
+    </span>
   );
 };
 
@@ -173,34 +173,33 @@ export const PlaybookPositioningPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
-      {/* Main panel area */}
-      <div className="flex-1 min-w-0 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
-        {/* Header - sticky within panel */}
-        <div className="sticky top-0 z-20 bg-white h-[50px] flex items-center px-3 gap-2 border-b border-slate-200 flex-shrink-0">
-          <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
-            <PanelLeft className="h-4 w-4" />
-          </SidebarTrigger>
-          <div className="flex-1 flex items-center">
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="#" onClick={(e) => e.preventDefault()}>
-                    Playbook
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Positioning</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
+    <div className="flex flex-1 min-h-screen relative flex-col">
+      {/* Header - sticky */}
+      <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-slate-200">
+        <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
+          <PanelLeft className="h-4 w-4" />
+        </SidebarTrigger>
+        <div className="flex-1 flex items-center">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#" onClick={(e) => e.preventDefault()}>
+                  Playbook
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Positioning</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
+      </div>
 
-        {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="w-full max-w-[1040px] mx-auto px-8 py-4 flex-1">
+      {/* Main content area */}
+      <div className="flex flex-1 overflow-hidden">
+        <div className="flex-1 bg-white overflow-y-auto">
+          <div className="max-w-[1040px] mx-auto px-8 py-4 pb-24 w-full">
             {/* Page header */}
             <div className="mb-8 pt-4">
               {/* Title */}
@@ -407,7 +406,6 @@ export const PlaybookPositioningPage: React.FC = () => {
                 Add Section
               </Button>
             </div>
-          </div>
         </div>
       </div>
     </div>
