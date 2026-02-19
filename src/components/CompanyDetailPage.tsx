@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Building2,
-  Globe,
   Calendar,
   Users,
   PanelLeft,
