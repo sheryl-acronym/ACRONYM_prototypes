@@ -323,8 +323,18 @@ export interface PostCallSummaryData {
     title: string;
     items: string[];
   }[];
-  positive_signals?: string[];
-  risk_factors?: string[];
+  positive_signals?: Array<{
+    title: string;
+    description: string;
+    evidence?: string;
+    quote?: string;
+  }>;
+  risk_factors?: Array<{
+    title: string;
+    description: string;
+    evidence?: string;
+    quote?: string;
+  }>;
   meddic?: {
     components: {
       name: string;
