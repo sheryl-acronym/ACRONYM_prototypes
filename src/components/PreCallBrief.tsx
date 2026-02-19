@@ -712,46 +712,34 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
               </div>
 
             {/* Suggested Discovery Questions */}
-            {(data.brief.suggested_discovery_questions?.length || 0) > 0 && (
+            {data.brief.suggested_discovery_questions && data.brief.suggested_discovery_questions.length > 0 && (
               <div className="space-y-2">
                 <h3 className="text-sm font-semibold text-foreground/90">Suggested discovery questions</h3>
             <div className="grid grid-cols-1 gap-2">
-              {(() => {
-                const questionsToDisplay = currentVersion === 'call-2'
-                  ? [
-                      'How did "Hidden SKU" handling perform under your current testing scenarios?',
-                      'What are your specific margin requirements for profitability impact?',
-                      'How does this integration align with your premium brand positioning?',
-                      'What would success look like in terms of margin uplift and timeline?',
-                      'What additional stakeholder sign-offs are needed beyond Yuliia and Theresa?',
-                    ]
-                  : data.brief.suggested_discovery_questions || [];
-
-                return questionsToDisplay.map((q, i) => {
-                  const meddic = currentVersion === 'call-2' ? undefined : discoveryQuestionMEDDIC[i];
-                  const styles = meddic ? getMEDDICStyles(meddic) : null;
-                  const reasoning = currentVersion === 'call-2' ? undefined : discoveryQuestionReasonings[i];
-                  return (
-                    <div
-                      key={i}
-                      className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-slate-300 hover:shadow-md transition-all hover:bg-slate-50"
-                    >
-                      <div className="flex items-start gap-3">
-                        <BadgeHelp className="h-4 w-4 text-slate-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-sm text-foreground/80 flex-1">{q}</span>
-                        {meddic && styles && (
-                          <div className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0 ${styles.bg} ${styles.text}`}>
-                            {meddic}
-                          </div>
-                        )}
-                      </div>
-                      {reasoning && (
-                        <p className="text-xs text-muted-foreground ml-7">{reasoning}</p>
+              {data.brief.suggested_discovery_questions.map((q, i) => {
+                const meddic = discoveryQuestionMEDDIC[i];
+                const styles = meddic ? getMEDDICStyles(meddic) : null;
+                const reasoning = discoveryQuestionReasonings[i];
+                return (
+                  <div
+                    key={i}
+                    className="flex flex-col gap-2 rounded-lg border border-slate-200 bg-white p-3 hover:border-slate-300 hover:shadow-md transition-all hover:bg-slate-50"
+                  >
+                    <div className="flex items-start gap-3">
+                      <BadgeHelp className="h-4 w-4 text-slate-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-foreground/80 flex-1">{q}</span>
+                      {meddic && styles && (
+                        <div className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0 ${styles.bg} ${styles.text}`}>
+                          {meddic}
+                        </div>
                       )}
                     </div>
-                  );
-                });
-              })()}
+                    {reasoning && (
+                      <p className="text-xs text-muted-foreground ml-7">{reasoning}</p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
