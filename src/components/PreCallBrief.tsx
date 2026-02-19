@@ -684,11 +684,20 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
                       </>
                     )}
                   </div>
-                  {data.brief.who_youre_talking_to?.attendees?.[0]?.buyer_persona && (
-                    <div className="flex items-center gap-1.5">
+                  {currentVersion === 'call-2' ? (
+                    <div className="flex items-center gap-1.5 flex-wrap">
                       <span>talking to</span>
-                      <PersonaPill persona={data.brief.who_youre_talking_to.attendees[0].buyer_persona} />
+                      <PersonaPill persona="Technical Founder/Decision Maker" />
+                      <PersonaPill persona="Technical Implementation Lead" />
+                      <PersonaPill persona="Marketing/Growth Leader" />
                     </div>
+                  ) : (
+                    data.brief.who_youre_talking_to?.attendees?.[0]?.buyer_persona && (
+                      <div className="flex items-center gap-1.5">
+                        <span>talking to</span>
+                        <PersonaPill persona={data.brief.who_youre_talking_to.attendees[0].buyer_persona} />
+                      </div>
+                    )
                   )}
                   {data.metadata.meddic_completion && (
                     <div className="flex items-center gap-1.5 relative group">
@@ -732,17 +741,23 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
                 <h3 className="text-sm font-semibold text-foreground/90">Suggested discovery questions</h3>
             <div className="grid grid-cols-1 gap-2">
               {(() => {
-                const questionsToDisplay = currentVersion === 'call-2'
-                  ? [
-                      'What\'s your revenue mix between subscription and one-time purchases?',
-                      'How many SKUs/products do you have?',
-                      'Have you seen our solution before or had a chance to look at it?',
-                      'What\'s your timeline for implementation and going live?',
-                    ]
-                  : data.brief.suggested_discovery_questions || [];
+                const call2QuestionsWithMeddic = [
+                  { text: 'What\'s your revenue mix between subscription and one-time purchases?', meddic: 'Metrics' },
+                  { text: 'How many SKUs/products do you have?', meddic: 'Metrics' },
+                  { text: 'Have you seen our solution before or had a chance to look at it?', meddic: '' },
+                  { text: 'What\'s your timeline for implementation and going live?', meddic: 'Budget' },
+                ];
 
-                return questionsToDisplay.map((q, i) => {
-                  const meddic = currentVersion === 'call-2' ? undefined : discoveryQuestionMEDDIC[i];
+                const questionsToDisplay = currentVersion === 'call-2'
+                  ? call2QuestionsWithMeddic
+                  : (data.brief.suggested_discovery_questions || []).map((q, i) => ({
+                      text: q,
+                      meddic: discoveryQuestionMEDDIC[i] || '',
+                    }));
+
+                return questionsToDisplay.map((item, i) => {
+                  const q = typeof item === 'string' ? item : item.text;
+                  const meddic = typeof item === 'string' ? undefined : item.meddic;
                   const styles = meddic ? getMEDDICStyles(meddic) : null;
                   const reasoning = currentVersion === 'call-2' ? call2DiscoveryQuestionReasonings[i] : discoveryQuestionReasonings[i];
                   return (
