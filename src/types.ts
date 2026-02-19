@@ -7,6 +7,7 @@ export interface Participant {
   bio?: string[];
   approach?: string;
   linkedin_url?: string;
+  tags?: string[];
 }
 
 export interface Company {

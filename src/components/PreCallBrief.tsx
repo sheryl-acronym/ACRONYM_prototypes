@@ -452,6 +452,7 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo; currentVersi
       ],
       email: undefined as string | undefined,
       avatar_url: undefined,
+      tags: ['New'],
     },
     {
       name: 'Theresa Morrison',
@@ -466,6 +467,7 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo; currentVersi
       ],
       email: undefined as string | undefined,
       avatar_url: undefined,
+      tags: ['New'],
     },
   ];
 
@@ -562,6 +564,7 @@ const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo; currentVersi
             persona: attendee.buyer_persona,
             linkedin_url: attendee.linkedin_url,
             bio: attendee.bio,
+            tags: attendee.tags,
           };
 
           return (
