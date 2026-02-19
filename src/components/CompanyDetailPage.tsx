@@ -78,7 +78,7 @@ const TopBar: React.FC<{ companyName: string }> = ({ companyName }) => {
 };
 
 const CompanyHeader: React.FC<{ company: Company }> = ({ company }) => (
-  <div className="mb-6">
+  <div className="mb-6 flex items-start justify-between gap-4">
     <div className="flex items-center gap-3">
       {company.logo_url ? (
         <img
@@ -98,8 +98,23 @@ const CompanyHeader: React.FC<{ company: Company }> = ({ company }) => (
       >
         {company.name.charAt(0).toUpperCase()}
       </span>
-      <h1 className="text-2xl font-bold text-foreground">{company.name}</h1>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-bold text-foreground">{company.name}</h1>
+        {company.domain && (
+          <a
+            href={`https://${company.domain}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-muted-foreground underline decoration-dotted hover:decoration-solid w-fit"
+          >
+            {company.domain}
+          </a>
+        )}
+      </div>
     </div>
+    <Button variant="outline" size="sm">
+      View in Hubspot
+    </Button>
   </div>
 );
 
@@ -182,24 +197,6 @@ const MetadataRows: React.FC<{ company: Company }> = ({ company }) => {
             <div className="flex items-center">
               <CustomerProfilePill profile={company.customer_profile} />
             </div>
-          </div>
-        )}
-
-        {/* Domain */}
-        {company.domain && (
-          <div className="grid grid-cols-[160px_1fr] gap-6">
-            <div className="flex items-center gap-2">
-              <Globe className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium text-muted-foreground">Domain</span>
-            </div>
-            <a
-              href={`https://${company.domain}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-foreground underline decoration-dotted hover:decoration-solid"
-            >
-              {company.domain}
-            </a>
           </div>
         )}
 
