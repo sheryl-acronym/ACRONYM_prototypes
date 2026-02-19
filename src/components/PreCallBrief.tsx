@@ -552,7 +552,12 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
         <TabsContent value="brief" className="py-4">
           {/* Meeting Context */}
           <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-3">Meeting Context</h2>
-          <p className="text-sm text-slate-700 mb-6">{data.meeting_type.label}</p>
+          <p className="text-sm text-slate-700 mb-6">
+            {currentVersion === 'call-2'
+              ? 'Follow-up "Demo & Pricing Review" with PROVEN Skincare and introduction to new stakeholders. Last call validated $15M ARR and 95% product eligibility; strong momentum with Russell acting as self-champion but need to prove unit economics.'
+              : data.meeting_type.label
+            }
+          </p>
 
           <MeetingObjectivesSection key={JSON.stringify(data.brief.meeting_objectives)} data={data.brief.meeting_objectives} state={objectivesState} />
           <Separator className="my-2" />
