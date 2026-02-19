@@ -676,15 +676,14 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
                     </div>
                   )}
                   {data.metadata.meddic_completion && (
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 relative group">
                       <span>MEDDIC status:</span>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <span className="font-medium underline decoration-dotted decoration-1 underline-offset-2 cursor-pointer hover:text-slate-700">
-                            {data.metadata.meddic_completion.complete}/{data.metadata.meddic_completion.complete + data.metadata.meddic_completion.partial + data.metadata.meddic_completion.missing} complete
-                          </span>
-                        </PopoverTrigger>
-                        <PopoverContent side="right" align="start" className="w-80 p-0">
+                      <span className="font-medium underline decoration-dotted decoration-1 underline-offset-2 cursor-help hover:text-slate-700">
+                        {data.metadata.meddic_completion.complete}/{data.metadata.meddic_completion.complete + data.metadata.meddic_completion.partial + data.metadata.meddic_completion.missing} complete
+                      </span>
+                      {/* Hidden by default, visible on hover */}
+                      <div className="absolute left-0 top-full mt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+                        <div className="bg-white border border-slate-200 rounded-lg shadow-lg overflow-hidden w-80">
                           <div className="overflow-x-auto">
                             <table className="w-full text-xs">
                               <thead className="bg-slate-50">
@@ -705,8 +704,8 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
                               </tbody>
                             </table>
                           </div>
-                        </PopoverContent>
-                      </Popover>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
