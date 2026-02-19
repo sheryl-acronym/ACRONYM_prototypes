@@ -410,108 +410,155 @@ const MeetingObjectivesSection: React.FC<{ data: MeetingObjectives; state: Meeti
   );
 };
 
-const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo }> = ({ data }) => (
-  <div className="py-4">
-    <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-4">
-      Who you're talking to
-    </h2>
+const WhoYoureTalkingToSection: React.FC<{ data: WhoYoureTalkingTo; currentVersion?: 'call-1' | 'call-2' | 'no-brief' }> = ({ data, currentVersion = 'call-1' }) => {
+  // Call 2 specific quick intel bullets about what was learned in Call 1
+  const call2QuickIntel = [
+    'Validated $15M ARR and 95% product eligibility in Call 1',
+    'Russell champions internally; self-advocate moving forward',
+    'Need to prove unit economics and margin hurdle rates',
+    'Yuliia (QA) and Theresa (Brand) are key stakeholders for approval',
+  ];
 
-    {/* Company info */}
-    <div className="mb-3">
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3 flex-1 min-w-0">
-          {data.company.logo_url && (
-            <img
-              src={data.company.logo_url}
-              alt={data.company.name}
-              className="h-10 w-auto object-contain flex-shrink-0 max-w-[60px]"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          )}
-          <div className="flex flex-col gap-1 min-w-0">
-            <h3 className="text-sm font-semibold text-foreground">{data.company.name}</h3>
-            {data.company.domain && (
-              <a
-                href={`https://${data.company.domain}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-muted-foreground hover:text-foreground underline decoration-dotted decoration-1 underline-offset-2 transition-colors inline-block"
-              >
-                {data.company.domain}
-              </a>
+  // Call 2 additional participants
+  const call2AdditionalParticipants = [
+    {
+      name: 'Yuliia Kovalenko',
+      avatar_color: 'bg-green-500',
+      role: 'QA Lead',
+      buyer_persona: 'Technical QA Manager',
+      linkedin_url: 'linkedin.com/in/yuliia-kovalenko',
+      bio: [
+        'Leads QA processes and product validation',
+        'Critical evaluator of "Hidden SKU" handling and technical implementation',
+        'Requirement: Must validate compliance and system integration before approval',
+      ],
+      email: undefined as string | undefined,
+      avatar_url: undefined,
+    },
+    {
+      name: 'Theresa Morrison',
+      avatar_color: 'bg-pink-500',
+      role: 'VP Brand & Marketing',
+      buyer_persona: 'Brand Strategy Executive',
+      linkedin_url: 'linkedin.com/in/theresa-morrison',
+      bio: [
+        'Oversees brand integrity and premium positioning',
+        'Concerned with checkout flow alignment and customer experience',
+        'Requirement: Checkout experience must meet premium brand standards',
+      ],
+      email: undefined as string | undefined,
+      avatar_url: undefined,
+    },
+  ];
+
+  const displayedIntel = currentVersion === 'call-2' ? call2QuickIntel : data.company.company_research || [];
+  const displayedAttendees = currentVersion === 'call-2'
+    ? [...data.attendees, ...call2AdditionalParticipants]
+    : data.attendees;
+
+  return (
+    <div className="py-4">
+      <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-4">
+        Who you're talking to
+      </h2>
+
+      {/* Company info */}
+      <div className="mb-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            {data.company.logo_url && (
+              <img
+                src={data.company.logo_url}
+                alt={data.company.name}
+                className="h-10 w-auto object-contain flex-shrink-0 max-w-[60px]"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
             )}
+            <div className="flex flex-col gap-1 min-w-0">
+              <h3 className="text-sm font-semibold text-foreground">{data.company.name}</h3>
+              {data.company.domain && (
+                <a
+                  href={`https://${data.company.domain}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-muted-foreground hover:text-foreground underline decoration-dotted decoration-1 underline-offset-2 transition-colors inline-block"
+                >
+                  {data.company.domain}
+                </a>
+              )}
+            </div>
           </div>
+          {data.company.company_profile_url && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs h-7 px-2.5 flex-shrink-0"
+              asChild
+            >
+              <a href={data.company.company_profile_url}>View profile</a>
+            </Button>
+          )}
         </div>
-        {data.company.company_profile_url && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-xs h-7 px-2.5 flex-shrink-0"
-            asChild
-          >
-            <a href={data.company.company_profile_url}>View profile</a>
-          </Button>
-        )}
+      </div>
+
+      {/* Deal summary */}
+      {data.company.deal_summary && (
+        <p className="text-sm text-slate-700 mb-4 leading-relaxed">
+          {data.company.deal_summary}
+        </p>
+      )}
+
+      {/* Customer profile */}
+      {data.company.customer_profile && (
+        <div className="mb-4">
+          <CustomerProfilePill profile={data.company.customer_profile} />
+        </div>
+      )}
+
+      {/* Company research / Quick Intel */}
+      {displayedIntel.length > 0 && (
+        <div className="mb-4">
+          <p className="text-xs font-medium text-slate-700 mb-2">Quick Intel</p>
+          <ul className="space-y-1 text-sm text-slate-700">
+            {displayedIntel.map((b, i) => (
+              <li key={i} className="flex gap-2">
+                <span className="text-slate-400 flex-shrink-0">•</span>
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Participants */}
+      <h3 className="text-sm font-semibold text-foreground mb-3">Participants</h3>
+      <div className="space-y-2">
+        {displayedAttendees.map((attendee, i) => {
+          // Convert attendee to ContactCardData format for UnifiedContactCard
+          const contactCardData: ContactCardData = {
+            name: attendee.name,
+            avatar_color: attendee.avatar_color,
+            email: attendee.email,
+            job_title: attendee.role,
+            persona: attendee.buyer_persona,
+            linkedin_url: attendee.linkedin_url,
+            bio: attendee.bio,
+          };
+
+          return (
+            <UnifiedContactCard
+              key={i}
+              contact={contactCardData}
+              variant="compact"
+            />
+          );
+        })}
       </div>
     </div>
-
-    {/* Deal summary */}
-    {data.company.deal_summary && (
-      <p className="text-sm text-slate-700 mb-4 leading-relaxed">
-        {data.company.deal_summary}
-      </p>
-    )}
-
-    {/* Customer profile */}
-    {data.company.customer_profile && (
-      <div className="mb-4">
-        <CustomerProfilePill profile={data.company.customer_profile} />
-      </div>
-    )}
-
-    {/* Company research */}
-    {data.company.company_research && data.company.company_research.length > 0 && (
-      <div className="mb-4">
-        <p className="text-xs font-medium text-slate-700 mb-2">Quick Intel</p>
-        <ul className="space-y-1 text-sm text-slate-700">
-          {data.company.company_research.map((b, i) => (
-            <li key={i} className="flex gap-2">
-              <span className="text-slate-400 flex-shrink-0">•</span>
-              <span>{b}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )}
-
-    {/* Participants */}
-    <h3 className="text-sm font-semibold text-foreground mb-3">Participants</h3>
-    <div className="space-y-2">
-      {data.attendees.map((attendee, i) => {
-        // Convert attendee to ContactCardData format for UnifiedContactCard
-        const contactCardData: ContactCardData = {
-          name: attendee.name,
-          avatar_color: attendee.avatar_color,
-          email: attendee.email,
-          job_title: attendee.role,
-          persona: attendee.buyer_persona,
-          linkedin_url: attendee.linkedin_url,
-          bio: attendee.bio,
-        };
-
-        return (
-          <UnifiedContactCard
-            key={i}
-            contact={contactCardData}
-            variant="compact"
-          />
-        );
-      })}
-    </div>
-  </div>
-);
+  );
+};
 
 const NoBriefContent: React.FC = () => (
   <div className="flex flex-col items-center justify-center flex-1 py-16 px-4 border border-dashed border-slate-200 rounded-lg my-4">
@@ -533,6 +580,20 @@ const NoBriefContent: React.FC = () => (
 export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = false, onVersionChange, currentVersion = 'call-1' }) => {
   const objectivesState = useMeetingObjectivesState(data.brief.meeting_objectives);
 
+  // Call 2 additional participants for metadata
+  const call2AdditionalParticipants = [
+    { name: 'Yuliia Kovalenko', avatar_color: 'green-500' },
+    { name: 'Theresa Morrison', avatar_color: 'pink-500' },
+  ];
+
+  // Modify metadata for Call 2 to include additional participants
+  const displayedMetadata = currentVersion === 'call-2'
+    ? {
+        ...data.metadata,
+        their_team: [...(data.metadata.their_team || []), ...call2AdditionalParticipants],
+      }
+    : data.metadata;
+
   return (
     <div className="flex flex-col min-h-screen bg-white overflow-hidden">
       {!hideTopBar && (
@@ -548,7 +609,7 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
         title={data.title}
         companyDealId={data.deal_id}
       />
-      <MetadataRows metadata={data.metadata} />
+      <MetadataRows metadata={displayedMetadata} />
       <Separator className="my-4" />
       {currentVersion === 'no-brief' ? (
         <NoBriefContent />
@@ -574,7 +635,7 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
 
           <MeetingObjectivesSection key={JSON.stringify(data.brief.meeting_objectives)} data={data.brief.meeting_objectives} state={objectivesState} currentVersion={currentVersion} />
           <Separator className="my-2" />
-          <WhoYoureTalkingToSection key={JSON.stringify(data.brief.who_youre_talking_to)} data={data.brief.who_youre_talking_to} />
+          <WhoYoureTalkingToSection key={JSON.stringify(data.brief.who_youre_talking_to)} data={data.brief.who_youre_talking_to} currentVersion={currentVersion} />
         </TabsContent>
 
         <TabsContent value="playbook" className="py-4">
@@ -601,6 +662,14 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
                     <div className="flex items-center gap-1.5">
                       <span>talking to</span>
                       <PersonaPill persona={data.brief.who_youre_talking_to.attendees[0].buyer_persona} />
+                    </div>
+                  )}
+                  {data.metadata.meddic_completion && (
+                    <div className="flex items-center gap-1.5">
+                      <span>MEDDIC:</span>
+                      <span className="font-medium">
+                        {data.metadata.meddic_completion.complete}/{data.metadata.meddic_completion.complete + data.metadata.meddic_completion.partial + data.metadata.meddic_completion.missing} complete
+                      </span>
                     </div>
                   )}
                 </div>

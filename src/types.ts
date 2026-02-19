@@ -70,6 +70,12 @@ export interface MeetingMetadata {
   our_team: Participant[];
   their_team: Participant[];
   team?: Participant[]; // Our team members
+  meddic_completion?: {
+    complete: number;
+    partial: number;
+    missing: number;
+    gaps?: string[];
+  };
 }
 
 export interface PreCallBriefData {

@@ -121,6 +121,15 @@ export const upcomingMeetingsBriefData: Record<string, PreCallBriefData> = {
     // Override company info with PROVEN-specific details
     return {
       ...base,
+      metadata: {
+        ...base.metadata,
+        meddic_completion: {
+          complete: 4,
+          partial: 1,
+          missing: 1,
+          gaps: ['Budget timeline unclear', 'Decision process not fully mapped'],
+        },
+      },
       brief: {
         ...base.brief,
         who_youre_talking_to: {
