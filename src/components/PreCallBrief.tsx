@@ -666,7 +666,7 @@ export const PreCallBrief: React.FC<PreCallBriefProps> = ({ data, hideTopBar = f
                   )}
                   {data.metadata.meddic_completion && (
                     <div className="flex items-center gap-1.5">
-                      <span>MEDDIC:</span>
+                      <span>MEDDIC status:</span>
                       <span className="font-medium">
                         {data.metadata.meddic_completion.complete}/{data.metadata.meddic_completion.complete + data.metadata.meddic_completion.partial + data.metadata.meddic_completion.missing} complete
                       </span>
