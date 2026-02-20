@@ -4,7 +4,6 @@ import {
   PanelLeft,
   MoreHorizontal,
   Users,
-  CheckCircle,
   XCircle,
   Target,
   Bookmark,
@@ -93,8 +92,8 @@ const KeyMovesSection: React.FC = () => (
     </h2>
     <div className="space-y-3">
       <div className="flex gap-3">
-        <div className="flex-shrink-0 mt-1">
-          <CheckCircle className="h-4 w-4 text-green-600" />
+        <div className="flex-shrink-0 mt-0.5">
+          <div className="h-1.5 w-1.5 rounded-full bg-foreground" />
         </div>
         <div>
           <p className="text-sm font-medium text-foreground mb-1">Move 1: Title</p>
@@ -102,8 +101,8 @@ const KeyMovesSection: React.FC = () => (
         </div>
       </div>
       <div className="flex gap-3">
-        <div className="flex-shrink-0 mt-1">
-          <CheckCircle className="h-4 w-4 text-green-600" />
+        <div className="flex-shrink-0 mt-0.5">
+          <div className="h-1.5 w-1.5 rounded-full bg-foreground" />
         </div>
         <div>
           <p className="text-sm font-medium text-foreground mb-1">Move 2: Title</p>
