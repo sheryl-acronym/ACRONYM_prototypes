@@ -249,7 +249,7 @@ const PinnedExamplesSection: React.FC<{ objection: Objection; onSignalClick: (si
 };
 
 const ResponsePlayTabContent: React.FC<{ objection: Objection }> = ({ objection }) => (
-  <div className="space-y-8">
+  <div className="pt-8 space-y-8">
     <KeyMovesSection />
     <WhatNotToDoSection />
     <IdealOutcomeSection />
