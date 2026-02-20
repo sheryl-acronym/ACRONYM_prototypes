@@ -25,6 +25,7 @@ import { Signal, signalsData } from '@/signals-demo-data';
 import { CompanyPill } from '@/components/CompanyPill';
 import { CategoryPill } from '@/components/CategoryPill';
 import { PersonaPill } from '@/components/PersonaPill';
+import { EffectivenessPill } from '@/components/EffectivenessPill';
 
 interface ObjectionDetailPageProps {
   objection: Objection;
@@ -162,9 +163,7 @@ const EffectivenessAndRaisedBySection: React.FC<{ objection: Objection }> = ({ o
           <Target className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm font-medium text-muted-foreground">Effectiveness</span>
         </div>
-        <Badge variant="outline" className="rounded-md font-normal text-xs px-3 py-1.5 w-fit">
-          Stalls
-        </Badge>
+        <EffectivenessPill effectiveness="Stalls" />
       </div>
 
       <div className="grid grid-cols-[180px_1fr] gap-6">
