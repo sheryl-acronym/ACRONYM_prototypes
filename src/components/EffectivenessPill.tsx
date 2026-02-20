@@ -34,7 +34,7 @@ export const EffectivenessPill: React.FC<EffectivenessPillProps> = ({
 
   return (
     <div
-      className={`inline-flex items-center justify-center px-3 py-1 rounded-full font-medium text-xs ${styles.bg} ${styles.text} ${className}`}
+      className={`w-fit inline-flex items-center justify-center px-3 py-1 rounded-full font-medium text-xs ${styles.bg} ${styles.text} ${className}`}
     >
       {effectiveness}
     </div>
