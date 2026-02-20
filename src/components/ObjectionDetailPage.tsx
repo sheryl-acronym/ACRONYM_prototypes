@@ -15,10 +15,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Objection } from '@/objections-demo-data';
@@ -302,7 +300,7 @@ const PinnedExamplesSection: React.FC<{ objection: Objection; onSignalClick: (si
   );
 };
 
-const ResponsePlayTabContent: React.FC<{ objection: Objection }> = ({ objection }) => (
+const ResponsePlayTabContent: React.FC = () => (
   <div className="pt-8 space-y-8">
     <KeyMovesSection />
     <WhatNotToDoSection />
@@ -320,7 +318,6 @@ export const ObjectionDetailPage: React.FC<ObjectionDetailPageProps> = ({
   objection,
   hideTopBar = false,
 }) => {
-  const navigate = useNavigate();
   const [selectedSignalId, setSelectedSignalId] = React.useState<string | null>(null);
 
   const handleSignalClick = (signal: Signal) => {
@@ -344,7 +341,7 @@ export const ObjectionDetailPage: React.FC<ObjectionDetailPageProps> = ({
                   <TabsTrigger value="signals">Signals</TabsTrigger>
                 </TabsList>
                 <TabsContent value="response-play">
-                  <ResponsePlayTabContent objection={objection} />
+                  <ResponsePlayTabContent />
                 </TabsContent>
                 <TabsContent value="signals">
                   <SignalsTab objection={objection} onSignalClick={handleSignalClick} />
@@ -390,7 +387,7 @@ export const ObjectionDetailPage: React.FC<ObjectionDetailPageProps> = ({
                   <TabsTrigger value="signals">Signals</TabsTrigger>
                 </TabsList>
                 <TabsContent value="response-play">
-                  <ResponsePlayTabContent objection={objection} />
+                  <ResponsePlayTabContent />
                 </TabsContent>
                 <TabsContent value="signals">
                   <SignalsTab objection={objection} onSignalClick={handleSignalClick} />

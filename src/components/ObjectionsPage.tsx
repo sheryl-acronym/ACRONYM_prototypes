@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Objection } from '@/objections-demo-data';
 import {
   Table,
@@ -106,7 +105,6 @@ function SortableHeader({
 }
 
 export const ObjectionsPage: React.FC<ObjectionsPageProps> = ({ objections }) => {
-  const navigate = useNavigate();
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
