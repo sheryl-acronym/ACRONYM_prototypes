@@ -217,9 +217,8 @@ const SignalCard: React.FC<{ signal: Signal; onClick: () => void }> = ({ signal,
           <p className="text-sm text-foreground/80 leading-relaxed">{signal.conversation_snippet}</p>
         </div>
       </div>
-      <div className="flex items-center justify-between text-xs text-muted-foreground">
-        <p>from {signal.meeting_title}</p>
-        <p>{signal.meeting_date}</p>
+      <div className="text-xs text-muted-foreground">
+        <p>from {signal.meeting_title} • {signal.meeting_date}</p>
       </div>
     </button>
   );
