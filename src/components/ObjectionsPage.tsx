@@ -43,29 +43,10 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import { CategoryPill } from '@/components/CategoryPill';
 
 interface ObjectionsPageProps {
   objections: Objection[];
-}
-
-const categoryConfig: Record<string, { bg: string; text: string; border: string }> = {
-  'Fit and Capability': { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
-  'Authority': { bg: 'bg-slate-50', text: 'text-slate-900', border: 'border-slate-200' },
-  'Alternatives': { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
-  'Risk and Trust': { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200' },
-  'Budget and Value': { bg: 'bg-purple-50', text: 'text-purple-900', border: 'border-purple-200' },
-};
-
-function CategoryBadge({ category }: { category: string }) {
-  const config = categoryConfig[category];
-  return (
-    <Badge
-      variant="outline"
-      className={`${config.bg} ${config.text} ${config.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
-    >
-      {category}
-    </Badge>
-  );
 }
 
 type SortField = 'category' | 'objection' | 'description';
@@ -312,7 +293,7 @@ export const ObjectionsPage: React.FC<ObjectionsPageProps> = ({ objections }) =>
                         checked={categoryFilters.has(category)}
                         onCheckedChange={() => toggleCategoryFilter(category)}
                       />
-                      <CategoryBadge category={category} />
+                      <CategoryPill category={category} />
                     </label>
                   ))}
                 </div>
@@ -406,7 +387,7 @@ export const ObjectionsPage: React.FC<ObjectionsPageProps> = ({ objections }) =>
                       onClick={() => navigate(`/objections/${objection.id}`)}
                     >
                       <TableCell>
-                        <CategoryBadge category={objection.category} />
+                        <CategoryPill category={objection.category} />
                       </TableCell>
                       <TableCell style={{ width: '320px' }}>
                         <span className="text-sm font-medium">{objection.objection}</span>
