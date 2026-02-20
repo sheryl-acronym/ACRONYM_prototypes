@@ -25,19 +25,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Objection } from '@/objections-demo-data';
 import { Signal, signalsData } from '@/signals-demo-data';
 import { CompanyPill } from '@/components/CompanyPill';
+import { CategoryPill } from '@/components/CategoryPill';
 
 interface ObjectionDetailPageProps {
   objection: Objection;
   hideTopBar?: boolean;
 }
-
-const categoryConfig: Record<string, { bg: string; text: string; border: string }> = {
-  'Fit and Capability': { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
-  'Authority': { bg: 'bg-slate-50', text: 'text-slate-900', border: 'border-slate-200' },
-  'Alternatives': { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
-  'Risk and Trust': { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200' },
-  'Budget and Value': { bg: 'bg-purple-50', text: 'text-purple-900', border: 'border-purple-200' },
-};
 
 const TopBar: React.FC<{ objectionTitle: string }> = ({ objectionTitle }) => {
   const navigate = useNavigate();
@@ -74,15 +67,10 @@ const TopBar: React.FC<{ objectionTitle: string }> = ({ objectionTitle }) => {
 };
 
 const ObjectionHeader: React.FC<{ objection: Objection }> = ({ objection }) => {
-  const config = categoryConfig[objection.category];
   return (
     <div className="mb-6">
       <div className="mb-4">
-        <Badge
-          className={`${config.bg} ${config.text} ${config.border} font-normal text-sm rounded-md px-3 py-1.5`}
-        >
-          {objection.category}
-        </Badge>
+        <CategoryPill category={objection.category} />
       </div>
       <h1 className="text-2xl font-bold text-foreground mb-4">{objection.objection}</h1>
     </div>
