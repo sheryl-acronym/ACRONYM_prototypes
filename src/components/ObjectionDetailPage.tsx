@@ -260,9 +260,8 @@ const PinnedExamplesSection: React.FC<{ objection: Objection; onSignalClick: (si
   );
 };
 
-const ResponsePlayTab: React.FC<{ objection: Objection }> = ({ objection }) => (
+const ResponsePlayTabContent: React.FC<{ objection: Objection }> = ({ objection }) => (
   <div className="space-y-8">
-    <DescriptionSection description={objection.description} />
     <KeyMovesSection />
     <WhatNotToDoSection />
     <IdealOutcomeSection />
@@ -292,13 +291,14 @@ export const ObjectionDetailPage: React.FC<ObjectionDetailPageProps> = ({
         <div className="flex-1 overflow-y-auto">
           <div className="px-6 py-4 w-full">
             <ObjectionHeader objection={objection} />
+            <DescriptionSection description={objection.description} />
             <Tabs defaultValue="response-play" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="response-play">Response Play</TabsTrigger>
                 <TabsTrigger value="signals">Signals</TabsTrigger>
               </TabsList>
               <TabsContent value="response-play">
-                <ResponsePlayTab objection={objection} />
+                <ResponsePlayTabContent objection={objection} />
               </TabsContent>
               <TabsContent value="signals">
                 <SignalsTab objection={objection} onSignalClick={handleSignalClick} />
@@ -325,13 +325,14 @@ export const ObjectionDetailPage: React.FC<ObjectionDetailPageProps> = ({
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
             <ObjectionHeader objection={objection} />
+            <DescriptionSection description={objection.description} />
             <Tabs defaultValue="response-play" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="response-play">Response Play</TabsTrigger>
                 <TabsTrigger value="signals">Signals</TabsTrigger>
               </TabsList>
               <TabsContent value="response-play">
-                <ResponsePlayTab objection={objection} />
+                <ResponsePlayTabContent objection={objection} />
               </TabsContent>
               <TabsContent value="signals">
                 <SignalsTab objection={objection} onSignalClick={handleSignalClick} />
