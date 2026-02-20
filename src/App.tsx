@@ -17,6 +17,7 @@ import DiscoveryQuestionsPage from '@/components/DiscoveryQuestionsPage';
 import FAQsPage from '@/components/FAQsPage';
 import ObjectionsPage from '@/components/ObjectionsPage';
 import ObjectionDetailPage from '@/components/ObjectionDetailPage';
+import SignalsPage from '@/components/SignalsPage';
 import PlaybookPositioningPage from '@/components/PlaybookPositioningPage';
 import ComponentsPage from '@/components/ComponentsPage';
 import AppSidebar from '@/components/AppSidebar';
@@ -35,6 +36,7 @@ import { buyerPersonasData } from '@/buyer-personas-demo-data';
 import { discoveryQuestionsData } from '@/discovery-questions-demo-data';
 import { faqs } from '@/faqs-demo-data';
 import { objectionsData } from '@/objections-demo-data';
+import { signalsData } from '@/signals-demo-data';
 
 const meetingBriefData = upcomingMeetingsBriefData;
 const meetingSummaryData = pastMeetingsSummaryData;
@@ -309,6 +311,8 @@ function App() {
             <Route path="/faqs" element={<FAQsPage faqs={faqs} />} />
             <Route path="/objections" element={<ObjectionsPage objections={objectionsData} />} />
             <Route path="/objections/:objectionId" element={<ObjectionDetailRoute />} />
+            <Route path="/signals" element={<SignalsPage signals={signalsData} />} />
+            <Route path="/signals/:signalId" element={<SignalsPage signals={signalsData} />} />
             <Route path="/playbook/positioning" element={<PlaybookPositioningPage />} />
             <Route path="/components" element={<ComponentsPage />} />
           </Routes>
