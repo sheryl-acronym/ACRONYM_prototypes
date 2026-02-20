@@ -242,7 +242,8 @@ const SignalStatsSection: React.FC = () => (
       <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-2">
         Total Signals
       </p>
-      <p className="text-4xl font-bold text-foreground flex-grow">254</p>
+      <p className="text-4xl font-bold text-foreground">254</p>
+      <p className="text-xs text-muted-foreground mb-auto">over 658 calls</p>
       <p className="text-xs text-green-600 font-medium">+5 this week</p>
     </div>
     <div className="border border-stone-200 rounded-lg p-4">
