@@ -224,7 +224,7 @@ const PinnedExamplesSection: React.FC<{ objection: Objection; onSignalClick: (si
         </p>
       </div>
       <div className="space-y-4">
-        {relatedSignals.slice(0, 3).map((signal) => (
+        {relatedSignals.slice(0, 5).map((signal) => (
           <SignalCard
             key={signal.id}
             signal={signal}
