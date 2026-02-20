@@ -246,7 +246,7 @@ const SignalStatsSection: React.FC = () => (
       <p className="text-xs text-muted-foreground mb-auto">over 658 calls</p>
       <p className="text-xs text-green-600 font-medium">+5 this week</p>
     </div>
-    <div className="border border-stone-200 rounded-lg p-4">
+    <div className="border border-stone-200 rounded-lg p-4 flex flex-col">
       <div className="flex items-start justify-between mb-3">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60">
           Trend
@@ -266,7 +266,7 @@ const SignalStatsSection: React.FC = () => (
           strokeLinejoin="round"
         />
       </svg>
-      <p className="text-xs text-green-600 font-medium mb-1">increasing</p>
+      <p className="text-xs text-green-600 font-medium mb-auto">increasing</p>
       <p className="text-xs text-muted-foreground">+12% vs. last week</p>
     </div>
   </div>
