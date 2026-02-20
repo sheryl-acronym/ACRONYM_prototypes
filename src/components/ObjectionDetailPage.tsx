@@ -27,6 +27,7 @@ import { CompanyPill } from '@/components/CompanyPill';
 import { CategoryPill } from '@/components/CategoryPill';
 import { PersonaPill } from '@/components/PersonaPill';
 import { EffectivenessPill } from '@/components/EffectivenessPill';
+import { SignalDetailSidePanel } from '@/components/SignalDetailSidePanel';
 
 interface ObjectionDetailPageProps {
   objection: Objection;
@@ -320,70 +321,95 @@ export const ObjectionDetailPage: React.FC<ObjectionDetailPageProps> = ({
   hideTopBar = false,
 }) => {
   const navigate = useNavigate();
+  const [selectedSignalId, setSelectedSignalId] = React.useState<string | null>(null);
 
   const handleSignalClick = (signal: Signal) => {
-    navigate(`/signals/${signal.id}`);
+    setSelectedSignalId(signal.id);
   };
+
+  const selectedSignal = selectedSignalId ? signalsData.find((s) => s.id === selectedSignalId) : null;
 
   if (hideTopBar) {
     return (
-      <div className="flex flex-col h-full overflow-hidden">
-        <div className="flex-1 overflow-y-auto">
-          <div className="px-6 py-4 w-full">
-            <ObjectionHeader objection={objection} />
-            <DescriptionSection description={objection.description} />
-            <EffectivenessAndRaisedBySection objection={objection} />
-            <Tabs defaultValue="response-play" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="response-play">Response Play</TabsTrigger>
-                <TabsTrigger value="signals">Signals</TabsTrigger>
-              </TabsList>
-              <TabsContent value="response-play">
-                <ResponsePlayTabContent objection={objection} />
-              </TabsContent>
-              <TabsContent value="signals">
-                <SignalsTab objection={objection} onSignalClick={handleSignalClick} />
-              </TabsContent>
-            </Tabs>
+      <>
+        <div className="flex flex-col h-full overflow-hidden">
+          <div className="flex-1 overflow-y-auto">
+            <div className="px-6 py-4 w-full">
+              <ObjectionHeader objection={objection} />
+              <DescriptionSection description={objection.description} />
+              <EffectivenessAndRaisedBySection objection={objection} />
+              <Tabs defaultValue="response-play" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="response-play">Response Play</TabsTrigger>
+                  <TabsTrigger value="signals">Signals</TabsTrigger>
+                </TabsList>
+                <TabsContent value="response-play">
+                  <ResponsePlayTabContent objection={objection} />
+                </TabsContent>
+                <TabsContent value="signals">
+                  <SignalsTab objection={objection} onSignalClick={handleSignalClick} />
+                </TabsContent>
+              </Tabs>
+            </div>
           </div>
         </div>
-      </div>
+
+        {/* Signal Detail Side Panel */}
+        {selectedSignal && selectedSignalId && (
+          <SignalDetailSidePanel
+            signalId={selectedSignalId}
+            signal={selectedSignal}
+            onClose={() => setSelectedSignalId(null)}
+          />
+        )}
+      </>
     );
   }
 
   return (
-    <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
-      <div className="flex-1 min-w-0 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
-        <div className="z-20 bg-white h-[50px] flex items-center px-3 gap-2 border-b border-slate-200 flex-shrink-0">
-          <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
-            <PanelLeft className="h-4 w-4" />
-          </SidebarTrigger>
-          <div className="flex-1 flex items-center">
-            <TopBar objectionTitle={objection.objection} />
+    <>
+      <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
+        <div className="flex-1 min-w-0 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
+          <div className="z-20 bg-white h-[50px] flex items-center px-3 gap-2 border-b border-slate-200 flex-shrink-0">
+            <SidebarTrigger className="h-8 w-8 p-1.5 hover:bg-slate-100 rounded transition-colors">
+              <PanelLeft className="h-4 w-4" />
+            </SidebarTrigger>
+            <div className="flex-1 flex items-center">
+              <TopBar objectionTitle={objection.objection} />
+            </div>
           </div>
-        </div>
 
-        <div className="flex-1 overflow-y-auto">
-          <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
-            <ObjectionHeader objection={objection} />
-            <DescriptionSection description={objection.description} />
-            <EffectivenessAndRaisedBySection objection={objection} />
-            <Tabs defaultValue="response-play" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="response-play">Response Play</TabsTrigger>
-                <TabsTrigger value="signals">Signals</TabsTrigger>
-              </TabsList>
-              <TabsContent value="response-play">
-                <ResponsePlayTabContent objection={objection} />
-              </TabsContent>
-              <TabsContent value="signals">
-                <SignalsTab objection={objection} onSignalClick={handleSignalClick} />
-              </TabsContent>
-            </Tabs>
+          <div className="flex-1 overflow-y-auto">
+            <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
+              <ObjectionHeader objection={objection} />
+              <DescriptionSection description={objection.description} />
+              <EffectivenessAndRaisedBySection objection={objection} />
+              <Tabs defaultValue="response-play" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="response-play">Response Play</TabsTrigger>
+                  <TabsTrigger value="signals">Signals</TabsTrigger>
+                </TabsList>
+                <TabsContent value="response-play">
+                  <ResponsePlayTabContent objection={objection} />
+                </TabsContent>
+                <TabsContent value="signals">
+                  <SignalsTab objection={objection} onSignalClick={handleSignalClick} />
+                </TabsContent>
+              </Tabs>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Signal Detail Side Panel */}
+      {selectedSignal && selectedSignalId && (
+        <SignalDetailSidePanel
+          signalId={selectedSignalId}
+          signal={selectedSignal}
+          onClose={() => setSelectedSignalId(null)}
+        />
+      )}
+    </>
   );
 };
 
