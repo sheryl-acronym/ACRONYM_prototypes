@@ -104,16 +104,6 @@ const formatDate = (dateString: string): string => {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
-const MeetingContextSection: React.FC<{ signal: Signal; onTranscriptClick: () => void }> = ({ signal, onTranscriptClick }) => (
-  <button
-    onClick={onTranscriptClick}
-    className="inline-flex items-center gap-1.5 text-xs text-foreground/60 hover:text-foreground/80 border-b border-dotted border-foreground/60 hover:border-foreground/80 transition-colors bg-transparent border-0 p-0 cursor-pointer"
-  >
-    from {signal.meeting_title} • {formatDate(signal.meeting_date)}
-    <ChevronRight className="h-3.5 w-3.5" />
-  </button>
-);
-
 const ConversationExcerptSection: React.FC<{
   snippet: string;
   speakerName: string;
@@ -121,10 +111,7 @@ const ConversationExcerptSection: React.FC<{
   responseSpeakerName?: string;
   responseSnippet?: string;
   responseTimestamp?: string;
-  transcriptUrl?: string;
-  onTranscriptClick: () => void;
-  onViewTranscript?: () => void;
-}> = ({ snippet, speakerName, timestamp, responseSpeakerName, responseSnippet, responseTimestamp, transcriptUrl, onTranscriptClick, onViewTranscript }) => (
+}> = ({ snippet, speakerName, timestamp, responseSpeakerName, responseSnippet, responseTimestamp }) => (
   <div className="mb-8">
     {/* Customer objection */}
     <div className="mb-6">
@@ -173,10 +160,6 @@ const WhyThisWorksSection: React.FC<{ reasoning?: string }> = ({ reasoning }) =>
 };
 
 const MetadataRows: React.FC<{ signal: Signal; onTranscriptClick: () => void; onViewTranscript?: () => void }> = ({ signal, onTranscriptClick, onViewTranscript }) => {
-  console.log('Signal data:', signal);
-  console.log('response_approach:', signal.response_approach);
-  console.log('why_this_works:', signal.why_this_works);
-
   return (
     <div className="space-y-8">
       <ConversationExcerptSection
@@ -186,9 +169,6 @@ const MetadataRows: React.FC<{ signal: Signal; onTranscriptClick: () => void; on
         responseSpeakerName={signal.response_speaker_name}
         responseSnippet={signal.response_snippet}
         responseTimestamp={signal.response_timestamp}
-        transcriptUrl={signal.transcript_url}
-        onTranscriptClick={onTranscriptClick}
-        onViewTranscript={onViewTranscript}
       />
 
       {signal.transcript_url && signal.transcript_url !== '#' && (
@@ -284,7 +264,7 @@ export const SignalDetailPage: React.FC<SignalDetailPageProps> = ({
         {/* Main content */}
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
-            <SignalHeader signal={signal} />
+            <SignalHeader signal={signal} onTranscriptClick={handleTranscriptClick} />
             <MetadataRows signal={signal} onTranscriptClick={handleTranscriptClick} onViewTranscript={handleViewTranscript} />
           </div>
         </div>

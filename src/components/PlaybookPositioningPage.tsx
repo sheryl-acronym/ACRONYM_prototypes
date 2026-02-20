@@ -406,6 +406,7 @@ export const PlaybookPositioningPage: React.FC = () => {
                 Add Section
               </Button>
             </div>
+          </div>
         </div>
       </div>
     </div>
