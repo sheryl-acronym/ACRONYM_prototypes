@@ -19,6 +19,7 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Objection } from '@/objections-demo-data';
 import { Signal, signalsData } from '@/signals-demo-data';
@@ -30,6 +31,16 @@ import { EffectivenessPill } from '@/components/EffectivenessPill';
 interface ObjectionDetailPageProps {
   objection: Objection;
   hideTopBar?: boolean;
+}
+
+// Helper function to get initials from name
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 }
 
 const TopBar: React.FC<{ objectionTitle: string }> = ({ objectionTitle }) => {
@@ -192,7 +203,14 @@ const SignalCard: React.FC<{ signal: Signal; onClick: () => void }> = ({ signal,
       className="w-full text-left border border-stone-200 rounded-lg p-4 hover:border-stone-300 hover:bg-stone-50 transition-colors"
     >
       <div className="flex items-center justify-between mb-2">
-        <p className="text-xs font-semibold text-muted-foreground">{signal.speaker_name}</p>
+        <div className="flex items-center gap-2">
+          <Avatar className="h-6 w-6">
+            <AvatarFallback className="bg-slate-200 text-xs font-semibold">
+              {getInitials(signal.speaker_name)}
+            </AvatarFallback>
+          </Avatar>
+          <p className="text-xs font-semibold text-muted-foreground">{signal.speaker_name}</p>
+        </div>
         <CompanyPill company_name={signal.company_name} company_logo_url={signal.company_logo_url} />
       </div>
       <div className="mb-3">
