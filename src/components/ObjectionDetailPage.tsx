@@ -43,6 +43,18 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
+// Helper function to format date as "Mon DD, H:MMPM"
+function formatSignalDate(dateStr: string, timeStr?: string): string {
+  const date = new Date(dateStr);
+  const monthStr = date.toLocaleDateString('en-US', { month: 'short' });
+  const day = date.getDate();
+
+  if (timeStr) {
+    return `${monthStr} ${day}, ${timeStr}`;
+  }
+  return `${monthStr} ${day}`;
+}
+
 const TopBar: React.FC<{ objectionTitle: string }> = ({ objectionTitle }) => {
   const navigate = useNavigate();
   return (
@@ -218,7 +230,7 @@ const SignalCard: React.FC<{ signal: Signal; onClick: () => void }> = ({ signal,
         </div>
       </div>
       <div className="text-xs text-muted-foreground">
-        <p>from {signal.meeting_title} • {signal.meeting_date}</p>
+        <p>from {signal.meeting_title} • {formatSignalDate(signal.meeting_date, signal.meeting_time)}</p>
       </div>
     </button>
   );
