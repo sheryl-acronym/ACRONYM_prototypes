@@ -45,6 +45,7 @@ import {
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { CategoryPill } from '@/components/CategoryPill';
 import { PersonaPill } from '@/components/PersonaPill';
+import { ObjectionDetailSidePanel } from '@/components/ObjectionDetailSidePanel';
 
 interface ObjectionsPageProps {
   objections: Objection[];
@@ -113,6 +114,7 @@ export const ObjectionsPage: React.FC<ObjectionsPageProps> = ({ objections }) =>
   const [buyerPersonaFilters, setBuyerPersonaFilters] = React.useState<Set<string>>(new Set());
   const [sortField, setSortField] = React.useState<SortField>('category');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
+  const [selectedObjectionId, setSelectedObjectionId] = React.useState<string | null>(null);
 
   // Extract unique buyer personas from all objections
   const allBuyerPersonas = React.useMemo(() => {
@@ -385,7 +387,7 @@ export const ObjectionsPage: React.FC<ObjectionsPageProps> = ({ objections }) =>
                     <TableRow
                       key={objection.id}
                       className="cursor-pointer hover:bg-slate-50 transition-colors"
-                      onClick={() => navigate(`/objections/${objection.id}`)}
+                      onClick={() => setSelectedObjectionId(objection.id)}
                     >
                       <TableCell>
                         <CategoryPill category={objection.category} />
@@ -489,6 +491,15 @@ export const ObjectionsPage: React.FC<ObjectionsPageProps> = ({ objections }) =>
           </div>
         </div>
       </div>
+
+      {/* Objection Detail Side Panel */}
+      {selectedObjectionId && (
+        <ObjectionDetailSidePanel
+          objectionId={selectedObjectionId}
+          objection={objections.find((o) => o.id === selectedObjectionId)!}
+          onClose={() => setSelectedObjectionId(null)}
+        />
+      )}
     </div>
   );
 };
