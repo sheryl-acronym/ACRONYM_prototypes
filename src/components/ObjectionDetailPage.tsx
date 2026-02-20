@@ -24,6 +24,7 @@ import { Objection } from '@/objections-demo-data';
 import { Signal, signalsData } from '@/signals-demo-data';
 import { CompanyPill } from '@/components/CompanyPill';
 import { CategoryPill } from '@/components/CategoryPill';
+import { PersonaPill } from '@/components/PersonaPill';
 
 interface ObjectionDetailPageProps {
   objection: Objection;
@@ -174,9 +175,7 @@ const EffectivenessAndRaisedBySection: React.FC<{ objection: Objection }> = ({ o
         <div className="flex flex-wrap gap-2">
           {objection.typically_raised_by.length > 0 ? (
             objection.typically_raised_by.map((persona, idx) => (
-              <Badge key={idx} variant="outline" className="rounded-md font-normal text-xs px-2.5 py-1">
-                {persona}
-              </Badge>
+              <PersonaPill key={idx} persona={persona} />
             ))
           ) : (
             <span className="text-sm text-muted-foreground">Not specified</span>
