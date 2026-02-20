@@ -155,25 +155,21 @@ const IdealOutcomeSection: React.FC = () => (
 const EffectivenessAndRaisedBySection: React.FC<{ objection: Objection }> = ({ objection }) => (
   <>
     <Separator className="my-8" />
-    <div className="grid grid-cols-2 gap-8">
-      <div>
-        <div className="flex items-center gap-2 mb-3">
+    <div className="space-y-3">
+      <div className="grid grid-cols-[130px_1fr] gap-6">
+        <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-muted-foreground" />
-          <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60">
-            Effectiveness
-          </h3>
+          <span className="text-sm font-medium text-muted-foreground">Effectiveness</span>
         </div>
-        <Badge variant="outline" className="rounded-md font-normal text-xs px-3 py-1.5">
+        <Badge variant="outline" className="rounded-md font-normal text-xs px-3 py-1.5 w-fit">
           Stalls
         </Badge>
       </div>
 
-      <div>
-        <div className="flex items-center gap-2 mb-3">
+      <div className="grid grid-cols-[130px_1fr] gap-6">
+        <div className="flex items-center gap-2">
           <Users className="h-4 w-4 text-muted-foreground" />
-          <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60">
-            Typically raised by
-          </h3>
+          <span className="text-sm font-medium text-muted-foreground">Typically raised by</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {objection.typically_raised_by.length > 0 ? (
