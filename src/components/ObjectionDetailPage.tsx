@@ -197,7 +197,7 @@ const SignalCard: React.FC<{ signal: Signal; onClick: () => void }> = ({ signal,
       </div>
       <div className="mb-3">
         <div className="bg-stone-100 rounded-lg px-3 py-2 inline-block max-w-full">
-          <p className="text-xs text-foreground/80 leading-relaxed">{signal.conversation_snippet}</p>
+          <p className="text-sm text-foreground/80 leading-relaxed">{signal.conversation_snippet}</p>
         </div>
       </div>
       <div className="flex items-center justify-between text-xs text-muted-foreground">
