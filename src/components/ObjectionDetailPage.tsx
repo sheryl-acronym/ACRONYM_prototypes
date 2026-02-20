@@ -91,14 +91,14 @@ const KeyMovesSection: React.FC = () => (
     </h2>
     <div className="space-y-2">
       <div className="flex items-start gap-2">
-        <div className="h-2.5 w-2.5 rounded-full bg-foreground flex-shrink-0 mt-1.5" />
+        <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 flex-shrink-0 mt-1.5" />
         <div>
           <p className="text-sm font-medium text-foreground mb-1">Move 1: Title</p>
           <p className="text-sm text-foreground/70">Description of the move and how to approach it.</p>
         </div>
       </div>
       <div className="flex items-start gap-2">
-        <div className="h-2.5 w-2.5 rounded-full bg-foreground flex-shrink-0 mt-1.5" />
+        <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 flex-shrink-0 mt-1.5" />
         <div>
           <p className="text-sm font-medium text-foreground mb-1">Move 2: Title</p>
           <p className="text-sm text-foreground/70">Description of the move and how to approach it.</p>
@@ -115,15 +115,15 @@ const WhatNotToDoSection: React.FC = () => (
     </h2>
     <div className="space-y-2">
       <div className="flex items-start gap-2">
-        <div className="h-2.5 w-2.5 rounded-full bg-foreground flex-shrink-0 mt-1.5" />
+        <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 flex-shrink-0 mt-1.5" />
         <p className="text-sm text-foreground/70">Don't dismiss the concern outright</p>
       </div>
       <div className="flex items-start gap-2">
-        <div className="h-2.5 w-2.5 rounded-full bg-foreground flex-shrink-0 mt-1.5" />
+        <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 flex-shrink-0 mt-1.5" />
         <p className="text-sm text-foreground/70">Don't make promises you can't keep</p>
       </div>
       <div className="flex items-start gap-2">
-        <div className="h-2.5 w-2.5 rounded-full bg-foreground flex-shrink-0 mt-1.5" />
+        <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 flex-shrink-0 mt-1.5" />
         <p className="text-sm text-foreground/70">Don't skip the data or evidence</p>
       </div>
     </div>
@@ -137,15 +137,15 @@ const IdealOutcomeSection: React.FC = () => (
     </h2>
     <div className="space-y-2">
       <div className="flex items-start gap-2">
-        <div className="h-2.5 w-2.5 rounded-full bg-foreground flex-shrink-0 mt-1.5" />
+        <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 flex-shrink-0 mt-1.5" />
         <p className="text-sm text-foreground/70">Prospect understands the concern is valid and has clear answers</p>
       </div>
       <div className="flex items-start gap-2">
-        <div className="h-2.5 w-2.5 rounded-full bg-foreground flex-shrink-0 mt-1.5" />
+        <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 flex-shrink-0 mt-1.5" />
         <p className="text-sm text-foreground/70">They feel confident moving forward despite the objection</p>
       </div>
       <div className="flex items-start gap-2">
-        <div className="h-2.5 w-2.5 rounded-full bg-foreground flex-shrink-0 mt-1.5" />
+        <div className="h-2.5 w-2.5 rounded-full bg-muted-foreground/40 flex-shrink-0 mt-1.5" />
         <p className="text-sm text-foreground/70">Deal momentum increases rather than stalls</p>
       </div>
     </div>
