@@ -246,7 +246,7 @@ const SignalStatsSection: React.FC = () => (
       <p className="text-xs text-green-600 font-medium">+5 this week</p>
     </div>
     <div className="border border-stone-200 rounded-lg p-4">
-      <div className="flex items-start justify-between mb-2">
+      <div className="flex items-start justify-between mb-3">
         <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60">
           Trend
         </p>
@@ -255,6 +255,16 @@ const SignalStatsSection: React.FC = () => (
           <polyline points="17 6 23 6 23 12"></polyline>
         </svg>
       </div>
+      <svg className="w-full h-12 mb-3" viewBox="0 0 100 40" preserveAspectRatio="none">
+        <polyline
+          points="0,35 15,28 30,22 45,18 60,12 75,8 90,5"
+          fill="none"
+          stroke="#16a34a"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
       <p className="text-xs text-green-600 font-medium mb-1">increasing</p>
       <p className="text-xs text-muted-foreground">+12% vs. last week</p>
     </div>
