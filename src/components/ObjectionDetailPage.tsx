@@ -236,6 +236,31 @@ const SignalCard: React.FC<{ signal: Signal; onClick: () => void }> = ({ signal,
   );
 };
 
+const SignalStatsSection: React.FC = () => (
+  <div className="grid grid-cols-2 gap-4 mb-8">
+    <div className="border border-stone-200 rounded-lg p-4">
+      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-2">
+        Total Signals
+      </p>
+      <p className="text-2xl font-bold text-foreground mb-2">254</p>
+      <p className="text-xs text-green-600 font-medium">+5 this week</p>
+    </div>
+    <div className="border border-stone-200 rounded-lg p-4">
+      <div className="flex items-start justify-between mb-2">
+        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60">
+          Trend
+        </p>
+        <svg className="h-4 w-4 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 17"></polyline>
+          <polyline points="17 6 23 6 23 12"></polyline>
+        </svg>
+      </div>
+      <p className="text-xs text-green-600 font-medium mb-1">increasing</p>
+      <p className="text-xs text-muted-foreground">+12% vs. last week</p>
+    </div>
+  </div>
+);
+
 const PinnedExamplesSection: React.FC<{ objection: Objection; onSignalClick: (signal: Signal) => void }> = ({ objection, onSignalClick }) => {
   const relatedSignals = signalsData.filter((signal) => signal.objection === objection.objection);
 
@@ -245,6 +270,7 @@ const PinnedExamplesSection: React.FC<{ objection: Objection; onSignalClick: (si
 
   return (
     <div>
+      <SignalStatsSection />
       <div className="flex items-center gap-2 mb-4">
         <Bookmark className="h-3.5 w-3.5 text-muted-foreground" />
         <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
