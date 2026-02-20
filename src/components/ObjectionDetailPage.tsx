@@ -246,7 +246,7 @@ const ResponsePlayTabContent: React.FC<{ objection: Objection }> = ({ objection 
 );
 
 const SignalsTab: React.FC<{ objection: Objection; onSignalClick: (signal: Signal) => void }> = ({ objection, onSignalClick }) => (
-  <div>
+  <div className="pt-8">
     <PinnedExamplesSection objection={objection} onSignalClick={onSignalClick} />
   </div>
 );
