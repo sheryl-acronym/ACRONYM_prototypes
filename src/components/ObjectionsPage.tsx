@@ -44,6 +44,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { CategoryPill } from '@/components/CategoryPill';
+import { PersonaPill } from '@/components/PersonaPill';
 
 interface ObjectionsPageProps {
   objections: Objection[];
@@ -343,7 +344,7 @@ export const ObjectionsPage: React.FC<ObjectionsPageProps> = ({ objections }) =>
                         checked={buyerPersonaFilters.has(persona)}
                         onCheckedChange={() => toggleBuyerPersonaFilter(persona)}
                       />
-                      <span className="text-sm">{persona}</span>
+                      <PersonaPill persona={persona} />
                     </label>
                   ))}
                 </div>
@@ -397,11 +398,9 @@ export const ObjectionsPage: React.FC<ObjectionsPageProps> = ({ objections }) =>
                       </TableCell>
                       <TableCell>
                         {objection.typically_raised_by.length > 0 ? (
-                          <div className="flex flex-wrap gap-1 w-72 max-h-14 overflow-hidden">
+                          <div className="flex flex-wrap gap-2 w-72 max-h-14 overflow-hidden">
                             {objection.typically_raised_by.slice(0, 2).map((persona, idx) => (
-                              <Badge key={idx} variant="outline" className="font-normal text-xs rounded-md px-2 py-1 flex-shrink-0">
-                                {persona}
-                              </Badge>
+                              <PersonaPill key={idx} persona={persona} />
                             ))}
                             {objection.typically_raised_by.length > 2 && (
                               <Badge variant="secondary" className="font-normal text-xs rounded-md px-2 py-1 flex-shrink-0">
