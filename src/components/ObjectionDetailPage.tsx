@@ -157,7 +157,7 @@ const EffectivenessAndRaisedBySection: React.FC<{ objection: Objection }> = ({ o
   <>
     <Separator className="my-8" />
     <div className="space-y-3">
-      <div className="grid grid-cols-[130px_1fr] gap-6">
+      <div className="grid grid-cols-[180px_1fr] gap-6">
         <div className="flex items-center gap-2">
           <Target className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm font-medium text-muted-foreground">Effectiveness</span>
@@ -167,7 +167,7 @@ const EffectivenessAndRaisedBySection: React.FC<{ objection: Objection }> = ({ o
         </Badge>
       </div>
 
-      <div className="grid grid-cols-[130px_1fr] gap-6">
+      <div className="grid grid-cols-[180px_1fr] gap-6">
         <div className="flex items-center gap-2">
           <Users className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm font-medium text-muted-foreground">Typically raised by</span>
