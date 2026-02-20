@@ -4,7 +4,6 @@ import {
   PanelLeft,
   MoreHorizontal,
   Users,
-  XCircle,
   Target,
   Bookmark,
 } from 'lucide-react';
@@ -120,15 +119,15 @@ const WhatNotToDoSection: React.FC = () => (
     </h2>
     <div className="space-y-2">
       <div className="flex items-start gap-2">
-        <XCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+        <div className="h-1.5 w-1.5 rounded-full bg-foreground flex-shrink-0 mt-1" />
         <p className="text-sm text-foreground/70">Don't dismiss the concern outright</p>
       </div>
       <div className="flex items-start gap-2">
-        <XCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+        <div className="h-1.5 w-1.5 rounded-full bg-foreground flex-shrink-0 mt-1" />
         <p className="text-sm text-foreground/70">Don't make promises you can't keep</p>
       </div>
       <div className="flex items-start gap-2">
-        <XCircle className="h-4 w-4 text-red-600 mt-0.5 flex-shrink-0" />
+        <div className="h-1.5 w-1.5 rounded-full bg-foreground flex-shrink-0 mt-1" />
         <p className="text-sm text-foreground/70">Don't skip the data or evidence</p>
       </div>
     </div>
@@ -142,15 +141,15 @@ const IdealOutcomeSection: React.FC = () => (
     </h2>
     <div className="space-y-2">
       <div className="flex items-start gap-2">
-        <Target className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+        <div className="h-1.5 w-1.5 rounded-full bg-foreground flex-shrink-0 mt-1" />
         <p className="text-sm text-foreground/70">Prospect understands the concern is valid and has clear answers</p>
       </div>
       <div className="flex items-start gap-2">
-        <Target className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+        <div className="h-1.5 w-1.5 rounded-full bg-foreground flex-shrink-0 mt-1" />
         <p className="text-sm text-foreground/70">They feel confident moving forward despite the objection</p>
       </div>
       <div className="flex items-start gap-2">
-        <Target className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
+        <div className="h-1.5 w-1.5 rounded-full bg-foreground flex-shrink-0 mt-1" />
         <p className="text-sm text-foreground/70">Deal momentum increases rather than stalls</p>
       </div>
     </div>
