@@ -166,8 +166,7 @@ const IdealOutcomeSection: React.FC = () => (
 );
 
 const EffectivenessAndRaisedBySection: React.FC<{ objection: Objection }> = ({ objection }) => (
-  <>
-    <Separator className="my-8" />
+  <div className="mb-8">
     <div className="space-y-3">
       <div className="grid grid-cols-[180px_1fr] gap-6">
         <div className="flex items-center gap-2">
@@ -193,7 +192,7 @@ const EffectivenessAndRaisedBySection: React.FC<{ objection: Objection }> = ({ o
         </div>
       </div>
     </div>
-  </>
+  </div>
 );
 
 const SignalCard: React.FC<{ signal: Signal; onClick: () => void }> = ({ signal, onClick }) => {
@@ -259,7 +258,6 @@ const ResponsePlayTabContent: React.FC<{ objection: Objection }> = ({ objection 
     <KeyMovesSection />
     <WhatNotToDoSection />
     <IdealOutcomeSection />
-    <EffectivenessAndRaisedBySection objection={objection} />
   </div>
 );
 
@@ -286,6 +284,7 @@ export const ObjectionDetailPage: React.FC<ObjectionDetailPageProps> = ({
           <div className="px-6 py-4 w-full">
             <ObjectionHeader objection={objection} />
             <DescriptionSection description={objection.description} />
+            <EffectivenessAndRaisedBySection objection={objection} />
             <Tabs defaultValue="response-play" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="response-play">Response Play</TabsTrigger>
@@ -320,6 +319,7 @@ export const ObjectionDetailPage: React.FC<ObjectionDetailPageProps> = ({
           <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
             <ObjectionHeader objection={objection} />
             <DescriptionSection description={objection.description} />
+            <EffectivenessAndRaisedBySection objection={objection} />
             <Tabs defaultValue="response-play" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="response-play">Response Play</TabsTrigger>
