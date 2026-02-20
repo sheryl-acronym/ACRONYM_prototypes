@@ -238,11 +238,11 @@ const SignalCard: React.FC<{ signal: Signal; onClick: () => void }> = ({ signal,
 
 const SignalStatsSection: React.FC = () => (
   <div className="grid grid-cols-2 gap-4 mb-8">
-    <div className="border border-stone-200 rounded-lg p-4">
+    <div className="border border-stone-200 rounded-lg p-4 flex flex-col">
       <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-2">
         Total Signals
       </p>
-      <p className="text-4xl font-bold text-foreground mb-2">254</p>
+      <p className="text-4xl font-bold text-foreground flex-grow">254</p>
       <p className="text-xs text-green-600 font-medium">+5 this week</p>
     </div>
     <div className="border border-stone-200 rounded-lg p-4">
