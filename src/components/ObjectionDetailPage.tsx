@@ -7,7 +7,6 @@ import {
   CheckCircle,
   XCircle,
   Target,
-  Zap,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -22,7 +21,6 @@ import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Badge } from '@/components/ui/badge';
 import { Objection } from '@/objections-demo-data';
-import { Signal, signalsData } from '@/signals-demo-data';
 
 interface ObjectionDetailPageProps {
   objection: Objection;
@@ -213,45 +211,12 @@ const EffectivenessAndRaisedBySection: React.FC<{ objection: Objection }> = ({ o
   </>
 );
 
-const SignalExamplesSection: React.FC<{ objection: Objection; onSignalClick: (signal: Signal) => void }> = ({ objection, onSignalClick }) => {
-  const relatedSignals = signalsData.filter((signal) => signal.objection === objection.objection);
-
-  if (relatedSignals.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="mb-8">
-      <h2 className="text-xs font-medium uppercase tracking-wide text-muted-foreground/60 mb-4 flex items-center gap-2">
-        <Zap className="h-3.5 w-3.5" />
-        Signal Examples
-      </h2>
-      <div className="space-y-3">
-        {relatedSignals.map((signal) => (
-          <button
-            key={signal.id}
-            onClick={() => onSignalClick(signal)}
-            className="w-full text-left border border-stone-200 rounded-lg p-3 hover:border-stone-300 hover:bg-stone-50 transition-colors"
-          >
-            <div className="flex items-start justify-between mb-2">
-              <p className="text-xs font-semibold text-muted-foreground">{signal.speaker_name}</p>
-              <p className="text-xs text-muted-foreground">{signal.meeting_date}</p>
-            </div>
-            <p className="text-sm text-foreground/80 leading-relaxed line-clamp-2">{signal.conversation_snippet}</p>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const MetadataRows: React.FC<{ objection: Objection; onSignalClick?: (signal: Signal) => void }> = ({ objection, onSignalClick }) => (
+const MetadataRows: React.FC<{ objection: Objection }> = ({ objection }) => (
   <>
     <DescriptionSection description={objection.description} />
     <KeyMovesSection />
     <WhatNotToDoSection />
     <IdealOutcomeSection />
-    {onSignalClick && <SignalExamplesSection objection={objection} onSignalClick={onSignalClick} />}
     <EffectivenessAndRaisedBySection objection={objection} />
   </>
 );
@@ -260,19 +225,13 @@ export const ObjectionDetailPage: React.FC<ObjectionDetailPageProps> = ({
   objection,
   hideTopBar = false,
 }) => {
-  const navigate = useNavigate();
-
-  const handleSignalClick = (signal: Signal) => {
-    navigate(`/signals/${signal.id}`);
-  };
-
   if (hideTopBar) {
     return (
       <div className="flex flex-col h-full overflow-hidden">
         <div className="flex-1 overflow-y-auto">
           <div className="px-6 py-4 w-full">
             <ObjectionHeader objection={objection} />
-            <MetadataRows objection={objection} onSignalClick={handleSignalClick} />
+            <MetadataRows objection={objection} />
           </div>
         </div>
       </div>
@@ -297,7 +256,7 @@ export const ObjectionDetailPage: React.FC<ObjectionDetailPageProps> = ({
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
             <ObjectionHeader objection={objection} />
-            <MetadataRows objection={objection} onSignalClick={handleSignalClick} />
+            <MetadataRows objection={objection} />
           </div>
         </div>
       </div>
