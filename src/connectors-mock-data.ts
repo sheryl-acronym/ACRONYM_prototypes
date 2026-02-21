@@ -7,6 +7,7 @@ export interface Connector {
   icon: string;
   icon_color: string;
   logo_url?: string;
+  url?: string;
   status: ConnectorStatus;
   badge?: string;
 }
@@ -19,6 +20,7 @@ export const connectorsMockData: Connector[] = [
     icon: '📅',
     icon_color: '#EA4335',
     logo_url: '/googlecalendar.webp',
+    url: 'calendar.google.com',
     status: 'connected',
   },
   {
@@ -28,6 +30,7 @@ export const connectorsMockData: Connector[] = [
     icon: '💬',
     icon_color: '#36C5F0',
     logo_url: '/slack.png',
+    url: 'slack.com',
     status: 'connected',
   },
   {
@@ -37,6 +40,7 @@ export const connectorsMockData: Connector[] = [
     icon: '📧',
     icon_color: '#EA4335',
     logo_url: '/gmail.webp',
+    url: 'gmail.com',
     status: 'disconnected',
   },
   {
@@ -46,6 +50,7 @@ export const connectorsMockData: Connector[] = [
     icon: '📁',
     icon_color: '#4285F4',
     logo_url: '/google_drive.png',
+    url: 'drive.google.com',
     status: 'disconnected',
   },
   {
@@ -55,6 +60,7 @@ export const connectorsMockData: Connector[] = [
     icon: '🎙️',
     icon_color: '#4F46E5',
     logo_url: 'https://www.fathom.video/favicon.png',
+    url: 'fathom.video',
     status: 'connected',
   },
   {
@@ -64,6 +70,7 @@ export const connectorsMockData: Connector[] = [
     icon: '🔥',
     icon_color: '#FF6B35',
     logo_url: 'https://www.fireflies.ai/favicon.ico',
+    url: 'fireflies.ai',
     status: 'disconnected',
   },
   {
@@ -73,6 +80,7 @@ export const connectorsMockData: Connector[] = [
     icon: '🎯',
     icon_color: '#FF7A59',
     logo_url: 'https://www.hubspot.com/favicon.ico',
+    url: 'hubspot.com',
     status: 'connected',
   },
 ];

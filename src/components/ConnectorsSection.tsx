@@ -60,7 +60,10 @@ function ConnectorCard({ connector, onConnect }: ConnectorCardProps) {
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-sm">{connector.name}</h3>
+            <h3 className="font-semibold text-base">{connector.name}</h3>
+            {connector.url && (
+              <p className="text-xs text-slate-500 mt-0.5">{connector.url}</p>
+            )}
             {connector.badge && (
               <Badge variant="secondary" className="text-xs mt-1">
                 {connector.badge}
