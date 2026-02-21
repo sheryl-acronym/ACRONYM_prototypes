@@ -17,7 +17,6 @@ interface FAQDetailSidePanelProps {
 }
 
 export const FAQDetailSidePanel: React.FC<FAQDetailSidePanelProps> = ({
-  faqId,
   faq,
   onClose,
   onExpand,
