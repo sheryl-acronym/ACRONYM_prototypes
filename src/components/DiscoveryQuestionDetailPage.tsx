@@ -130,8 +130,8 @@ const SignalCard: React.FC<{ signal: Signal; onClick: () => void }> = ({ signal,
 const PinnedSignalsSection: React.FC<{ question: DiscoveryQuestion; onSignalClick: (signal: Signal) => void }> = ({ question, onSignalClick }) => {
   const relatedSignals = (question as any).related_signal_ids
     ? (question as any).related_signal_ids
-        .map((id: string) => signalsData.find((signal) => signal.id === id))
-        .filter((signal): signal is Signal => signal !== undefined)
+        .map((id: string) => signalsData.find((signal: Signal) => signal.id === id))
+        .filter((signal: Signal | undefined): signal is Signal => signal !== undefined)
     : [];
 
   if (relatedSignals.length === 0) {
