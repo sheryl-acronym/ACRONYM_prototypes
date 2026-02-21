@@ -10,19 +10,11 @@ type Connector = typeof connectorsMockData[0];
 export default function ConnectorsSection() {
   const [connectors, setConnectors] = React.useState<Connector[]>(connectorsMockData);
 
-  const handleDisconnect = (id: string) => {
-    setConnectors((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, status: 'disconnected' as const } : c))
-    );
-  };
-
   const handleConnect = (id: string) => {
     setConnectors((prev) =>
       prev.map((c) => (c.id === id ? { ...c, status: 'connected' as const } : c))
     );
   };
-
-  const connectedCount = connectors.filter((c) => c.status === 'connected').length;
 
   return (
     <div className="w-full">
@@ -32,7 +24,6 @@ export default function ConnectorsSection() {
           <ConnectorCard
             key={connector.id}
             connector={connector}
-            onDisconnect={handleDisconnect}
             onConnect={handleConnect}
           />
         ))}
@@ -43,11 +34,10 @@ export default function ConnectorsSection() {
 
 interface ConnectorCardProps {
   connector: Connector;
-  onDisconnect: (id: string) => void;
   onConnect: (id: string) => void;
 }
 
-function ConnectorCard({ connector, onDisconnect, onConnect }: ConnectorCardProps) {
+function ConnectorCard({ connector, onConnect }: ConnectorCardProps) {
   const isConnected = connector.status === 'connected';
   const isConfigurable = connector.status === 'configured';
 

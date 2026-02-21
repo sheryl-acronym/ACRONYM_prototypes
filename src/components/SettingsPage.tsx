@@ -1,6 +1,4 @@
 import React from 'react';
-import { Settings } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
   Breadcrumb,
@@ -11,22 +9,7 @@ import {
 import ConnectorsSection from '@/components/ConnectorsSection';
 import { PanelLeft } from 'lucide-react';
 
-type SettingSection = 'general' | 'account' | 'connections';
-
-interface SettingsPageProps {
-  initialSection?: SettingSection;
-}
-
-export default function SettingsPage({ initialSection = 'general' }: SettingsPageProps) {
-  const [activeSection, setActiveSection] = React.useState<SettingSection>(initialSection);
-
-  const sections: { id: SettingSection; label: string; description: string }[] = [
-    { id: 'general', label: 'General', description: 'Workspace settings and preferences' },
-    { id: 'account', label: 'Account', description: 'Your account and profile' },
-    { id: 'connections', label: 'Connections', description: 'Manage integrations and connections' },
-  ];
-
-  const currentSection = sections.find((s) => s.id === activeSection);
+export default function SettingsPage() {
 
   return (
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
