@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import TranscriptSidePanel from '@/components/TranscriptSidePanel';
 import { Signal } from '@/signals-demo-data';
 import { CategoryPill } from '@/components/CategoryPill';
@@ -22,6 +23,17 @@ import { CategoryPill } from '@/components/CategoryPill';
 interface SignalDetailPageProps {
   signal: Signal;
   hideTopBar?: boolean;
+  hideResponseApproach?: boolean;
+}
+
+// Helper function to get initials from name
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map((word) => word[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 }
 
 const TopBar: React.FC<{ signal: Signal }> = ({ signal }) => {
@@ -116,7 +128,12 @@ const ConversationExcerptSection: React.FC<{
     {/* Customer objection */}
     <div className="mb-6">
       <div className="mb-3 flex items-center gap-2">
-        <p className="text-xs font-semibold text-muted-foreground">{speakerName}</p>
+        <Avatar className="h-5 w-5">
+          <AvatarFallback className="bg-slate-200 text-xs font-semibold">
+            {getInitials(speakerName)}
+          </AvatarFallback>
+        </Avatar>
+        <p className="text-xs font-semibold text-muted-foreground underline cursor-pointer hover:text-foreground">{speakerName}</p>
         {timestamp && <p className="text-xs text-muted-foreground">[{timestamp}]</p>}
       </div>
       <div className="bg-stone-100 rounded-2xl px-4 py-3 border border-stone-200">
@@ -128,7 +145,12 @@ const ConversationExcerptSection: React.FC<{
     {responseSpeakerName && responseSnippet && (
       <div>
         <div className="mb-3 flex items-center gap-2">
-          <p className="text-xs font-semibold text-muted-foreground">{responseSpeakerName}</p>
+          <Avatar className="h-5 w-5">
+            <AvatarFallback className="bg-slate-200 text-xs font-semibold">
+              {getInitials(responseSpeakerName)}
+            </AvatarFallback>
+          </Avatar>
+          <p className="text-xs font-semibold text-muted-foreground underline cursor-pointer hover:text-foreground">{responseSpeakerName}</p>
           {responseTimestamp && <p className="text-xs text-muted-foreground">[{responseTimestamp}]</p>}
         </div>
         <div className="bg-stone-100 rounded-2xl px-4 py-3 border border-stone-200 mb-3">
@@ -159,7 +181,7 @@ const WhyThisWorksSection: React.FC<{ reasoning?: string }> = ({ reasoning }) =>
   );
 };
 
-const MetadataRows: React.FC<{ signal: Signal; onTranscriptClick: () => void; onViewTranscript?: () => void }> = ({ signal, onTranscriptClick, onViewTranscript }) => {
+const MetadataRows: React.FC<{ signal: Signal; onTranscriptClick: () => void; onViewTranscript?: () => void; hideResponseApproach?: boolean }> = ({ signal, onTranscriptClick, onViewTranscript, hideResponseApproach }) => {
   return (
     <div className="space-y-8">
       <ConversationExcerptSection
@@ -184,10 +206,13 @@ const MetadataRows: React.FC<{ signal: Signal; onTranscriptClick: () => void; on
         </div>
       )}
 
-      <div className="border-t border-slate-200" />
-
-      <ResponseApproachSection approach={signal.response_approach} />
-      <WhyThisWorksSection reasoning={signal.why_this_works} />
+      {!hideResponseApproach && (
+        <>
+          <div className="border-t border-slate-200" />
+          <ResponseApproachSection approach={signal.response_approach} />
+          <WhyThisWorksSection reasoning={signal.why_this_works} />
+        </>
+      )}
     </div>
   );
 };
@@ -195,6 +220,7 @@ const MetadataRows: React.FC<{ signal: Signal; onTranscriptClick: () => void; on
 export const SignalDetailPage: React.FC<SignalDetailPageProps> = ({
   signal,
   hideTopBar = false,
+  hideResponseApproach = false,
 }) => {
   const navigate = useNavigate();
   const [isTranscriptOpen, setIsTranscriptOpen] = React.useState(false);
@@ -232,7 +258,7 @@ export const SignalDetailPage: React.FC<SignalDetailPageProps> = ({
           <div className="flex-1 overflow-y-auto">
             <div className="px-6 py-4 w-full pb-24">
               <SignalHeader signal={signal} onTranscriptClick={handleTranscriptClick} />
-              <MetadataRows signal={signal} onTranscriptClick={handleTranscriptClick} onViewTranscript={handleViewTranscript} />
+              <MetadataRows signal={signal} onTranscriptClick={handleTranscriptClick} onViewTranscript={handleViewTranscript} hideResponseApproach={hideResponseApproach} />
             </div>
           </div>
         </div>
@@ -265,7 +291,7 @@ export const SignalDetailPage: React.FC<SignalDetailPageProps> = ({
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
             <SignalHeader signal={signal} onTranscriptClick={handleTranscriptClick} />
-            <MetadataRows signal={signal} onTranscriptClick={handleTranscriptClick} onViewTranscript={handleViewTranscript} />
+            <MetadataRows signal={signal} onTranscriptClick={handleTranscriptClick} onViewTranscript={handleViewTranscript} hideResponseApproach={hideResponseApproach} />
           </div>
         </div>
       </div>

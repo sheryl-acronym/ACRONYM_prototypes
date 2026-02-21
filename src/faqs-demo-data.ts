@@ -4,6 +4,7 @@ export interface FAQ {
   question: string;
   answer: string;
   typically_asked_by: string[];
+  related_signal_ids?: string[];
 }
 
 export const faqs: FAQ[] = [
@@ -13,6 +14,7 @@ export const faqs: FAQ[] = [
     question: 'Who are your customers?',
     answer: 'We work with over 1,000 merchants across a wide range of industries including skincare (Dermstore, Shiseido), fitness equipment (NordicTrack, ProForm), supplements (Amy Myers MD), red light therapy and other health and wellness categories.',
     typically_asked_by: ['Finance/Operations Executive', 'Technical Founder/Decision Maker'],
+    related_signal_ids: ['signal-faq-001'],
   },
   {
     id: 'faq-002',
@@ -20,6 +22,7 @@ export const faqs: FAQ[] = [
     question: 'What support and documentation resources are available to us?',
     answer: 'We have comprehensive support resources available throughout your journey with Flex. You\'ll have access to our support team via email at support@withflex.com, our shared Slack channels for quick back-and-forth questions, and extensive documentation covering integration, compliance, and operational best practices.',
     typically_asked_by: ['Technical Implementation Lead', 'Operations/Implementation Manager'],
+    related_signal_ids: ['signal-faq-002'],
   },
   {
     id: 'faq-003',
@@ -27,6 +30,7 @@ export const faqs: FAQ[] = [
     question: 'What level of technical development is required to integrate with your platform?',
     answer: 'We support API integrations for custom platforms and native integrations for Shopify and WooCommerce that require minimal to no development work. For Shopify, you simply install our app and enable the payment option at checkout. For custom platforms, our API documentation and sandbox environment make integration straightforward for experienced developers.',
     typically_asked_by: ['Technical Implementation Lead'],
+    related_signal_ids: ['signal-faq-003'],
   },
   {
     id: 'faq-004',
@@ -34,6 +38,7 @@ export const faqs: FAQ[] = [
     question: 'What are the next steps to get set up after we decide to move forward?',
     answer: 'After signing the contract, you\'ll set up a Stripe Connect account (takes about 5-10 minutes) to provide your banking information for fund deposits. Then we schedule a 30-minute implementation call where we discuss your specific setup requirements, integration timeline, and address any questions about the integration process.',
     typically_asked_by: ['Operations/Implementation Manager'],
+    related_signal_ids: ['signal-faq-002'],
   },
   {
     id: 'faq-005',
@@ -55,6 +60,7 @@ export const faqs: FAQ[] = [
     question: 'How does the payment processing fee work with mixed carts?',
     answer: 'Flex is the payment processor for HSA/FSA transactions. We handle the entire payment, including both eligible and ineligible items if there\'s a mixed cart. Our transaction fee of 5% plus $0.30 applies to the total transaction amount. This transparent pricing model means you know exactly what you\'re paying regardless of cart composition.',
     typically_asked_by: ['Finance/Operations Executive', 'Technical Founder/Decision Maker'],
+    related_signal_ids: ['signal-faq-001'],
   },
   {
     id: 'faq-008',
@@ -69,6 +75,7 @@ export const faqs: FAQ[] = [
     question: 'What products are eligible for HSA/FSA, and how is eligibility determined?',
     answer: 'We handle product eligibility determination for you through our internal compliance team. During implementation, we review your entire product catalog and categorize each SKU into three buckets: always-eligible (automatic approval), dual-use (requires medical necessity letter), and ineligible. We update eligibility determinations as needed and provide ongoing support for new product additions.',
     typically_asked_by: ['Technical Founder/Decision Maker', 'Finance/Operations Executive'],
+    related_signal_ids: ['signal-faq-003'],
   },
   {
     id: 'faq-010',

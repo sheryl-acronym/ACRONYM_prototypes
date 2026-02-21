@@ -13,6 +13,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { CategoryPill } from '@/components/CategoryPill';
+import { PersonaPill } from '@/components/PersonaPill';
+import { FAQDetailSidePanel } from '@/components/FAQDetailSidePanel';
+import { FAQDetailPage } from '@/components/FAQDetailPage';
 import {
   HelpCircle,
   PlusCircle,
@@ -47,25 +51,6 @@ interface FAQsPageProps {
   faqs: FAQ[];
 }
 
-const categoryConfig: Record<string, { bg: string; text: string; border: string }> = {
-  'Company': { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
-  'Product & Pricing': { bg: 'bg-purple-50', text: 'text-purple-900', border: 'border-purple-200' },
-  'Integration & Technical': { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
-  'Implementation': { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-200' },
-  'Compliance & Operations': { bg: 'bg-rose-50', text: 'text-rose-900', border: 'border-rose-200' },
-};
-
-function CategoryBadge({ category }: { category: string }) {
-  const config = categoryConfig[category];
-  return (
-    <Badge
-      variant="outline"
-      className={`${config.bg} ${config.text} ${config.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
-    >
-      {category}
-    </Badge>
-  );
-}
 
 type SortField = 'category' | 'question' | 'answer';
 type SortDir = 'asc' | 'desc';
@@ -121,6 +106,8 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
   const [personaFilters, setPersonaFilters] = React.useState<Set<string>>(new Set());
   const [sortField, setSortField] = React.useState<SortField>('category');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
+  const [selectedFAQId, setSelectedFAQId] = React.useState<string | null>(null);
+  const [expandedFAQId, setExpandedFAQId] = React.useState<string | null>(null);
 
   // Extract unique personas from all FAQs
   const allPersonas = React.useMemo(() => {
@@ -211,6 +198,20 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
     setPage(0);
   }, [search, categoryFilters, personaFilters]);
 
+  // If an FAQ is expanded, show the full detail page instead
+  if (expandedFAQId) {
+    const selectedFAQ = faqs.find((f) => f.id === expandedFAQId);
+    if (selectedFAQ) {
+      return (
+        <FAQDetailPage
+          faq={selectedFAQ}
+          hideTopBar={false}
+          onBack={() => setExpandedFAQId(null)}
+        />
+      );
+    }
+  }
+
   return (
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
       {/* Main table area */}
@@ -295,7 +296,7 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
                         checked={categoryFilters.has(category)}
                         onCheckedChange={() => toggleCategoryFilter(category)}
                       />
-                      <CategoryBadge category={category} />
+                      <CategoryPill category={category} />
                     </label>
                   ))}
                 </div>
@@ -383,9 +384,13 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
                   </TableRow>
                 ) : (
                   paginatedFAQs.map((faq) => (
-                    <TableRow key={faq.id}>
+                    <TableRow
+                      key={faq.id}
+                      onClick={() => setSelectedFAQId(faq.id)}
+                      className="cursor-pointer hover:bg-slate-50 transition-colors"
+                    >
                       <TableCell>
-                        <CategoryBadge category={faq.category} />
+                        <CategoryPill category={faq.category} />
                       </TableCell>
                       <TableCell style={{ width: '320px' }}>
                         <span className="text-sm font-medium">{faq.question}</span>
@@ -397,9 +402,7 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
                         {faq.typically_asked_by.length > 0 ? (
                           <div className="flex flex-wrap gap-1 w-72 max-h-14 overflow-hidden">
                             {faq.typically_asked_by.slice(0, 2).map((persona, idx) => (
-                              <Badge key={idx} variant="outline" className="font-normal text-xs rounded-md px-2 py-1 flex-shrink-0">
-                                {persona}
-                              </Badge>
+                              <PersonaPill key={idx} persona={persona} />
                             ))}
                             {faq.typically_asked_by.length > 2 && (
                               <Badge variant="secondary" className="font-normal text-xs rounded-md px-2 py-1 flex-shrink-0">
@@ -488,6 +491,16 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
           </div>
         </div>
       </div>
+
+      {/* FAQ Detail Side Panel */}
+      {selectedFAQId && (
+        <FAQDetailSidePanel
+          faqId={selectedFAQId}
+          faq={faqs.find((f) => f.id === selectedFAQId)!}
+          onClose={() => setSelectedFAQId(null)}
+          onExpand={() => setExpandedFAQId(selectedFAQId)}
+        />
+      )}
     </div>
   );
 };

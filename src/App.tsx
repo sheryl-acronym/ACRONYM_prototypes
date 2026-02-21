@@ -15,6 +15,7 @@ import CustomerProfilesPage from '@/components/CustomerProfilesPage';
 import BuyerPersonasPage from '@/components/BuyerPersonasPage';
 import DiscoveryQuestionsPage from '@/components/DiscoveryQuestionsPage';
 import FAQsPage from '@/components/FAQsPage';
+import FAQDetailPage from '@/components/FAQDetailPage';
 import ObjectionsPage from '@/components/ObjectionsPage';
 import ObjectionDetailPage from '@/components/ObjectionDetailPage';
 import SignalsPage from '@/components/SignalsPage';
@@ -285,6 +286,25 @@ function ObjectionDetailRoute() {
   return <ObjectionDetailPage objection={objection} />;
 }
 
+function FAQDetailRoute() {
+  const { faqId } = useParams<{ faqId: string }>();
+
+  const faq = React.useMemo(() => {
+    if (!faqId) return undefined;
+    return faqs.find((f) => f.id === faqId);
+  }, [faqId]);
+
+  if (!faq) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-muted-foreground">
+        FAQ not found.
+      </div>
+    );
+  }
+
+  return <FAQDetailPage faq={faq} />;
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -310,6 +330,7 @@ function App() {
             <Route path="/buyer-personas" element={<BuyerPersonasPage personas={buyerPersonasData} />} />
             <Route path="/discovery-questions" element={<DiscoveryQuestionsPage questions={discoveryQuestionsData} />} />
             <Route path="/faqs" element={<FAQsPage faqs={faqs} />} />
+            <Route path="/faqs/:faqId" element={<FAQDetailRoute />} />
             <Route path="/objections" element={<ObjectionsPage objections={objectionsData} />} />
             <Route path="/objections/:objectionId" element={<ObjectionDetailRoute />} />
             <Route path="/signals" element={<SignalsPage signals={signalsData} />} />

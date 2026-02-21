@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FAQ } from '@/faqs-demo-data';
 import {
   ChevronsRight,
   Maximize2,
@@ -7,39 +7,21 @@ import {
   Upload,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import SignalDetailPage from '@/components/SignalDetailPage';
+import FAQDetailPage from '@/components/FAQDetailPage';
 
-interface Signal {
-  id: string;
-  deal_id: string;
-  deal_name: string;
-  company_name: string;
-  company_logo_url?: string;
-  momentum?: 'Strong' | 'Stalled' | 'At risk' | 'Closed' | 'Active';
-  conversation_snippet: string;
-  speaker_name: string;
-  llm_reasoning?: string;
-  transcript_url?: string;
-  meeting_date: string;
-  meeting_time?: string;
-  meeting_title: string;
-}
-
-interface SignalDetailSidePanelProps {
-  signalId: string;
-  signal: Signal;
+interface FAQDetailSidePanelProps {
+  faqId: string;
+  faq: FAQ;
   onClose: () => void;
-  hideResponseApproach?: boolean;
+  onExpand: () => void;
 }
 
-export const SignalDetailSidePanel: React.FC<SignalDetailSidePanelProps> = ({
-  signalId,
-  signal,
+export const FAQDetailSidePanel: React.FC<FAQDetailSidePanelProps> = ({
+  faqId,
+  faq,
   onClose,
-  hideResponseApproach = false,
+  onExpand,
 }) => {
-  const navigate = useNavigate();
-
   // Handle ESC key to close
   React.useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -62,9 +44,9 @@ export const SignalDetailSidePanel: React.FC<SignalDetailSidePanelProps> = ({
   }, []);
 
   const handleOpenFullPage = React.useCallback(() => {
-    // Navigate to full signal detail page
-    navigate(`/signals/${signalId}`);
-  }, [signalId, navigate]);
+    // Expand to full page view
+    onExpand();
+  }, [onExpand]);
 
   return (
     <>
@@ -120,11 +102,11 @@ export const SignalDetailSidePanel: React.FC<SignalDetailSidePanelProps> = ({
 
         {/* Content - scrollable */}
         <div className="flex-1 overflow-y-auto">
-          <SignalDetailPage signal={signal} hideTopBar={true} hideResponseApproach={hideResponseApproach} />
+          <FAQDetailPage faq={faq} hideTopBar={true} />
         </div>
       </div>
     </>
   );
 };
 
-export default SignalDetailSidePanel;
+export default FAQDetailSidePanel;
