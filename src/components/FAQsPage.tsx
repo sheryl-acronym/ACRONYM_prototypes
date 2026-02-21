@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FAQ } from '@/faqs-demo-data';
 import {
   Table,
@@ -99,6 +100,7 @@ function SortableHeader({
 }
 
 export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
+  const navigate = useNavigate();
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -498,7 +500,7 @@ export const FAQsPage: React.FC<FAQsPageProps> = ({ faqs }) => {
           faqId={selectedFAQId}
           faq={faqs.find((f) => f.id === selectedFAQId)!}
           onClose={() => setSelectedFAQId(null)}
-          onExpand={() => setExpandedFAQId(selectedFAQId)}
+          onExpand={() => navigate(`/faqs/${selectedFAQId}`)}
         />
       )}
     </div>
