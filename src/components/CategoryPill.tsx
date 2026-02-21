@@ -46,6 +46,22 @@ const categoryStyles: Record<string, { bg: string; text: string }> = {
     bg: 'bg-rose-50',
     text: 'text-rose-900',
   },
+  'Current State': {
+    bg: 'bg-blue-50',
+    text: 'text-blue-900',
+  },
+  'Baseline Assessment': {
+    bg: 'bg-slate-50',
+    text: 'text-slate-900',
+  },
+  'Founder-Led to First Sales Team Transition': {
+    bg: 'bg-green-50',
+    text: 'text-green-900',
+  },
+  'Sales Leader-Driven Scaling': {
+    bg: 'bg-purple-50',
+    text: 'text-purple-900',
+  },
 };
 
 export const CategoryPill: React.FC<CategoryPillProps> = ({ category, className = '' }) => {

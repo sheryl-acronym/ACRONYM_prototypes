@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { CategoryPill } from '@/components/CategoryPill';
 import {
   Lightbulb,
   PlusCircle,
@@ -47,24 +48,6 @@ interface DiscoveryQuestionsPageProps {
   questions: DiscoveryQuestion[];
 }
 
-const categoryConfig: Record<string, { bg: string; text: string; border: string }> = {
-  'Current State': { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-200' },
-  'Baseline Assessment': { bg: 'bg-slate-50', text: 'text-slate-900', border: 'border-slate-200' },
-  'Founder-Led to First Sales Team Transition': { bg: 'bg-green-50', text: 'text-green-900', border: 'border-green-200' },
-  'Sales Leader-Driven Scaling': { bg: 'bg-purple-50', text: 'text-purple-900', border: 'border-purple-200' },
-};
-
-function CategoryBadge({ category }: { category: string }) {
-  const config = categoryConfig[category];
-  return (
-    <Badge
-      variant="outline"
-      className={`${config.bg} ${config.text} ${config.border} font-normal text-xs rounded-md px-2.5 py-0.5`}
-    >
-      {category}
-    </Badge>
-  );
-}
 
 type SortField = 'category' | 'question' | 'why_asking';
 type SortDir = 'asc' | 'desc';
@@ -307,7 +290,7 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
                         checked={categoryFilters.has(category)}
                         onCheckedChange={() => toggleCategoryFilter(category)}
                       />
-                      <CategoryBadge category={category} />
+                      <CategoryPill category={category} />
                     </label>
                   ))}
                 </div>
@@ -397,7 +380,7 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
                   paginatedQuestions.map((question) => (
                     <TableRow key={question.id}>
                       <TableCell>
-                        <CategoryBadge category={question.category} />
+                        <CategoryPill category={question.category} />
                       </TableCell>
                       <TableCell style={{ width: '320px' }}>
                         <span className="text-sm font-medium">{question.question}</span>
