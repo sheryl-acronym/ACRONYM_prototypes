@@ -7,7 +7,7 @@ import {
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
 import ConnectorsSection from '@/components/ConnectorsSection';
-import { PanelLeft } from 'lucide-react';
+import { PanelLeft, Plug } from 'lucide-react';
 
 export default function SettingsPage() {
 
@@ -42,7 +42,8 @@ export default function SettingsPage() {
           <main className="flex-1 overflow-hidden flex flex-col items-stretch justify-start min-w-[720px]">
             <div className="w-full h-full p-8 overflow-y-auto">
               {/* Header */}
-              <div className="mb-8">
+              <div className="mb-8 flex items-center gap-2.5">
+                <Plug className="h-5 w-5 text-foreground" />
                 <h2 className="text-2xl font-bold">
                   Connections
                 </h2>
