@@ -235,9 +235,16 @@ export default function AppSidebar() {
       <SidebarFooter className="px-3 pb-4">
         <SidebarMenu className="gap-0.5">
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Settings" className="h-9">
-              <Settings className="h-4 w-4" />
-              <span>Settings</span>
+            <SidebarMenuButton
+              asChild
+              isActive={location.pathname === '/settings'}
+              tooltip="Settings"
+              className="h-9"
+            >
+              <Link to="/settings">
+                <Settings className="h-4 w-4" />
+                <span>Settings</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>

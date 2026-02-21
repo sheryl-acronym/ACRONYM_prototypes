@@ -20,6 +20,7 @@ import ObjectionDetailPage from '@/components/ObjectionDetailPage';
 import SignalsPage from '@/components/SignalsPage';
 import PlaybookPositioningPage from '@/components/PlaybookPositioningPage';
 import ComponentsPage from '@/components/ComponentsPage';
+import SettingsPage from '@/components/SettingsPage';
 import AppSidebar from '@/components/AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { provenDemoData, provenDemoDataCall2 } from '@/proven-demo-data';
@@ -314,6 +315,8 @@ function App() {
             <Route path="/signals" element={<SignalsPage signals={signalsData} />} />
             <Route path="/signals/:signalId" element={<SignalsPage signals={signalsData} />} />
             <Route path="/playbook/positioning" element={<PlaybookPositioningPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/settings/:section" element={<SettingsPage />} />
             <Route path="/components" element={<ComponentsPage />} />
           </Routes>
         </SidebarInset>
