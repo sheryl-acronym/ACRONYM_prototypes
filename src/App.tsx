@@ -14,6 +14,7 @@ import ContactDetailPage from '@/components/ContactDetailPage';
 import CustomerProfilesPage from '@/components/CustomerProfilesPage';
 import BuyerPersonasPage from '@/components/BuyerPersonasPage';
 import DiscoveryQuestionsPage from '@/components/DiscoveryQuestionsPage';
+import DiscoveryQuestionDetailPage from '@/components/DiscoveryQuestionDetailPage';
 import FAQsPage from '@/components/FAQsPage';
 import FAQDetailPage from '@/components/FAQDetailPage';
 import ObjectionsPage from '@/components/ObjectionsPage';
@@ -305,6 +306,25 @@ function FAQDetailRoute() {
   return <FAQDetailPage faq={faq} />;
 }
 
+function DiscoveryQuestionDetailRoute() {
+  const { questionId } = useParams<{ questionId: string }>();
+
+  const question = React.useMemo(() => {
+    if (!questionId) return undefined;
+    return discoveryQuestionsData.find((q) => q.id === questionId);
+  }, [questionId]);
+
+  if (!question) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-muted-foreground">
+        Discovery question not found.
+      </div>
+    );
+  }
+
+  return <DiscoveryQuestionDetailPage question={question} />;
+}
+
 function App() {
   return (
     <BrowserRouter>
@@ -329,6 +349,7 @@ function App() {
             <Route path="/customer-profiles" element={<CustomerProfilesPage profiles={customerProfilesData} />} />
             <Route path="/buyer-personas" element={<BuyerPersonasPage personas={buyerPersonasData} />} />
             <Route path="/discovery-questions" element={<DiscoveryQuestionsPage questions={discoveryQuestionsData} />} />
+            <Route path="/discovery-questions/:questionId" element={<DiscoveryQuestionDetailRoute />} />
             <Route path="/faqs" element={<FAQsPage faqs={faqs} />} />
             <Route path="/faqs/:faqId" element={<FAQDetailRoute />} />
             <Route path="/objections" element={<ObjectionsPage objections={objectionsData} />} />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DiscoveryQuestion } from '@/discovery-questions-demo-data';
 import {
   Table,
@@ -14,6 +15,9 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { CategoryPill } from '@/components/CategoryPill';
+import { CustomerProfilePill } from '@/components/CustomerProfilePill';
+import { DiscoveryQuestionDetailSidePanel } from '@/components/DiscoveryQuestionDetailSidePanel';
+import { DiscoveryQuestionDetailPage } from '@/components/DiscoveryQuestionDetailPage';
 import {
   Lightbulb,
   PlusCircle,
@@ -102,6 +106,7 @@ function SortableHeader({
 }
 
 export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ questions }) => {
+  const navigate = useNavigate();
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -109,6 +114,8 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
   const [profileFilters, setProfileFilters] = React.useState<Set<string>>(new Set());
   const [sortField, setSortField] = React.useState<SortField>('category');
   const [sortDir, setSortDir] = React.useState<SortDir>('asc');
+  const [selectedQuestionId, setSelectedQuestionId] = React.useState<string | null>(null);
+  const [expandedQuestionId, setExpandedQuestionId] = React.useState<string | null>(null);
 
   // Extract unique customer profiles from all questions
   const allProfiles = React.useMemo(() => {
@@ -205,6 +212,20 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
   React.useEffect(() => {
     setPage(0);
   }, [search, categoryFilters, profileFilters]);
+
+  // If a question is expanded, show the full detail page instead
+  if (expandedQuestionId) {
+    const selectedQuestion = questions.find((q) => q.id === expandedQuestionId);
+    if (selectedQuestion) {
+      return (
+        <DiscoveryQuestionDetailPage
+          question={selectedQuestion}
+          hideTopBar={false}
+          onBack={() => setExpandedQuestionId(null)}
+        />
+      );
+    }
+  }
 
   return (
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
@@ -378,7 +399,11 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
                   </TableRow>
                 ) : (
                   paginatedQuestions.map((question) => (
-                    <TableRow key={question.id}>
+                    <TableRow
+                      key={question.id}
+                      onClick={() => setSelectedQuestionId(question.id)}
+                      className="cursor-pointer hover:bg-slate-50 transition-colors"
+                    >
                       <TableCell>
                         <CategoryPill category={question.category} />
                       </TableCell>
@@ -391,10 +416,8 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
                       <TableCell>
                         {question.typically_relevant_for.length > 0 ? (
                           <div className="flex flex-wrap gap-1 w-72 max-h-14 overflow-hidden">
-                            {question.typically_relevant_for.slice(0, 2).map((stage, idx) => (
-                              <Badge key={idx} variant="outline" className="font-normal text-xs rounded-md px-2 py-1 flex-shrink-0">
-                                {stage}
-                              </Badge>
+                            {question.typically_relevant_for.slice(0, 2).map((profile, idx) => (
+                              <CustomerProfilePill key={idx} profile={profile} />
                             ))}
                             {question.typically_relevant_for.length > 2 && (
                               <Badge variant="secondary" className="font-normal text-xs rounded-md px-2 py-1 flex-shrink-0">
@@ -483,6 +506,16 @@ export const DiscoveryQuestionsPage: React.FC<DiscoveryQuestionsPageProps> = ({ 
           </div>
         </div>
       </div>
+
+      {/* Discovery Question Detail Side Panel */}
+      {selectedQuestionId && (
+        <DiscoveryQuestionDetailSidePanel
+          questionId={selectedQuestionId}
+          question={questions.find((q) => q.id === selectedQuestionId)!}
+          onClose={() => setSelectedQuestionId(null)}
+          onExpand={() => navigate(`/discovery-questions/${selectedQuestionId}`)}
+        />
+      )}
     </div>
   );
 };
