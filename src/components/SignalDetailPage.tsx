@@ -39,14 +39,11 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
-const TopBar: React.FC<{ signal: Signal; contextTitle?: string; contextPath?: string }> = ({ signal, contextTitle, contextPath }) => {
+const TopBar: React.FC<{ signal: Signal; contextTitle?: string; contextPath?: string }> = ({ signal, contextTitle }) => {
   const navigate = useNavigate();
 
-  // Determine the context (Objection vs FAQ vs Discovery Question)
-  const isObjection = signal.objection;
-  const contextName = isObjection ? 'Objections' : contextTitle || 'FAQs';
-  const contextNavPath = contextPath || '/objections';
-  const contextDisplayName = isObjection ? signal.objection : contextTitle;
+  // Determine the context display name (Objection vs FAQ vs Discovery Question)
+  const contextDisplayName = signal.objection ? signal.objection : contextTitle;
 
   return (
     <div className="flex items-center justify-between w-full">
