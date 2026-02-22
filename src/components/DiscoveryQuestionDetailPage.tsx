@@ -147,7 +147,7 @@ const PinnedSignalsSection: React.FC<{ question: DiscoveryQuestion; onSignalClic
         </p>
       </div>
       <div className="space-y-4">
-        {relatedSignals.slice(0, 5).map((signal) => (
+        {relatedSignals.slice(0, 5).map((signal: Signal) => (
           <SignalCard
             key={signal.id}
             signal={signal}
