@@ -11,6 +11,7 @@ import {
   Building2,
   Calendar,
   ChevronsRight,
+  ExternalLink,
   Maximize2,
   MoreHorizontal,
   Upload,
@@ -34,6 +35,12 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import {
   Select,
@@ -356,13 +363,22 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
   return (
     <div className="space-y-0">
       {/* Deal stage */}
-      <div className="flex items-center py-1.5">
-        <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
+      <div className="flex items-center justify-between py-1.5">
+        <span className="text-sm text-muted-foreground flex items-center gap-2">
           <Layers className="h-4 w-4" />
           Deal stage
-          <img src="/hubspot.png" alt="HubSpot" className="h-3 w-3" title="Synced from HubSpot" />
         </span>
-        <StagePill stage={data.stage_name} />
+        <div className="flex items-center gap-2">
+          <StagePill stage={data.stage_name} />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <ExternalLink className="h-4 w-4 text-muted-foreground cursor-help hover:text-foreground transition-colors" />
+              </TooltipTrigger>
+              <TooltipContent>Synced from HubSpot</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       </div>
 
       {/* Momentum */}
