@@ -14,7 +14,7 @@ export const discoveryQuestionsData: DiscoveryQuestion[] = [
     question: 'How did you hear about us?',
     why_asking: 'Understand lead source and attribution to assess deal quality, identify referral patterns, and understand internal buying triggers and urgency drivers',
     typically_relevant_for: ['Enterprise Multi-Channel Advanced Operations', 'Health Tech Growth-Stage Partnership-Ready', 'Mid-Market E-Commerce Growth Brands', 'Mid-Market Multi-Channel Operators', 'SMB DTC Health/Wellness Fast-Movers'],
-    related_signal_ids: ['signal-dq-001', 'signal-dq-002'],
+    related_signal_ids: ['signal-dq-001'],
   },
   {
     id: 'dq-002',
@@ -22,7 +22,7 @@ export const discoveryQuestionsData: DiscoveryQuestion[] = [
     question: 'What checkout or e-commerce platform do you use?',
     why_asking: 'Understanding the prospect\'s technical infrastructure determines integration feasibility, effort, and approach. Payment/checkout platforms dictate whether we can use native integrations (Shopify, WooCommerce), require API work (custom checkouts), or face compatibility blockers. This directly impacts sales cycle length, implementation complexity, and whether the deal is technically viable.',
     typically_relevant_for: ['Enterprise Multi-Channel Advanced Operations', 'Health Tech Growth-Stage Partnership-Ready', 'Mid-Market E-Commerce Growth Brands', 'Mid-Market Multi-Channel Operators', 'SMB DTC Health/Wellness Fast-Movers'],
-    related_signal_ids: ['signal-dq-001', 'signal-dq-003'],
+    related_signal_ids: ['signal-dq-002'],
   },
   {
     id: 'dq-003',
@@ -30,6 +30,7 @@ export const discoveryQuestionsData: DiscoveryQuestion[] = [
     question: 'What\'s your average order value?',
     why_asking: 'Understand transaction size to calculate fee impact, position split cart functionality for high-value orders, and assess revenue potential per transaction',
     typically_relevant_for: ['SMB DTC Health/Wellness Fast-Movers', 'Mid-Market Multi-Channel Operators', 'Mid-Market E-Commerce Growth Brands', 'Health Tech Growth-Stage Partnership-Ready', 'Enterprise Multi-Channel Advanced Operations'],
+    related_signal_ids: ['signal-dq-003'],
   },
   {
     id: 'dq-004',
