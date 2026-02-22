@@ -70,7 +70,7 @@ const TopBar: React.FC<{ signal: Signal; contextTitle?: string; contextPath?: st
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="line-clamp-1 max-w-xs">{signal.meeting_title}</BreadcrumbPage>
+              <BreadcrumbPage>Signal</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
