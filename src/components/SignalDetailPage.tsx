@@ -24,6 +24,9 @@ interface SignalDetailPageProps {
   signal: Signal;
   hideTopBar?: boolean;
   hideResponseApproach?: boolean;
+  contextTitle?: string;
+  contextCategory?: string;
+  contextPath?: string;
 }
 
 // Helper function to get initials from name
@@ -36,8 +39,15 @@ function getInitials(name: string): string {
     .slice(0, 2);
 }
 
-const TopBar: React.FC<{ signal: Signal }> = ({ signal }) => {
+const TopBar: React.FC<{ signal: Signal; contextTitle?: string; contextPath?: string }> = ({ signal, contextTitle, contextPath }) => {
   const navigate = useNavigate();
+
+  // Determine the context (Objection vs FAQ vs Discovery Question)
+  const isObjection = signal.objection;
+  const contextName = isObjection ? 'Objections' : contextTitle || 'FAQs';
+  const contextNavPath = contextPath || '/objections';
+  const contextDisplayName = isObjection ? signal.objection : contextTitle;
+
   return (
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center gap-2">
@@ -48,15 +58,15 @@ const TopBar: React.FC<{ signal: Signal }> = ({ signal }) => {
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  navigate('/objections');
+                  navigate(contextNavPath);
                 }}
               >
-                Objections
+                {contextName}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{signal.objection}</BreadcrumbPage>
+              <BreadcrumbPage className="line-clamp-1">{contextDisplayName}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -86,23 +96,23 @@ const TopBar: React.FC<{ signal: Signal }> = ({ signal }) => {
   );
 };
 
-const SignalHeader: React.FC<{ signal: Signal; onTranscriptClick: () => void }> = ({ signal, onTranscriptClick }) => {
+const SignalHeader: React.FC<{ signal: Signal; onTranscriptClick: () => void; contextTitle?: string; contextLabel?: string; contextCategory?: string }> = ({ signal, onTranscriptClick, contextTitle, contextLabel, contextCategory }) => {
   return (
     <div className="mb-8">
-      {signal.category && (
+      {(signal.category || contextCategory) && (
         <div className="mb-3">
-          <CategoryPill category={signal.category} />
+          <CategoryPill category={(signal.category || contextCategory) as any} />
         </div>
       )}
-      {signal.objection && (
-        <>
-          <h1 className="text-2xl font-bold text-foreground">{signal.objection}</h1>
-          <p className="text-sm font-semibold text-foreground mt-4 mb-1">Objection Signal</p>
-        </>
-      )}
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">{signal.objection || contextTitle}</h1>
+        {contextLabel && (
+          <p className="text-sm font-semibold text-foreground mt-4 mb-1">{contextLabel}</p>
+        )}
+      </div>
       <button
         onClick={onTranscriptClick}
-        className="inline-flex items-center gap-1.5 text-xs text-foreground/60 hover:text-foreground/80 border-b border-dotted border-foreground/60 hover:border-foreground/80 transition-colors bg-transparent border-0 p-0 cursor-pointer"
+        className="inline-flex items-center gap-1.5 text-xs text-foreground/60 hover:text-foreground/80 border-b border-dotted border-foreground/60 hover:border-foreground/80 transition-colors bg-transparent border-0 p-0 cursor-pointer mt-4"
       >
         from {signal.meeting_title} • {formatDate(signal.meeting_date)}
         <ChevronRight className="h-3.5 w-3.5" />
@@ -221,6 +231,9 @@ export const SignalDetailPage: React.FC<SignalDetailPageProps> = ({
   signal,
   hideTopBar = false,
   hideResponseApproach = false,
+  contextTitle,
+  contextCategory,
+  contextPath,
 }) => {
   const navigate = useNavigate();
   const [isTranscriptOpen, setIsTranscriptOpen] = React.useState(false);
@@ -251,13 +264,16 @@ export const SignalDetailPage: React.FC<SignalDetailPageProps> = ({
     }
   }, []);
 
+  // Determine context label based on signal type
+  const contextLabel = signal.objection ? 'Objection Signal' : contextTitle ? `${contextTitle.split(' ')[0]} Signal` : 'Signal';
+
   if (hideTopBar) {
     return (
       <>
         <div className="flex flex-col h-full overflow-hidden">
           <div className="flex-1 overflow-y-auto">
             <div className="px-6 py-4 w-full pb-24">
-              <SignalHeader signal={signal} onTranscriptClick={handleTranscriptClick} />
+              <SignalHeader signal={signal} onTranscriptClick={handleTranscriptClick} contextTitle={contextTitle} contextLabel={contextLabel} contextCategory={contextCategory} />
               <MetadataRows signal={signal} onTranscriptClick={handleTranscriptClick} onViewTranscript={handleViewTranscript} hideResponseApproach={hideResponseApproach} />
             </div>
           </div>
@@ -283,14 +299,14 @@ export const SignalDetailPage: React.FC<SignalDetailPageProps> = ({
             <PanelLeft className="h-4 w-4" />
           </SidebarTrigger>
           <div className="flex-1 flex items-center">
-            <TopBar signal={signal} />
+            <TopBar signal={signal} contextTitle={contextTitle} contextPath={contextPath} />
           </div>
         </div>
 
         {/* Main content */}
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
-            <SignalHeader signal={signal} onTranscriptClick={handleTranscriptClick} />
+            <SignalHeader signal={signal} onTranscriptClick={handleTranscriptClick} contextTitle={contextTitle} contextLabel={contextLabel} contextCategory={contextCategory} />
             <MetadataRows signal={signal} onTranscriptClick={handleTranscriptClick} onViewTranscript={handleViewTranscript} hideResponseApproach={hideResponseApproach} />
           </div>
         </div>

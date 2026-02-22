@@ -30,6 +30,9 @@ interface SignalDetailSidePanelProps {
   signal: Signal;
   onClose: () => void;
   hideResponseApproach?: boolean;
+  contextTitle?: string;
+  contextCategory?: string;
+  contextPath?: string;
 }
 
 export const SignalDetailSidePanel: React.FC<SignalDetailSidePanelProps> = ({
@@ -37,6 +40,9 @@ export const SignalDetailSidePanel: React.FC<SignalDetailSidePanelProps> = ({
   signal,
   onClose,
   hideResponseApproach = false,
+  contextTitle,
+  contextCategory,
+  contextPath,
 }) => {
   const navigate = useNavigate();
 
@@ -120,7 +126,7 @@ export const SignalDetailSidePanel: React.FC<SignalDetailSidePanelProps> = ({
 
         {/* Content - scrollable */}
         <div className="flex-1 overflow-y-auto">
-          <SignalDetailPage signal={signal} hideTopBar={true} hideResponseApproach={hideResponseApproach} />
+          <SignalDetailPage signal={signal} hideTopBar={true} hideResponseApproach={hideResponseApproach} contextTitle={contextTitle} contextCategory={contextCategory} contextPath={contextPath} />
         </div>
       </div>
     </>

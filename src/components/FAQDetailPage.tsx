@@ -231,6 +231,9 @@ export const FAQDetailPage: React.FC<FAQDetailPageProps> = ({
             signal={selectedSignal}
             onClose={() => setSelectedSignalId(null)}
             hideResponseApproach={true}
+            contextTitle={faq.question}
+            contextCategory={faq.category}
+            contextPath={`/faqs`}
           />
         )}
       </>
@@ -268,6 +271,9 @@ export const FAQDetailPage: React.FC<FAQDetailPageProps> = ({
           signal={selectedSignal}
           onClose={() => setSelectedSignalId(null)}
           hideResponseApproach={true}
+          contextTitle={faq.question}
+          contextCategory={faq.category}
+          contextPath={`/faqs`}
         />
       )}
     </>
