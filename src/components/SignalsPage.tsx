@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Signal, signalsData } from '@/signals-demo-data';
+import { faqs } from '@/faqs-demo-data';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
   Breadcrumb,
@@ -115,8 +116,23 @@ export const SignalsPage: React.FC<SignalsPageProps> = ({ signals = signalsData 
 
   // If a signal is selected, show the detail page
   if (selectedSignal) {
+    // Check if this is an FAQ signal (has no objection field)
+    let contextTitle: string | undefined;
+    let contextCategory: string | undefined;
+    let contextPath: string | undefined;
+
+    if (!selectedSignal.objection) {
+      // Find which FAQ this signal belongs to
+      const relatedFaq = faqs.find((faq) => faq.related_signal_ids?.includes(selectedSignal.id));
+      if (relatedFaq) {
+        contextTitle = relatedFaq.question;
+        contextCategory = relatedFaq.category;
+        contextPath = '/faqs';
+      }
+    }
+
     return (
-      <SignalDetailPage signal={selectedSignal} />
+      <SignalDetailPage signal={selectedSignal} contextTitle={contextTitle} contextCategory={contextCategory} contextPath={contextPath} />
     );
   }
 
