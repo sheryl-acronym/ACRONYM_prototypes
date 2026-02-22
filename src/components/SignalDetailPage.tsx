@@ -265,7 +265,7 @@ export const SignalDetailPage: React.FC<SignalDetailPageProps> = ({
   }, []);
 
   // Determine context label based on signal type
-  const contextLabel = signal.objection ? 'Objection Signal' : contextTitle ? `${contextTitle.split(' ')[0]} Signal` : 'Signal';
+  const contextLabel = signal.objection ? 'Objection Signal' : contextTitle ? 'FAQ Signal' : 'Signal';
 
   if (hideTopBar) {
     return (
