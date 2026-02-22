@@ -58,10 +58,10 @@ const TopBar: React.FC<{ signal: Signal; contextTitle?: string; contextPath?: st
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  navigate(contextNavPath);
+                  navigate('/');
                 }}
               >
-                {contextName}
+                Playbook
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
