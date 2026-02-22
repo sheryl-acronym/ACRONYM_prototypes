@@ -360,6 +360,7 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
           <Layers className="h-4 w-4" />
           Deal stage
+          <img src="/hubspot.png" alt="HubSpot" className="h-3 w-3" title="Synced from HubSpot" />
         </span>
         <StagePill stage={data.stage_name} />
       </div>
