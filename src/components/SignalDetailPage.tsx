@@ -66,23 +66,11 @@ const TopBar: React.FC<{ signal: Signal; contextTitle?: string; contextPath?: st
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage className="line-clamp-1">{contextDisplayName}</BreadcrumbPage>
+              <BreadcrumbPage className="line-clamp-1 max-w-xs">{contextDisplayName}</BreadcrumbPage>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate('/signals');
-                }}
-              >
-                Signals
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>{signal.meeting_title}</BreadcrumbPage>
+              <BreadcrumbPage className="line-clamp-1 max-w-xs">{signal.meeting_title}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
