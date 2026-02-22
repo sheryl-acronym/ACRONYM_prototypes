@@ -237,6 +237,9 @@ export const DiscoveryQuestionDetailPage: React.FC<DiscoveryQuestionDetailPagePr
             signal={selectedSignal}
             onClose={() => setSelectedSignalId(null)}
             hideResponseApproach={true}
+            contextTitle={question.question}
+            contextCategory={question.category}
+            contextPath={`/discovery-questions`}
           />
         )}
       </>
@@ -283,6 +286,9 @@ export const DiscoveryQuestionDetailPage: React.FC<DiscoveryQuestionDetailPagePr
           signal={selectedSignal}
           onClose={() => setSelectedSignalId(null)}
           hideResponseApproach={true}
+          contextTitle={question.question}
+          contextCategory={question.category}
+          contextPath={`/discovery-questions`}
         />
       )}
     </>
