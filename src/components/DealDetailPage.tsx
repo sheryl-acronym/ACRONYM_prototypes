@@ -333,8 +333,22 @@ const DealHeader: React.FC<{
   dealName: string;
   dealIconColor: string;
 }> = ({ dealName }) => (
-  <div className="mb-6">
+  <div className="mb-6 flex items-center justify-between">
     <h1 className="text-2xl font-bold text-foreground">{dealName}</h1>
+    <Button
+      variant="outline"
+      size="sm"
+      className="h-8 gap-2"
+      onClick={() => {
+        // This would open the deal in HubSpot using the deal ID
+        // For now, we'll just create a placeholder URL
+        window.open('https://app.hubspot.com', '_blank');
+      }}
+      title="View in HubSpot"
+    >
+      <img src="/hubspot.png" alt="HubSpot" className="h-4 w-4" />
+      <span className="text-xs">View in HubSpot</span>
+    </Button>
   </div>
 );
 
