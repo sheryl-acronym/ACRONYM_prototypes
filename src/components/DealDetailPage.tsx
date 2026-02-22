@@ -364,7 +364,7 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
     <div className="space-y-0">
       {/* Deal stage */}
       <div className="flex items-center justify-between py-1.5">
-        <span className="text-sm text-muted-foreground flex items-center gap-2">
+        <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
           <Layers className="h-4 w-4" />
           Deal stage
         </span>
