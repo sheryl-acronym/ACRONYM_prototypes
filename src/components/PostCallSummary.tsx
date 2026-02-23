@@ -8,7 +8,7 @@ import {
   Building,
   Box,
   MoreHorizontal,
-  Upload,
+  Link as LinkIcon,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -161,7 +161,7 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
               <Button variant="ghost" size="icon" className="h-8 w-8">
-                <Upload className="h-4 w-4" />
+                <LinkIcon className="h-4 w-4" />
               </Button>
             </div>
           </div>
