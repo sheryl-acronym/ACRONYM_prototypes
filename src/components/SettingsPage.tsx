@@ -1,3 +1,4 @@
+import React from 'react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import {
   Breadcrumb,
@@ -6,9 +7,23 @@ import {
   BreadcrumbPage,
 } from '@/components/ui/breadcrumb';
 import ConnectorsSection from '@/components/ConnectorsSection';
+import SlackConfigurationPage from '@/components/SlackConfigurationPage';
 import { PanelLeft, Plug } from 'lucide-react';
 
 export default function SettingsPage() {
+  const [currentView, setCurrentView] = React.useState<'connections' | 'slack-config'>('connections');
+
+  const handleConfigureSlack = () => {
+    setCurrentView('slack-config');
+  };
+
+  const handleBackFromConfig = () => {
+    setCurrentView('connections');
+  };
+
+  if (currentView === 'slack-config') {
+    return <SlackConfigurationPage onBack={handleBackFromConfig} />;
+  }
 
   return (
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
@@ -49,7 +64,7 @@ export default function SettingsPage() {
               </div>
 
               {/* Content - Only show Connections */}
-              <ConnectorsSection />
+              <ConnectorsSection onConfigureSlack={handleConfigureSlack} />
             </div>
           </main>
             </div>

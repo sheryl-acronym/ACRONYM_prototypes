@@ -7,7 +7,11 @@ import { connectorsMockData } from '@/connectors-mock-data';
 
 type Connector = typeof connectorsMockData[0];
 
-export default function ConnectorsSection() {
+interface ConnectorsSectionProps {
+  onConfigureSlack?: () => void;
+}
+
+export default function ConnectorsSection({ onConfigureSlack }: ConnectorsSectionProps) {
   const [connectors, setConnectors] = React.useState<Connector[]>(connectorsMockData);
 
   const handleConnect = (id: string) => {
@@ -25,6 +29,7 @@ export default function ConnectorsSection() {
             key={connector.id}
             connector={connector}
             onConnect={handleConnect}
+            onConfigure={connector.id === 'slack' ? onConfigureSlack : undefined}
           />
         ))}
       </div>
@@ -35,9 +40,10 @@ export default function ConnectorsSection() {
 interface ConnectorCardProps {
   connector: Connector;
   onConnect: (id: string) => void;
+  onConfigure?: () => void;
 }
 
-function ConnectorCard({ connector, onConnect }: ConnectorCardProps) {
+function ConnectorCard({ connector, onConnect, onConfigure }: ConnectorCardProps) {
   const isConnected = connector.status === 'connected';
   const isConfigurable = connector.status === 'configured';
 
@@ -80,7 +86,10 @@ function ConnectorCard({ connector, onConnect }: ConnectorCardProps) {
             </PopoverTrigger>
             <PopoverContent className="w-40 p-2" align="end">
               <div className="space-y-1">
-                <button className="w-full text-left px-3 py-2 text-sm hover:bg-slate-100 rounded transition-colors">
+                <button
+                  onClick={onConfigure}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-slate-100 rounded transition-colors"
+                >
                   Configure
                 </button>
                 <button className="w-full text-left px-3 py-2 text-sm hover:bg-slate-100 rounded transition-colors text-red-600 hover:bg-red-50">
@@ -133,6 +142,7 @@ function ConnectorCard({ connector, onConnect }: ConnectorCardProps) {
           <Button
             size="sm"
             variant="outline"
+            onClick={onConfigure}
             className="h-8 text-xs"
           >
             Configure

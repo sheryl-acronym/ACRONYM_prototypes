@@ -352,3 +352,25 @@ export interface PostCallSummaryData {
     }>;
   };
 }
+
+export type NotificationDestination = 'dm' | 'channel';
+
+export interface NotificationConfig {
+  enabled: boolean;
+  destination: NotificationDestination;
+  slack_channel_id?: string;
+  slack_channel_name?: string;
+}
+
+export interface TimedNotificationConfig extends NotificationConfig {
+  timing: string; // e.g., "15m", "1h", "1d", "9am"
+  timing_unit?: 'minutes' | 'hours' | 'days' | 'time_of_day';
+  timing_value?: number;
+}
+
+export interface SlackNotificationSettings {
+  pre_call_brief: TimedNotificationConfig;
+  post_call_summary: NotificationConfig;
+  daily_digest: TimedNotificationConfig;
+  weekly_digest: TimedNotificationConfig;
+}
