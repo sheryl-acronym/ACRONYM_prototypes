@@ -8,6 +8,7 @@ interface TranscriptEntry {
   speaker: string;
   text: string;
   timestamp: string;
+  role?: 'buyer' | 'seller';
 }
 
 interface TranscriptPanelProps {
@@ -16,6 +17,17 @@ interface TranscriptPanelProps {
   };
   onClose: () => void;
   isInset?: boolean;
+}
+
+function getBubbleColor(role?: 'buyer' | 'seller'): string {
+  switch (role) {
+    case 'buyer':
+      return 'bg-blue-50 border-blue-200';
+    case 'seller':
+      return 'bg-green-50 border-green-200';
+    default:
+      return 'bg-slate-50 border-slate-200';
+  }
 }
 
 export const TranscriptPanel: React.FC<TranscriptPanelProps> = ({ transcript, onClose, isInset = false }) => {
@@ -114,7 +126,7 @@ export const TranscriptPanel: React.FC<TranscriptPanelProps> = ({ transcript, on
                   [{entry.timestamp}]
                 </p>
               </div>
-              <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+              <div className={`border rounded-lg p-3 ${getBubbleColor(entry.role)}`}>
                 <p className="text-sm text-foreground leading-relaxed">
                   {entry.text}
                 </p>

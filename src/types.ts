@@ -348,6 +348,7 @@ export interface PostCallSummaryData {
       speaker: string;
       text: string;
       timestamp: string;
+      role?: 'buyer' | 'seller';
     }>;
   };
 }
