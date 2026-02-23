@@ -142,6 +142,60 @@ Next steps include scheduling a follow-up technical review with the product team
       evidence: 'Market window for differentiation is narrowing',
     },
   ],
+  transcript: {
+    entries: [
+      {
+        speaker: 'David Barratt',
+        text: 'Thanks for joining the call today. I wanted to dive deep into the integration architecture and make sure we have all the technical details aligned.',
+        timestamp: '00:00',
+      },
+      {
+        speaker: 'Eugene Kim',
+        text: 'Absolutely. We\'ve been using the integration for a few months now and overall it\'s been solid. But we did identify some areas where we\'d like to see improvements.',
+        timestamp: '00:18',
+      },
+      {
+        speaker: 'David Barratt',
+        text: 'Great. Can you walk me through the current setup and the main pain points you\'ve encountered?',
+        timestamp: '00:35',
+      },
+      {
+        speaker: 'Benny Cole',
+        text: 'Sure. The background product syncing works well for our SMB customers. But as we expand to mid-market, we\'re hitting some limitations with API rate limits.',
+        timestamp: '00:52',
+      },
+      {
+        speaker: 'David Barratt',
+        text: 'That makes sense. Do you have specific numbers on the rate limiting issues?',
+        timestamp: '01:15',
+      },
+      {
+        speaker: 'Eugene Kim',
+        text: 'We\'re seeing impacts when customers try to sync more than 10,000 requests per minute. For mid-market customers, that\'s becoming a real blocker.',
+        timestamp: '01:28',
+      },
+      {
+        speaker: 'David Barratt',
+        text: 'I understand. We\'ve already identified this as a priority for Q2. Let me walk through our proposed roadmap.',
+        timestamp: '02:10',
+      },
+      {
+        speaker: 'Benny Cole',
+        text: 'That would be really helpful. I\'ll need to take this back to our finance and technical teams for approval.',
+        timestamp: '02:35',
+      },
+      {
+        speaker: 'David Barratt',
+        text: 'Of course. We can provide detailed technical specifications and a phased implementation timeline to help with your internal review.',
+        timestamp: '02:48',
+      },
+      {
+        speaker: 'Eugene Kim',
+        text: 'Perfect. I\'m confident in this partnership and excited to move forward together.',
+        timestamp: '03:20',
+      },
+    ],
+  },
   meddic: {
     components: [
       {

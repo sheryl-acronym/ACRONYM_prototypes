@@ -4,10 +4,11 @@ import {
   Zap,
   Calendar,
   Users,
-  Link as LinkIcon,
   FileText,
   Building,
   Box,
+  MoreHorizontal,
+  Upload,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -18,12 +19,14 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ContactPill } from '@/components/ContactPill';
 import { CompanyPill } from '@/components/CompanyPill';
 import { DealPill } from '@/components/DealPill';
 import { ActionItem } from '@/components/ActionItem';
+import { TranscriptPanel } from '@/components/TranscriptPanel';
 
 interface PostCallSummaryProps {
   data: PostCallSummaryData;
@@ -129,13 +132,14 @@ const MeddicsSection: React.FC<{
 
 export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopBar = false }) => {
   const colors = momentumConfig[data.momentum.status];
+  const [showTranscript, setShowTranscript] = React.useState(false);
 
   return (
     <div className="flex flex-1 min-h-screen relative flex-col bg-white">
       {/* Full-width header - sticky */}
       {!hideTopBar && (
         <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-slate-200">
-          <div className="flex-1 flex items-center">
+          <div className="flex-1 flex items-center justify-between">
             <Breadcrumb>
               <BreadcrumbList>
                 {data.breadcrumb.map((item, i) => (
@@ -152,13 +156,22 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
                 ))}
               </BreadcrumbList>
             </Breadcrumb>
+            <div className="flex items-center gap-1">
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <Upload className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Main content area */}
+      {/* Main content area with flex layout */}
       <div className="flex flex-1 overflow-hidden">
-        <div className="flex-1 bg-white overflow-y-auto">
+        <div className={`flex-1 min-w-0 bg-white flex flex-col overflow-hidden transition-all`}>
+        <div className="flex-1 overflow-y-auto">
           <div className="max-w-[760px] mx-auto px-8 py-4 pb-24 w-full">
             {/* Title and Momentum Header */}
             <div className="mb-6">
@@ -214,9 +227,12 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
                   <p className="text-sm font-medium text-muted-foreground">Transcript</p>
                 </div>
                 <div className="text-left">
-                  <button className="inline-flex items-center gap-2 h-6 px-3 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50 transition-colors">
-                    <LinkIcon className="h-4 w-4 text-foreground" />
-                    <span className="text-sm font-medium text-foreground">Copy link</span>
+                  <button
+                    onClick={() => setShowTranscript(true)}
+                    disabled={!data.transcript}
+                    className="inline-flex items-center gap-2 h-6 px-3 py-1 rounded border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <span className="text-sm font-medium text-foreground">View transcript</span>
                   </button>
                 </div>
               </div>
@@ -425,6 +441,18 @@ export const PostCallSummary: React.FC<PostCallSummaryProps> = ({ data, hideTopB
             </Tabs>
           </div>
         </div>
+        </div>
+
+        {/* Inset Transcript Panel */}
+        {showTranscript && data.transcript && (
+          <div className="w-[420px] bg-white border-l border-slate-200 flex flex-col overflow-hidden">
+            <TranscriptPanel
+              transcript={data.transcript}
+              onClose={() => setShowTranscript(false)}
+              isInset={true}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

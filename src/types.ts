@@ -343,4 +343,11 @@ export interface PostCallSummaryData {
       details?: string[];
     }[];
   };
+  transcript?: {
+    entries: Array<{
+      speaker: string;
+      text: string;
+      timestamp: string;
+    }>;
+  };
 }
