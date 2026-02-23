@@ -119,9 +119,11 @@ function DealsPageRoute() {
 }
 
 function DealDetailRoute() {
-  const { dealId } = useParams<{ dealId: string }>();
+  const { dealId, variant: urlVariant } = useParams<{ dealId: string; variant?: string }>();
   const navigate = useNavigate();
-  const [version, setVersion] = React.useState<'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot'>('v1');
+  const [version, setVersion] = React.useState<'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot'>(
+    (urlVariant as 'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot') || 'v1'
+  );
 
   // Redirect if dealId is a view name (board/table)
   React.useEffect(() => {
@@ -147,7 +149,11 @@ function DealDetailRoute() {
 
   const handleVersionChange = React.useCallback((newVersion: 'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot') => {
     setVersion(newVersion);
-  }, []);
+    // Update URL with the new variant
+    if (dealId) {
+      navigate(`/deals/${dealId}/${newVersion}`);
+    }
+  }, [dealId, navigate]);
 
   // If no specific detail data, build a fallback from the deals list
   if (!deal && dealId) {
@@ -337,7 +343,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/deals" replace />} />
             <Route path="/deals" element={<DealsPageRoute />} />
+            <Route path="/deals/:view/:dealId/:variant" element={<DealDetailRoute />} />
             <Route path="/deals/:view/:dealId" element={<DealDetailRoute />} />
+            <Route path="/deals/:dealId/:variant" element={<DealDetailRoute />} />
             <Route path="/deals/:dealId" element={<DealDetailRoute />} />
             <Route path="/deals/:view" element={<DealsPageRoute />} />
             <Route path="/meetings" element={<UpcomingMeetingsPage meetings={upcomingMeetingsData} briefData={meetingBriefData} />} />
