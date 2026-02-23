@@ -11,7 +11,6 @@ import {
   Building2,
   Calendar,
   ChevronsRight,
-  ExternalLink,
   Maximize2,
   MoreHorizontal,
   Upload,
@@ -23,6 +22,7 @@ import {
   ThumbsDown,
   BookOpen,
   IterationCw,
+  RefreshCw,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -58,9 +58,10 @@ import { MeetingCard } from '@/components/MeetingCard';
 
 interface DealDetailPageProps {
   data: DealDetailData;
-  onVersionChange?: (version: 'v1' | 'v2' | '1st-call' | 'post-call-1') => void;
+  onVersionChange?: (version: 'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot') => void;
   hideTopBar?: boolean;
   collapseMeddic?: boolean;
+  variant?: 'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot';
 }
 
 function formatShortDate(dateStr: string | null): string | null {
@@ -286,7 +287,7 @@ const VerbatimCallout: React.FC<{ verbatim: Verbatim }> = ({ verbatim }) => {
   );
 };
 
-const TopBar: React.FC<{ dealName: string; onVersionChange?: (version: 'v1' | 'v2' | '1st-call' | 'post-call-1') => void }> = ({ dealName, onVersionChange }) => {
+const TopBar: React.FC<{ dealName: string; variant?: string; onVersionChange?: (version: 'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot') => void }> = ({ dealName, variant = 'v1', onVersionChange }) => {
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between w-full">
@@ -313,7 +314,7 @@ const TopBar: React.FC<{ dealName: string; onVersionChange?: (version: 'v1' | 'v
       </div>
       <div className="flex items-center gap-1">
         {onVersionChange && (
-          <Select defaultValue="v1" onValueChange={(v) => onVersionChange(v as 'v1' | 'v2' | '1st-call' | 'post-call-1')}>
+          <Select value={variant} onValueChange={(v) => onVersionChange(v as 'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot')}>
             <SelectTrigger className="w-auto h-8 text-xs px-2.5">
               <SelectValue />
             </SelectTrigger>
@@ -322,6 +323,7 @@ const TopBar: React.FC<{ dealName: string; onVersionChange?: (version: 'v1' | 'v
               <SelectItem value="v2">V2</SelectItem>
               <SelectItem value="1st-call">1st call scheduled</SelectItem>
               <SelectItem value="post-call-1">Post Call 1</SelectItem>
+              <SelectItem value="no-hubspot">No HubSpot Deal</SelectItem>
             </SelectContent>
           </Select>
         )}
@@ -339,46 +341,132 @@ const TopBar: React.FC<{ dealName: string; onVersionChange?: (version: 'v1' | 'v
 const DealHeader: React.FC<{
   dealName: string;
   dealIconColor: string;
-}> = ({ dealName }) => (
-  <div className="mb-6 flex items-center justify-between">
-    <h1 className="text-2xl font-bold text-foreground">{dealName}</h1>
-    <Button
-      variant="outline"
-      size="sm"
-      className="h-8 gap-2"
-      onClick={() => {
-        // This would open the deal in HubSpot using the deal ID
-        // For now, we'll just create a placeholder URL
-        window.open('https://app.hubspot.com', '_blank');
-      }}
-      title="View in HubSpot"
-    >
-      <img src="/hubspot.png" alt="HubSpot" className="h-4 w-4" />
-      <span className="text-xs">View in HubSpot</span>
-    </Button>
-  </div>
-);
+  variant?: string;
+}> = ({ dealName, variant = 'v1' }) => {
+  const [showLinkModal, setShowLinkModal] = React.useState(false);
+  const [hubspotDealId, setHubspotDealId] = React.useState('');
+
+  const handleLinkDeal = () => {
+    if (hubspotDealId.trim()) {
+      // Handle linking the deal
+      console.log('Linking to HubSpot deal:', hubspotDealId);
+      setShowLinkModal(false);
+      setHubspotDealId('');
+    }
+  };
+
+  return (
+    <div className="mb-6 flex items-center justify-between">
+      <h1 className="text-2xl font-bold text-foreground">{dealName}</h1>
+      {variant !== 'no-hubspot' ? (
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-8 gap-2"
+          onClick={() => {
+            // This would open the deal in HubSpot using the deal ID
+            // For now, we'll just create a placeholder URL
+            window.open('https://app.hubspot.com', '_blank');
+          }}
+          title="View in HubSpot"
+        >
+          <img src="/hubspot.png" alt="HubSpot" className="h-4 w-4" />
+          <span className="text-sm">View in HubSpot</span>
+        </Button>
+      ) : (
+        <>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                title="More options"
+              >
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-48 p-2" align="end">
+              <button
+                onClick={() => setShowLinkModal(true)}
+                className="w-full text-left px-3 py-2 text-sm rounded hover:bg-gray-100 transition-colors"
+              >
+                Link to HubSpot Deal
+              </button>
+            </PopoverContent>
+          </Popover>
+
+          {showLinkModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+              <div className="bg-white rounded-lg shadow-lg p-6 w-96">
+                <h2 className="text-lg font-semibold mb-4">Link to HubSpot Deal</h2>
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">
+                    HubSpot Deal ID
+                  </label>
+                  <input
+                    type="text"
+                    value={hubspotDealId}
+                    onChange={(e) => setHubspotDealId(e.target.value)}
+                    placeholder="Enter deal ID"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') {
+                        handleLinkDeal();
+                      }
+                    }}
+                  />
+                </div>
+                <div className="flex gap-2 justify-end">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowLinkModal(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={handleLinkDeal}
+                    disabled={!hubspotDealId.trim()}
+                  >
+                    Link Deal
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
 
 const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
+  const [stage, setStage] = React.useState(data.stage_name);
+
+  const stageOptions = ['First meeting scheduled', 'Discovery & Qualification', 'Demo', 'Proposal / Negotiation', 'Closed Won', 'Closed Lost'];
+
   return (
     <div className="space-y-0">
       {/* Deal stage */}
-      <div className="flex items-center justify-between py-1.5">
+      <div className="flex items-center py-1.5">
         <span className="w-36 text-sm text-muted-foreground flex-shrink-0 flex items-center gap-2">
           <Layers className="h-4 w-4" />
           Deal stage
         </span>
-        <div className="flex items-center gap-2">
-          <StagePill stage={data.stage_name} />
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <ExternalLink className="h-4 w-4 text-muted-foreground cursor-help hover:text-foreground transition-colors" />
-              </TooltipTrigger>
-              <TooltipContent>Synced from HubSpot</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+        <Select value={stage} onValueChange={setStage}>
+          <SelectTrigger className="w-auto h-6 text-sm px-2.5 border-0 bg-transparent hover:bg-gray-100 [&>svg]:hidden">
+            <StagePill stage={stage} />
+          </SelectTrigger>
+          <SelectContent>
+            {stageOptions.map((stageOption) => (
+              <SelectItem key={stageOption} value={stageOption}>
+                <StagePill stage={stageOption} />
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Momentum */}
@@ -1001,10 +1089,16 @@ const MeddicsSection: React.FC<{
   );
 };
 
-export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionChange, hideTopBar = false, collapseMeddic = false }) => {
+export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionChange, hideTopBar = false, collapseMeddic = false, variant: initialVariant = 'v1' }) => {
   const [transcriptOpen, setTranscriptOpen] = React.useState(false);
   const [highlightQuote, setHighlightQuote] = React.useState<string | null>(null);
+  const [variant, setVariant] = React.useState<'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot'>(initialVariant);
   const isNarrow = useIsNarrow(OVERLAY_BREAKPOINT);
+
+  const handleVersionChange = React.useCallback((newVersion: 'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot') => {
+    setVariant(newVersion);
+    onVersionChange?.(newVersion);
+  }, [onVersionChange]);
 
   const openTranscript = React.useCallback((quote: string) => {
     setHighlightQuote(quote);
@@ -1024,7 +1118,7 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
         {!hideTopBar && (
           <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-gray-200">
             <div className="flex-1 flex items-center">
-              <TopBar dealName={data.name} onVersionChange={onVersionChange} />
+              <TopBar dealName={data.name} variant={variant} onVersionChange={handleVersionChange} />
             </div>
           </div>
         )}
@@ -1032,7 +1126,7 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
         <div className="flex flex-1 overflow-hidden">
           <div className="flex-1 bg-white overflow-y-auto">
             <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
-            <DealHeader dealName={data.name} dealIconColor={data.icon_color} />
+            <DealHeader dealName={data.name} dealIconColor={data.icon_color} variant={variant} />
             <MetadataRows data={data} />
 
             <Separator className="my-4" />

@@ -121,7 +121,7 @@ function DealsPageRoute() {
 function DealDetailRoute() {
   const { dealId } = useParams<{ dealId: string }>();
   const navigate = useNavigate();
-  const [version, setVersion] = React.useState<'v1' | 'v2' | '1st-call' | 'post-call-1'>('v1');
+  const [version, setVersion] = React.useState<'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot'>('v1');
 
   // Redirect if dealId is a view name (board/table)
   React.useEffect(() => {
@@ -139,10 +139,13 @@ function DealDetailRoute() {
     if (version === 'post-call-1') {
       return dealDetailDemoData[`${dealId}-v2-post-call`];
     }
+    if (version === 'no-hubspot') {
+      return dealDetailDemoData[dealId];
+    }
     return dealDetailDemoData[dealId];
   }, [dealId, version]);
 
-  const handleVersionChange = React.useCallback((newVersion: 'v1' | 'v2' | '1st-call' | 'post-call-1') => {
+  const handleVersionChange = React.useCallback((newVersion: 'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot') => {
     setVersion(newVersion);
   }, []);
 
@@ -179,11 +182,11 @@ function DealDetailRoute() {
         key_stakeholders: [],
       };
       return version === 'v1' ? (
-        <DealDetailPage data={fallbackData} onVersionChange={handleVersionChange} />
+        <DealDetailPage data={fallbackData} onVersionChange={handleVersionChange} variant={version} />
       ) : version === 'v2' ? (
         <DealDetailPageV2 data={fallbackData} onVersionChange={handleVersionChange} />
-      ) : version === '1st-call' || version === 'post-call-1' ? (
-        <DealDetailPage data={fallbackData} onVersionChange={handleVersionChange} />
+      ) : version === '1st-call' || version === 'post-call-1' || version === 'no-hubspot' ? (
+        <DealDetailPage data={fallbackData} onVersionChange={handleVersionChange} variant={version} />
       ) : null;
     }
   }
@@ -197,11 +200,11 @@ function DealDetailRoute() {
   }
 
   return version === 'v1' ? (
-    <DealDetailPage data={deal} onVersionChange={handleVersionChange} />
+    <DealDetailPage data={deal} onVersionChange={handleVersionChange} variant={version} />
   ) : version === 'v2' ? (
     <DealDetailPageV2 data={deal} onVersionChange={handleVersionChange} />
-  ) : version === '1st-call' || version === 'post-call-1' ? (
-    <DealDetailPage data={deal} onVersionChange={handleVersionChange} />
+  ) : version === '1st-call' || version === 'post-call-1' || version === 'no-hubspot' ? (
+    <DealDetailPage data={deal} onVersionChange={handleVersionChange} variant={version} />
   ) : null;
 }
 
