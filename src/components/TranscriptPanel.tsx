@@ -22,9 +22,9 @@ interface TranscriptPanelProps {
 function getBubbleColor(role?: 'buyer' | 'seller'): string {
   switch (role) {
     case 'buyer':
-      return 'bg-blue-50 border-blue-200';
+      return 'bg-white border-slate-200';
     case 'seller':
-      return 'bg-green-50 border-green-200';
+      return 'bg-slate-100 border-slate-200';
     default:
       return 'bg-slate-50 border-slate-200';
   }
