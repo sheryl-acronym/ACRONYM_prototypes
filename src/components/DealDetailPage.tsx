@@ -22,7 +22,6 @@ import {
   ThumbsDown,
   BookOpen,
   IterationCw,
-  RefreshCw,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -35,12 +34,6 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import {
   Select,
@@ -443,7 +436,7 @@ const DealHeader: React.FC<{
 };
 
 const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
-  const [stage, setStage] = React.useState(data.stage_name);
+  const [stage, setStage] = React.useState<string>(data.stage_name);
 
   const stageOptions = ['First meeting scheduled', 'Discovery & Qualification', 'Demo', 'Proposal / Negotiation', 'Closed Won', 'Closed Lost'];
 
@@ -455,7 +448,7 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
           <Layers className="h-4 w-4" />
           Deal stage
         </span>
-        <Select value={stage} onValueChange={setStage}>
+        <Select value={stage} onValueChange={(value) => setStage(value)}>
           <SelectTrigger className="w-auto h-6 text-sm px-2.5 border-0 bg-transparent hover:bg-gray-100 [&>svg]:hidden">
             <StagePill stage={stage} />
           </SelectTrigger>
