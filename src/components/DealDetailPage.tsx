@@ -22,6 +22,7 @@ import {
   ThumbsDown,
   BookOpen,
   IterationCw,
+  RotateCw,
 } from 'lucide-react';
 import {
   Breadcrumb,
@@ -35,6 +36,12 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import {
   Select,
   SelectContent,
@@ -435,7 +442,7 @@ const DealHeader: React.FC<{
   );
 };
 
-const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
+const MetadataRows: React.FC<{ data: DealDetailData; variant?: 'v1' | 'v2' | '1st-call' | 'post-call-1' | 'no-hubspot' }> = ({ data, variant = 'v1' }) => {
   const [stage, setStage] = React.useState<string>(data.stage_name);
 
   const stageOptions = ['First meeting scheduled', 'Discovery & Qualification', 'Demo', 'Proposal / Negotiation', 'Closed Won', 'Closed Lost'];
@@ -448,18 +455,36 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
           <Layers className="h-4 w-4" />
           Deal stage
         </span>
-        <Select value={stage} onValueChange={(value) => setStage(value)}>
-          <SelectTrigger className="w-auto h-6 text-sm px-2.5 border-0 bg-transparent hover:bg-gray-100 [&>svg]:hidden">
-            <StagePill stage={stage} />
-          </SelectTrigger>
-          <SelectContent>
-            {stageOptions.map((stageOption) => (
-              <SelectItem key={stageOption} value={stageOption}>
-                <StagePill stage={stageOption} />
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        {variant === 'no-hubspot' ? (
+          <Select value={stage} onValueChange={(value) => setStage(value)}>
+            <SelectTrigger className="w-auto h-6 text-sm px-2.5 border-0 bg-transparent hover:bg-gray-100 [&>svg]:hidden">
+              <StagePill stage={stage} />
+            </SelectTrigger>
+            <SelectContent>
+              {stageOptions.map((stageOption) => (
+                <SelectItem key={stageOption} value={stageOption}>
+                  <StagePill stage={stageOption} />
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ) : (
+          <div className="flex items-center gap-2">
+            <StagePill stage={data.stage_name} />
+            {variant === 'v1' && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <RotateCw className="h-4 w-4 text-muted-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-sm">
+                    Last synced: Jan 23, 2026 at 2:30 PM
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Momentum */}
@@ -509,7 +534,21 @@ const MetadataRows: React.FC<{ data: DealDetailData }> = ({ data }) => {
           <User className="h-4 w-4" />
           Owner
         </span>
-        <ContactPill name={data.owner_name} />
+        <div className="flex items-center gap-2">
+          <ContactPill name={data.owner_name} />
+          {variant === 'v1' && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <RotateCw className="h-4 w-4 text-muted-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="text-sm">
+                  Last synced: Jan 23, 2026 at 2:30 PM
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </div>
       </div>
 
       {/* Company */}
@@ -1105,22 +1144,23 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
   const contextValue = React.useMemo(() => ({ openTranscript }), [openTranscript]);
 
   return (
-    <TranscriptPanelContext.Provider value={contextValue}>
-      <div className="flex flex-1 min-h-screen relative flex-col">
-        {/* Full-width header - sticky */}
-        {!hideTopBar && (
-          <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-gray-200">
-            <div className="flex-1 flex items-center">
-              <TopBar dealName={data.name} variant={variant} onVersionChange={handleVersionChange} />
+    <TooltipProvider>
+      <TranscriptPanelContext.Provider value={contextValue}>
+        <div className="flex flex-1 min-h-screen relative flex-col">
+          {/* Full-width header - sticky */}
+          {!hideTopBar && (
+            <div className="sticky top-0 z-20 flex-shrink-0 h-[50px] flex items-center px-3 bg-white border-b border-gray-200">
+              <div className="flex-1 flex items-center">
+                <TopBar dealName={data.name} variant={variant} onVersionChange={handleVersionChange} />
+              </div>
             </div>
-          </div>
-        )}
-        {/* Main content area */}
-        <div className="flex flex-1 overflow-hidden">
-          <div className="flex-1 bg-white overflow-y-auto">
-            <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
-            <DealHeader dealName={data.name} dealIconColor={data.icon_color} variant={variant} />
-            <MetadataRows data={data} />
+          )}
+          {/* Main content area */}
+          <div className="flex flex-1 overflow-hidden">
+            <div className="flex-1 bg-white overflow-y-auto">
+              <div className="max-w-[720px] mx-auto px-8 pt-8 pb-24 w-full">
+              <DealHeader dealName={data.name} dealIconColor={data.icon_color} variant={variant} />
+              <MetadataRows data={data} variant={variant} />
 
             <Separator className="my-4" />
 
@@ -1263,6 +1303,7 @@ export const DealDetailPage: React.FC<DealDetailPageProps> = ({ data, onVersionC
 
       </div>
     </TranscriptPanelContext.Provider>
+    </TooltipProvider>
   );
 };
 

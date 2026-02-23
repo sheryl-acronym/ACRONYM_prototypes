@@ -343,8 +343,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/deals" replace />} />
             <Route path="/deals" element={<DealsPageRoute />} />
-            <Route path="/deals/:view/:dealId/:variant" element={<DealDetailRoute />} />
-            <Route path="/deals/:view/:dealId" element={<DealDetailRoute />} />
             <Route path="/deals/:dealId/:variant" element={<DealDetailRoute />} />
             <Route path="/deals/:dealId" element={<DealDetailRoute />} />
             <Route path="/deals/:view" element={<DealsPageRoute />} />
