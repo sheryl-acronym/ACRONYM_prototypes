@@ -21,7 +21,16 @@ import {
   CollapsibleContent,
 } from '@/components/ui/collapsible';
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
   Box,
+  Briefcase,
   Calendar,
   BookOpen,
   ChevronDown,
@@ -75,6 +84,19 @@ export default function AppSidebar() {
                   <Link to="/deals">
                     <Box className="h-4 w-4" />
                     <span>Deals</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === '/accounts'}
+                  tooltip="Customers"
+                  className="h-9"
+                >
+                  <Link to="/accounts">
+                    <Briefcase className="h-4 w-4" />
+                    <span>Customers</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -207,29 +229,6 @@ export default function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="my-2" />
-
-        {/* Components section */}
-        <SidebarGroup className="px-3 pt-2 pb-2">
-          <SidebarGroupLabel className="mb-1 px-2 text-xs text-muted-foreground/60 uppercase tracking-wider">Development</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu className="gap-0.5">
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={location.pathname === '/components'}
-                  tooltip="Components"
-                  className="h-9"
-                >
-                  <Link to="/components">
-                    <Palette className="h-4 w-4" />
-                    <span>Components</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter className="px-3 pb-4">
@@ -248,13 +247,28 @@ export default function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="sales@reformer1.ai" className="h-auto py-2.5">
-              <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gray-200 text-xs font-semibold flex-shrink-0">
-                CN
-              </span>
-              <span className="flex-1 truncate text-sm">sales@reformer1.ai</span>
-              <ChevronsUpDown className="ml-auto h-4 w-4 text-muted-foreground" />
-            </SidebarMenuButton>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton className="h-auto py-2.5">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gray-200 text-xs font-semibold flex-shrink-0">
+                    CN
+                  </span>
+                  <span className="flex-1 truncate text-sm">sales@reformer1.ai</span>
+                  <ChevronsUpDown className="ml-auto h-4 w-4 text-muted-foreground" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="top" align="start" className="w-52">
+                <DropdownMenuLabel className="text-xs text-muted-foreground font-normal">sales@reformer1.ai</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel className="text-xs text-muted-foreground/60 uppercase tracking-wider font-normal pb-0">Development</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                  <Link to="/components" className="flex items-center gap-2 cursor-pointer">
+                    <Palette className="h-4 w-4" />
+                    Components
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

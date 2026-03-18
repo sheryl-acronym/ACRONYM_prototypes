@@ -3,6 +3,7 @@ import { Company } from '@/components/CompaniesPage';
 export const companiesData: Company[] = [
   {
     id: 'comp-001',
+    account_health: 'Healthy',
     name: 'actandacre',
     domain: 'actandacre.com',
     icon_color: 'bg-slate-600',
@@ -99,6 +100,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-002',
+    account_health: 'Healthy',
     name: 'adaptive sound technologies, inc.',
     domain: 'asoundtech.com',
     icon_color: 'bg-purple-400',
@@ -174,6 +176,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-003',
+    account_health: 'Monitor',
     name: 'adco medical suppliers',
     domain: 'adcopros.com',
     icon_color: 'bg-blue-500',
@@ -269,6 +272,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-004',
+    account_health: 'At Risk',
     name: 'advocare',
     domain: 'advocare.com',
     icon_color: 'bg-blue-600',
@@ -355,6 +359,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-005',
+    account_health: 'Healthy',
     name: 'adyen',
     domain: 'adyen.com',
     icon_color: 'bg-green-500',
@@ -432,6 +437,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-006',
+    account_health: 'Monitor',
     name: 'aletha health',
     domain: 'alethahealth.com',
     icon_color: 'bg-gray-700',
@@ -498,6 +504,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-007',
+    account_health: 'At Risk',
     name: 'allermi',
     domain: 'allermi.com',
     icon_color: 'bg-gray-500',
@@ -554,6 +561,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-008',
+    account_health: 'Healthy',
     name: 'alma',
     domain: 'alma.food',
     icon_color: 'bg-green-400',
@@ -620,6 +628,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-009',
+    account_health: 'Monitor',
     name: 'alyze.health',
     domain: 'alyze.health',
     icon_color: 'bg-purple-300',
@@ -688,6 +697,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-010',
+    account_health: 'At Risk',
     name: 'andiemup',
     domain: 'andiemup.com',
     icon_color: 'bg-gray-800',
@@ -755,6 +765,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-011',
+    account_health: 'Monitor',
     name: 'anker',
     domain: 'anker.com',
     icon_color: 'bg-blue-400',
@@ -822,6 +833,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-012',
+    account_health: 'Healthy',
     name: 'anthropic',
     domain: 'anthropic.com',
     icon_color: 'bg-orange-500',
@@ -890,6 +902,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-013',
+    account_health: 'At Risk',
     name: 'appflowy',
     domain: 'appflowy.io',
     icon_color: 'bg-indigo-600',
@@ -956,6 +969,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-014',
+    account_health: 'Monitor',
     name: 'appsmith',
     domain: 'appsmith.com',
     icon_color: 'bg-green-600',
@@ -1023,6 +1037,7 @@ export const companiesData: Company[] = [
   },
   {
     id: 'comp-015',
+    account_health: 'Healthy',
     name: 'arc',
     domain: 'arc.dev',
     icon_color: 'bg-pink-500',

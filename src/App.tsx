@@ -7,6 +7,7 @@ import DealDetailPage from '@/components/DealDetailPage';
 import DealDetailPageV2 from '@/components/DealDetailPageV2';
 import PastMeetingsPage from '@/components/PastMeetingsPage';
 import UpcomingMeetingsPage from '@/components/UpcomingMeetingsPage';
+import AccountsPage from '@/components/AccountsPage';
 import CompaniesPage from '@/components/CompaniesPage';
 import CompanyDetailPage from '@/components/CompanyDetailPage';
 import ContactsPage from '@/components/ContactsPage';
@@ -33,6 +34,7 @@ import { upcomingMeetingsData } from '@/upcoming-meetings-data';
 import { upcomingMeetingsBriefData } from '@/upcoming-meetings-brief-data';
 import { pastMeetingsSummaryData } from '@/past-meetings-summary-data';
 import { companiesData } from '@/companies-demo-data';
+import { accountsData } from '@/accounts-demo-data';
 import { contactsData } from '@/contacts-demo-data';
 import { customerProfilesData } from '@/customer-profiles-demo-data';
 import { buyerPersonasData } from '@/buyer-personas-demo-data';
@@ -214,6 +216,31 @@ function DealDetailRoute() {
   ) : null;
 }
 
+function AccountsRoute() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedAccountId = searchParams.get('accountId') || undefined;
+
+  const handleAccountSelect = React.useCallback(
+    (accountId: string) => {
+      setSearchParams({ accountId });
+    },
+    [setSearchParams]
+  );
+
+  const handleCloseSidePanel = React.useCallback(() => {
+    setSearchParams({});
+  }, [setSearchParams]);
+
+  return (
+    <AccountsPage
+      accounts={accountsData}
+      selectedAccountId={selectedAccountId}
+      onAccountSelect={handleAccountSelect}
+      onCloseSidePanel={handleCloseSidePanel}
+    />
+  );
+}
+
 function ContactsRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedContactId = searchParams.get('contactId') || undefined;
@@ -346,6 +373,7 @@ function App() {
             <Route path="/deals/:dealId/:variant" element={<DealDetailRoute />} />
             <Route path="/deals/:dealId" element={<DealDetailRoute />} />
             <Route path="/deals/:view" element={<DealsPageRoute />} />
+            <Route path="/accounts" element={<AccountsRoute />} />
             <Route path="/meetings" element={<UpcomingMeetingsPage meetings={upcomingMeetingsData} briefData={meetingBriefData} />} />
             <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} summaryData={meetingSummaryData} />} />
             <Route path="/meetings/past/:meetingId" element={<PostCallSummaryRoute />} />

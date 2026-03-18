@@ -78,6 +78,7 @@ export interface Company {
   company_type: string | null;
   location: string | null;
   tech_stack: string | null;
+  account_health?: 'Healthy' | 'Monitor' | 'At Risk';
   contacts?: ContactCardData[];
   upcoming_meetings?: Array<{
     date: string;
