@@ -428,14 +428,14 @@ function App() {
             <Route path="/settings/org/post-call-workflows" element={<SettingsRoot />} />
             <Route path="/settings/org/notifications" element={<SettingsRoot />} />
             <Route path="/settings/org/data-hygiene" element={<SettingsRoot />} />
-            <Route path="/settings/my" element={<Navigate to="/settings/my/integrations/slack" replace />} />
+            <Route path="/settings/my" element={<Navigate to="/settings/my/account" replace />} />
+            <Route path="/settings/my/account" element={<SettingsRoot />} />
             <Route path="/settings/my/integrations" element={<Navigate to="/settings/my/integrations/slack" replace />} />
             <Route path="/settings/my/integrations/slack" element={<SettingsRoot />} />
             <Route path="/settings/my/integrations/google-calendar" element={<SettingsRoot />} />
             <Route path="/settings/my/integrations/gmail" element={<SettingsRoot />} />
             <Route path="/settings/my/integrations/google-drive" element={<SettingsRoot />} />
             <Route path="/settings/my/integrations/acronym-recorder" element={<SettingsRoot />} />
-            <Route path="/settings/my/notifications" element={<SettingsRoot />} />
             <Route path="/components" element={<ComponentsPage />} />
           </Routes>
         </SidebarInset>

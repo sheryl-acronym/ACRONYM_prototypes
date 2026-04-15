@@ -24,6 +24,7 @@ export interface ignore_list_entry {
   id: string;
   pattern: string;
   match_type: 'exact' | 'domain' | 'contains';
+  skip_when?: 'all_meetings' | 'only_external_attendee' | 'organizer_only';
   note?: string;
 }
 
@@ -80,6 +81,7 @@ export interface google_calendar_settings {
 
 export interface my_notification_settings {
   pre_call_brief_enabled: boolean;
+  post_meeting_summary_enabled: boolean;
   daily_briefing_enabled: boolean;
   daily_wrap_up_enabled: boolean;
 }
@@ -233,12 +235,11 @@ export const initialGoogleCalendarSettings: google_calendar_settings = {
   connected_email: 'alex@flex.com',
   ignore_mode: 'blocklist',
   ignore_list: [
-    {
-      id: 'gcal-il-001',
-      pattern: '@flex.com',
-      match_type: 'domain',
-      note: 'Ignore all internal meetings',
-    },
+    { id: 'gcal-il-001', pattern: 'jasonscott@google.com', match_type: 'exact', skip_when: 'organizer_only' },
+    { id: 'gcal-il-002', pattern: '5two5.vc', match_type: 'domain', skip_when: 'all_meetings' },
+    { id: 'gcal-il-003', pattern: 'benbiran@gmail.com', match_type: 'exact', skip_when: 'all_meetings' },
+    { id: 'gcal-il-004', pattern: 'brandishuttera@gmail.com', match_type: 'exact', skip_when: 'all_meetings' },
+    { id: 'gcal-il-005', pattern: 'formable.ai', match_type: 'domain', skip_when: 'only_external_attendee' },
   ],
 };
 
@@ -252,6 +253,7 @@ export const initialMyIntegrations: Record<string, my_integration_connection> = 
 
 export const initialMyNotifications: my_notification_settings = {
   pre_call_brief_enabled: true,
+  post_meeting_summary_enabled: false,
   daily_briefing_enabled: false,
   daily_wrap_up_enabled: false,
 };

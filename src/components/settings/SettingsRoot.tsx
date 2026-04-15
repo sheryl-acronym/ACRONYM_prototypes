@@ -14,12 +14,12 @@ import OrgNotificationsPage from './org/OrgNotificationsPage';
 import OrgDataHygienePage from './org/OrgDataHygienePage';
 
 // My pages
+import MyAccountPage from './my/MyAccountPage';
 import MySlackPage from './my/MySlackPage';
 import MyGoogleCalendarPage from './my/MyGoogleCalendarPage';
 import MyGmailPage from './my/MyGmailPage';
 import MyGoogleDrivePage from './my/MyGoogleDrivePage';
 import MyAcronymRecorderPage from './my/MyAcronymRecorderPage';
-import MyNotificationsPage from './my/MyNotificationsPage';
 
 // Map pathname → content component
 const CONTENT_MAP: Record<string, React.ComponentType> = {
@@ -31,12 +31,12 @@ const CONTENT_MAP: Record<string, React.ComponentType> = {
   '/settings/org/post-call-workflows': OrgPostCallWorkflowsPage,
   '/settings/org/notifications': OrgNotificationsPage,
   '/settings/org/data-hygiene': OrgDataHygienePage,
+  '/settings/my/account': MyAccountPage,
   '/settings/my/integrations/slack': MySlackPage,
   '/settings/my/integrations/google-calendar': MyGoogleCalendarPage,
   '/settings/my/integrations/gmail': MyGmailPage,
   '/settings/my/integrations/google-drive': MyGoogleDrivePage,
   '/settings/my/integrations/acronym-recorder': MyAcronymRecorderPage,
-  '/settings/my/notifications': MyNotificationsPage,
 };
 
 export default function SettingsRoot() {
