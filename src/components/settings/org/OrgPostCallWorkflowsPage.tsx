@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Separator } from '@/components/ui/separator';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Lock, ArrowRight } from 'lucide-react';
 import {
@@ -51,12 +50,6 @@ export default function OrgPostCallWorkflowsPage() {
   );
   const [framework_crm_sync, setFrameworkCrmSync] = React.useState(true);
   const [crm_connected, setCrmConnected] = React.useState(true); // toggle for prototype
-
-  const toggleSummarySync = () =>
-    setSettings((prev) => ({
-      ...prev,
-      summary_sync: { ...prev.summary_sync, enabled: !prev.summary_sync.enabled },
-    }));
 
   const toggleSummaryCrmSync = () =>
     setSettings((prev) => ({
@@ -270,39 +263,6 @@ export default function OrgPostCallWorkflowsPage() {
 }
 
 // ─── Helper components ────────────────────────────────────────────────────────
-
-interface WorkflowSectionProps {
-  title: string;
-  description: string;
-  enabled: boolean;
-  onToggle: () => void;
-  hideToggle?: boolean;
-  children?: React.ReactNode;
-}
-
-function WorkflowSection({
-  title,
-  description,
-  enabled,
-  onToggle,
-  hideToggle = false,
-  children,
-}: WorkflowSectionProps) {
-  return (
-    <div className="space-y-3">
-      <div className="flex items-start justify-between">
-        <div className="space-y-0.5 pr-4">
-          <h3 className="text-sm font-semibold text-neutral-800">{title}</h3>
-          <p className="text-sm text-neutral-500">{description}</p>
-        </div>
-        {!hideToggle && <Toggle enabled={enabled} onToggle={onToggle} />}
-      </div>
-      {(hideToggle || enabled) && children && (
-        <div className="bg-neutral-50 rounded-lg p-4 space-y-3">{children}</div>
-      )}
-    </div>
-  );
-}
 
 function FrameworkFieldRow({
   field,
