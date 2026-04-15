@@ -112,7 +112,7 @@ export default function OrgPostCallWorkflowsPage() {
         <div className="rounded-lg border border-neutral-200 bg-white overflow-hidden">
           <div className="grid grid-cols-[1fr_200px_90px] px-5 py-2 bg-neutral-50 border-b border-neutral-100">
             <span className="text-xs font-medium text-neutral-400">Call classification</span>
-            <span className="text-xs font-medium text-neutral-400">Sub-role</span>
+            <span className="text-xs font-medium text-neutral-400">Associated roles</span>
             <span className="text-xs font-medium text-neutral-400 text-right">Status</span>
           </div>
           <div className="divide-y divide-neutral-100">
