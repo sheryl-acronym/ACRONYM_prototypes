@@ -417,8 +417,8 @@ function App() {
             <Route path="/signals" element={<SignalsPage signals={signalsData} />} />
             <Route path="/signals/:signalId" element={<SignalsPage signals={signalsData} />} />
             <Route path="/playbook/positioning" element={<PlaybookPositioningPage />} />
-            <Route path="/settings" element={<Navigate to="/settings/org/integrations/crm" replace />} />
-            <Route path="/settings/org" element={<Navigate to="/settings/org/integrations/crm" replace />} />
+            <Route path="/settings" element={<Navigate to="/settings/my/account" replace />} />
+            <Route path="/settings/org" element={<Navigate to="/settings/org/organization" replace />} />
             <Route path="/settings/org/integrations" element={<Navigate to="/settings/org/integrations/crm" replace />} />
             <Route path="/settings/org/organization" element={<SettingsRoot />} />
             <Route path="/settings/org/integrations/crm" element={<SettingsRoot />} />

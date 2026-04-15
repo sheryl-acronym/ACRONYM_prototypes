@@ -47,7 +47,7 @@ export default function SettingsRoot() {
 
   // If no matching content, redirect to default
   if (!ContentComponent) {
-    return <Navigate to="/settings/org/integrations/crm" replace />;
+    return <Navigate to="/settings/my/account" replace />;
   }
 
   const isOrg = pathname.startsWith('/settings/org');
