@@ -110,29 +110,31 @@ export default function OrgPostCallWorkflowsPage() {
           ACRONYM automatically processes the following call types. Contact your ACRONYM administrator to adjust settings.
         </p>
         <div className="rounded-lg border border-neutral-200 bg-white overflow-hidden">
-          <div className="grid grid-cols-[1fr_auto_auto] gap-4 px-5 py-2 bg-neutral-50 border-b border-neutral-100">
+          <div className="grid grid-cols-[1fr_200px_90px] px-5 py-2 bg-neutral-50 border-b border-neutral-100">
             <span className="text-xs font-medium text-neutral-400">Call classification</span>
             <span className="text-xs font-medium text-neutral-400">Sub-role</span>
-            <span className="text-xs font-medium text-neutral-400">Status</span>
+            <span className="text-xs font-medium text-neutral-400 text-right">Status</span>
           </div>
           <div className="divide-y divide-neutral-100">
             {CALL_TYPE_RULES.map((rule) => (
-              <div key={rule.call_type} className="grid grid-cols-[1fr_auto_auto] gap-4 px-5 py-3 items-center">
-                <div className="min-w-0">
+              <div key={rule.call_type} className="grid grid-cols-[1fr_200px_90px] px-5 py-3.5 items-start">
+                <div className="min-w-0 pr-4">
                   <p className="text-sm font-medium text-neutral-800">{rule.call_type}</p>
                   <p className="text-xs text-neutral-400 mt-0.5">{rule.note}</p>
                 </div>
-                <div className="flex flex-wrap gap-1 justify-end">
+                <div className="flex flex-wrap gap-1 pt-0.5">
                   {rule.sub_roles.length > 0 ? rule.sub_roles.map((r) => (
                     <Badge key={r} variant="secondary" className="text-xs font-normal">{r}</Badge>
                   )) : <span className="text-xs text-neutral-300">—</span>}
                 </div>
-                <Badge
-                  variant={rule.processed ? 'default' : 'secondary'}
-                  className={`text-xs flex-shrink-0 ${rule.processed ? 'bg-green-100 text-green-700 hover:bg-green-100' : ''}`}
-                >
-                  {rule.processed ? 'Processed' : 'Skipped'}
-                </Badge>
+                <div className="flex justify-end pt-0.5">
+                  <Badge
+                    variant={rule.processed ? 'default' : 'secondary'}
+                    className={`text-xs flex-shrink-0 ${rule.processed ? 'bg-green-100 text-green-700 hover:bg-green-100' : ''}`}
+                  >
+                    {rule.processed ? 'Processed' : 'Skipped'}
+                  </Badge>
+                </div>
               </div>
             ))}
           </div>
