@@ -91,7 +91,7 @@ export default function IgnoreListTable({
           <div>
             <h3 className="text-sm font-semibold text-neutral-700">{label}</h3>
             {description && (
-              <p className="text-sm text-neutral-400 mt-0.5">{description}</p>
+              <p className="text-xs text-neutral-400 mt-2">{description}</p>
             )}
           </div>
           <DropdownMenu>
