@@ -80,9 +80,16 @@ const ORG_NAV: NavSection[] = [
 
 const MY_NAV: NavSection[] = [
   {
+    type: 'item',
+    item: { label: 'Account', path: '/settings/my/account' },
+  },
+  {
+    type: 'spacer',
+  },
+  {
     type: 'group',
     group: {
-      label: 'Integrations',
+      label: 'Connections',
       prefix: '/settings/my/integrations',
       items: [
         { label: 'Slack', path: '/settings/my/integrations/slack' },
@@ -92,10 +99,6 @@ const MY_NAV: NavSection[] = [
         { label: 'ACRONYM Recorder', path: '/settings/my/integrations/acronym-recorder', coming_soon: true },
       ],
     },
-  },
-  {
-    type: 'item',
-    item: { label: 'Notifications', path: '/settings/my/notifications' },
   },
 ];
 
@@ -124,8 +127,8 @@ export default function SettingsNav() {
           }
           return null;
         })}
-        {isOrg && (
-          <div className="pt-6 mt-10 border-t border-neutral-200">
+        <div className="pt-6 mt-24 border-t border-neutral-200">
+          {isOrg ? (
             <Link
               to="/settings/my/integrations/slack"
               className="flex items-center gap-1.5 px-2 py-1.5 rounded-md text-sm text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 transition-colors"
@@ -133,8 +136,16 @@ export default function SettingsNav() {
               <span>Personal settings</span>
               <ExternalLink className="h-3 w-3 text-neutral-400 flex-shrink-0" />
             </Link>
-          </div>
-        )}
+          ) : (
+            <Link
+              to="/settings/org/organization"
+              className="flex items-center gap-1.5 px-2 py-1.5 rounded-md text-sm text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 transition-colors"
+            >
+              <span>Organization settings</span>
+              <ExternalLink className="h-3 w-3 text-neutral-400 flex-shrink-0" />
+            </Link>
+          )}
+        </div>
       </nav>
     </div>
   );
