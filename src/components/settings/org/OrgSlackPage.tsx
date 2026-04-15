@@ -116,15 +116,11 @@ export default function OrgSlackPage() {
           <Separator className="mb-8" />
 
           <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5">
-            <p className="text-sm font-medium text-neutral-700 mb-1">Channel configuration</p>
-            <p className="text-sm text-neutral-500 mb-4">
-              Which workflows post to which channels is configured under Notifications &amp; Alerts.
-            </p>
             <Link
               to="/settings/org/notifications"
               className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-900 hover:text-neutral-700"
             >
-              Go to Notifications &amp; Alerts
+              Manage Organization Slack Notifications
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>

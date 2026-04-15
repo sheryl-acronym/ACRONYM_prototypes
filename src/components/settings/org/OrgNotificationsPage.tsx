@@ -17,7 +17,9 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/components/ui/dialog';
-import { Trash2, Plus, Bell, ArrowRight, Pencil, RefreshCw } from 'lucide-react';
+import { Trash2, Plus, Bell, ArrowRight, Pencil, RefreshCw, ChevronsUpDown, X, ExternalLink } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Link } from 'react-router-dom';
 import {
   initialOrgWorkflows,
@@ -28,11 +30,11 @@ import {
 } from '@/settings-mock-data';
 
 // Reusable inline toggle
-function Toggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
+function Toggle({ enabled, onToggle, disabled }: { enabled: boolean; onToggle: () => void; disabled?: boolean }) {
   return (
     <button
-      onClick={onToggle}
-      className="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus:outline-none"
+      onClick={disabled ? undefined : onToggle}
+      className={`relative inline-flex h-5 w-9 flex-shrink-0 rounded-full border-2 border-transparent transition-colors focus:outline-none ${disabled ? 'cursor-not-allowed opacity-40' : 'cursor-pointer'}`}
       style={{ backgroundColor: enabled ? '#10b981' : '#e2e8f0' }}
     >
       <span
@@ -46,24 +48,31 @@ function Toggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void 
 const TRIGGER_OPTIONS: { value: workflow_trigger_type; label: string }[] = [
   { value: 'post_call', label: 'Post-call summary — after every call' },
   { value: 'weekly', label: 'Weekly pipeline review — recurring schedule' },
-  { value: 'daily', label: 'Daily briefing — recurring schedule' },
 ];
 
-const TIMING_OPTIONS: Record<workflow_trigger_type, { value: string; label: string }[]> = {
-  post_call: [],
-  weekly: [
-    { value: 'Monday, 9:00 AM', label: 'Monday, 9:00 AM' },
-    { value: 'Monday, 5:00 PM', label: 'Monday, 5:00 PM' },
-    { value: 'Friday, 9:00 AM', label: 'Friday, 9:00 AM' },
-    { value: 'Friday, 5:00 PM', label: 'Friday, 5:00 PM' },
-  ],
-  daily: [
-    { value: '8:00 AM', label: '8:00 AM' },
-    { value: '9:00 AM', label: '9:00 AM' },
-    { value: '10:00 AM', label: '10:00 AM' },
-    { value: '5:00 PM', label: '5:00 PM' },
-    { value: '6:00 PM', label: '6:00 PM' },
-  ],
+
+const WEEKLY_DAY_OPTIONS = [
+  { value: 'Monday', label: 'Monday' },
+  { value: 'Tuesday', label: 'Tuesday' },
+  { value: 'Wednesday', label: 'Wednesday' },
+  { value: 'Thursday', label: 'Thursday' },
+  { value: 'Friday', label: 'Friday' },
+];
+
+
+const REP_OPTIONS = [
+  { value: 'alice', label: 'Alice Johnson' },
+  { value: 'bob', label: 'Bob Smith' },
+  { value: 'carol', label: 'Carol Lee' },
+  { value: 'dan', label: 'Dan Kim' },
+];
+
+interface PostCallFilters {
+  reps: string[];
+}
+
+const DEFAULT_FILTERS: PostCallFilters = {
+  reps: [],
 };
 
 const TRIGGER_ICONS: Record<workflow_trigger_type, string> = {
@@ -71,6 +80,105 @@ const TRIGGER_ICONS: Record<workflow_trigger_type, string> = {
   weekly: 'Weekly',
   daily: 'Daily',
 };
+
+function RepMultiSelect({
+  selected,
+  onChange,
+  onRemove,
+}: {
+  selected: string[];
+  onChange: (reps: string[]) => void;
+  onRemove: () => void;
+}) {
+  const [open, setOpen] = React.useState(false);
+  const [search, setSearch] = React.useState('');
+
+  const filtered = REP_OPTIONS.filter((opt) =>
+    opt.label.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const toggle = (value: string) => {
+    onChange(
+      selected.includes(value)
+        ? selected.filter((v) => v !== value)
+        : [...selected, value]
+    );
+  };
+
+  const selectedLabels = REP_OPTIONS.filter((o) => selected.includes(o.value)).map((o) => o.label);
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <label className="text-sm font-medium text-neutral-700">Filter by rep</label>
+        <button
+          type="button"
+          onClick={onRemove}
+          className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors"
+        >
+          Remove
+        </button>
+      </div>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            className="w-full flex items-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-left hover:bg-neutral-50 transition-colors"
+          >
+            <span className={selected.length === 0 ? 'text-neutral-400' : 'text-neutral-800'}>
+              {selected.length === 0
+                ? 'Select reps…'
+                : selectedLabels.length <= 2
+                ? selectedLabels.join(', ')
+                : `${selectedLabels.slice(0, 2).join(', ')} +${selectedLabels.length - 2} more`}
+            </span>
+            <ChevronsUpDown className="h-3.5 w-3.5 text-neutral-400 flex-shrink-0" />
+          </button>
+        </PopoverTrigger>
+        <PopoverContent className="w-64 p-0" align="start">
+          <div className="p-2 border-b border-neutral-100">
+            <Input
+              placeholder="Search reps…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="h-8 text-sm"
+              autoFocus
+            />
+          </div>
+          <div className="max-h-48 overflow-y-auto py-1">
+            {filtered.length === 0 ? (
+              <p className="text-xs text-neutral-400 text-center py-4">No reps found</p>
+            ) : (
+              filtered.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => toggle(opt.value)}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors text-left"
+                >
+                  <Checkbox checked={selected.includes(opt.value)} onCheckedChange={() => toggle(opt.value)} />
+                  {opt.label}
+                </button>
+              ))
+            )}
+          </div>
+          {selected.length > 0 && (
+            <div className="border-t border-neutral-100 p-2">
+              <button
+                type="button"
+                onClick={() => onChange([])}
+                className="flex items-center gap-1 text-xs text-neutral-400 hover:text-neutral-600 transition-colors"
+              >
+                <X className="h-3 w-3" />
+                Clear all
+              </button>
+            </div>
+          )}
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
 
 export default function OrgNotificationsPage() {
   const [workflows, setWorkflows] = React.useState<org_workflow_instance[]>(initialOrgWorkflows);
@@ -83,6 +191,9 @@ export default function OrgNotificationsPage() {
   const [draft_name, setDraftName] = React.useState('');
   const [draft_trigger, setDraftTrigger] = React.useState<workflow_trigger_type>('post_call');
   const [draft_timing, setDraftTiming] = React.useState('');
+  const [draft_day, setDraftDay] = React.useState('Monday');
+  const [draft_filters, setDraftFilters] = React.useState<PostCallFilters>(DEFAULT_FILTERS);
+  const [filters_expanded, setFiltersExpanded] = React.useState(false);
   const [draft_channel, setDraftChannel] = React.useState('');
 
   const openSheet = () => {
@@ -90,6 +201,9 @@ export default function OrgNotificationsPage() {
     setDraftName('');
     setDraftTrigger('post_call');
     setDraftTiming('');
+    setDraftDay('Monday');
+    setDraftFilters(DEFAULT_FILTERS);
+    setFiltersExpanded(false);
     setDraftChannel('');
     setSheetOpen(true);
   };
@@ -98,7 +212,15 @@ export default function OrgNotificationsPage() {
     setEditingId(workflow.id);
     setDraftName(workflow.name);
     setDraftTrigger(workflow.trigger_type);
-    setDraftTiming(workflow.trigger_label === 'After every call' ? '' : workflow.trigger_label);
+    const label = workflow.trigger_label === 'After every call' ? '' : workflow.trigger_label;
+    setDraftTiming(label);
+    if (workflow.trigger_type === 'weekly' && label) {
+      setDraftDay(label);
+    } else {
+      setDraftDay('Monday');
+    }
+    setDraftFilters(DEFAULT_FILTERS);
+    setFiltersExpanded(false);
     const channel = SLACK_CHANNELS.find((c) => `#${c.name}` === workflow.destination_channel);
     setDraftChannel(channel?.id ?? '');
     setSheetOpen(true);
@@ -119,14 +241,16 @@ export default function OrgNotificationsPage() {
     const trigger_label =
       draft_trigger === 'post_call'
         ? 'After every call'
-        : draft_timing || TIMING_OPTIONS[draft_trigger][0]?.value || '';
+        : draft_trigger === 'weekly'
+        ? draft_day
+        : draft_timing || '';
     const channelName = SLACK_CHANNELS.find((c) => c.id === draft_channel)?.name ?? draft_channel;
 
     if (editing_id) {
       setWorkflows((prev) =>
         prev.map((w) =>
           w.id === editing_id
-            ? { ...w, name: draft_name.trim(), trigger_type: draft_trigger, trigger_label, destination_channel: `#${channelName}` }
+            ? { ...w, name: draft_name.trim(), trigger_type: draft_trigger, trigger_label, destination_channel: `#${channelName}`, enabled: true }
             : w
         )
       );
@@ -187,10 +311,7 @@ export default function OrgNotificationsPage() {
         return (
           <>
             <div className="mb-8">
-              <h2 className="text-sm font-semibold text-neutral-700 mb-1">Default Workflows</h2>
-              <p className="text-xs text-neutral-400 mb-4">
-                Built-in workflows configured by ACRONYM. Toggle on or off, or edit the destination channel.
-              </p>
+              <h2 className="text-sm font-semibold text-neutral-700 mb-4">Default Workflows</h2>
               <div className="rounded-lg border border-neutral-200 bg-white divide-y divide-neutral-100 overflow-hidden">
                 {defaults.map((workflow) => (
                   <WorkflowRow
@@ -205,16 +326,14 @@ export default function OrgNotificationsPage() {
             </div>
 
             <div className="mb-8">
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm font-semibold text-neutral-700">Custom Workflows</h2>
                 <Button variant="outline" size="sm" onClick={openSheet} className="gap-1.5 h-8 text-xs">
                   <Plus className="h-3.5 w-3.5" />
                   Add workflow
                 </Button>
               </div>
-              <p className="text-xs text-neutral-400 mb-4">
-                Additional workflows you've configured. Multiple instances of the same type can coexist with different destinations.
-              </p>
+
               {custom.length === 0 ? (
                 <div className="rounded-lg border border-dashed border-neutral-200 bg-neutral-50 py-10 flex flex-col items-center text-center">
                   <Bell className="h-7 w-7 text-neutral-300 mb-3" />
@@ -248,21 +367,27 @@ export default function OrgNotificationsPage() {
           <Badge variant="secondary" className="font-normal text-xs">Coming Soon</Badge>
         </div>
         <p className="text-sm text-neutral-400">
-          Define custom workflow types and delivery conditions beyond the defaults above.
           Configure alerts that fire when specific deal events or signal thresholds are met.
         </p>
       </div>
+
+      <Link
+        to="/settings/my/notifications"
+        className="flex items-center justify-between p-4 rounded-lg border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 transition-colors mt-6"
+      >
+        <span className="text-xs font-medium text-neutral-700">Manage Personal Slack Notifications</span>
+        <ExternalLink className="h-3 w-3 text-neutral-400" />
+      </Link>
 
       {/* Add / Edit workflow modal */}
       <Dialog open={sheet_open} onOpenChange={setSheetOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>{editing_id ? 'Edit workflow' : 'Add workflow'}</DialogTitle>
-            {editing_id && workflows.find((w) => w.id === editing_id)?.is_default && (
-              <DialogDescription>
-                Editing <span className="font-medium text-neutral-700">{workflows.find((w) => w.id === editing_id)?.name}</span>
-              </DialogDescription>
-            )}
+            <DialogTitle>
+              {editing_id && workflows.find((w) => w.id === editing_id)?.is_default
+                ? `Edit ${workflows.find((w) => w.id === editing_id)?.name}`
+                : editing_id ? 'Edit workflow' : 'Add workflow'}
+            </DialogTitle>
             {(!editing_id || !workflows.find((w) => w.id === editing_id)?.is_default) && (
               <DialogDescription>Configure a recurring Slack notification for your org.</DialogDescription>
             )}
@@ -281,7 +406,7 @@ export default function OrgNotificationsPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-neutral-700">Trigger type</label>
+                  <label className="text-sm font-medium text-neutral-700">Workflow Type</label>
                   <Select
                     value={draft_trigger}
                     onValueChange={(v) => {
@@ -302,24 +427,63 @@ export default function OrgNotificationsPage() {
                   </Select>
                 </div>
 
-                {draft_trigger !== 'post_call' && (
+                {draft_trigger === 'weekly' && (
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-neutral-700">Send timing</label>
-                    <Select value={draft_timing} onValueChange={setDraftTiming}>
+                    <label className="text-sm font-medium text-neutral-700">Day</label>
+                    <Select value={draft_day} onValueChange={setDraftDay}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Choose a time" />
+                        <SelectValue placeholder="Choose a day" />
                       </SelectTrigger>
                       <SelectContent>
-                        {TIMING_OPTIONS[draft_trigger].map((opt) => (
+                        {WEEKLY_DAY_OPTIONS.map((opt) => (
                           <SelectItem key={opt.value} value={opt.value}>
                             {opt.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
+                    <p className="text-xs text-neutral-400">Sent at 8:00 AM in each recipient's local timezone.</p>
+                  </div>
+                )}
+
+                {draft_trigger === 'post_call' && (
+                  <div>
+                    {!filters_expanded ? (
+                      <button
+                        type="button"
+                        onClick={() => setFiltersExpanded(true)}
+                        className="flex items-center gap-1 text-xs text-neutral-400 hover:text-neutral-600 transition-colors"
+                      >
+                        <Plus className="h-3 w-3" />
+                        Filter by rep
+                      </button>
+                    ) : (
+                      <RepMultiSelect
+                        selected={draft_filters.reps}
+                        onChange={(reps) => setDraftFilters((f) => ({ ...f, reps }))}
+                        onRemove={() => { setFiltersExpanded(false); setDraftFilters((f) => ({ ...f, reps: [] })); }}
+                      />
+                    )}
                   </div>
                 )}
               </>
+            ) : draft_trigger === 'weekly' ? (
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-neutral-700">Day</label>
+                <Select value={draft_day} onValueChange={setDraftDay}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choose a day" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {WEEKLY_DAY_OPTIONS.map((opt) => (
+                      <SelectItem key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-neutral-400">Sent at 8:00 AM in each recipient's local timezone.</p>
+              </div>
             ) : null}
 
             <div className="space-y-2">
@@ -363,7 +527,7 @@ export default function OrgNotificationsPage() {
                 disabled={
                   !draft_channel ||
                   (!editing_id || !workflows.find((w) => w.id === editing_id)?.is_default
-                    ? !draft_name.trim() || (draft_trigger !== 'post_call' && !draft_timing)
+                    ? !draft_name.trim() || (draft_trigger === 'weekly' && !draft_day)
                     : false)
                 }
                 className="flex-1"
@@ -389,38 +553,55 @@ function WorkflowRow({
   onDelete: () => void;
   onEdit: () => void;
 }) {
+  const unconfigured = !workflow.destination_channel;
+
   return (
     <div className="flex items-center gap-3 px-4 py-3.5 group">
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <p className={`text-sm font-medium ${workflow.enabled ? 'text-neutral-900' : 'text-neutral-400'}`}>
+          <p className={`text-sm font-medium ${unconfigured || !workflow.enabled ? 'text-neutral-400' : 'text-neutral-900'}`}>
             {workflow.name}
           </p>
           <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4 font-normal">
             {TRIGGER_ICONS[workflow.trigger_type]}
           </Badge>
         </div>
-        <p className="text-xs text-neutral-400 mt-0.5">
-          {workflow.trigger_label} → <span className="font-mono">{workflow.destination_channel}</span>
-        </p>
-      </div>
-      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
-        <button
-          onClick={onEdit}
-          className="p-1.5 hover:text-neutral-700 text-neutral-400 rounded transition-colors"
-        >
-          <Pencil className="h-3.5 w-3.5" />
-        </button>
-        {!workflow.is_default && (
-          <button
-            onClick={onDelete}
-            className="p-1.5 hover:text-red-500 text-neutral-400 rounded transition-colors"
-          >
-            <Trash2 className="h-3.5 w-3.5" />
-          </button>
+        {unconfigured ? (
+          <p className="text-xs text-neutral-400 mt-0.5 italic">No channel configured</p>
+        ) : (
+          <p className="text-xs text-neutral-400 mt-0.5">
+            {workflow.trigger_label} → <span className="font-mono">{workflow.destination_channel}</span>
+          </p>
         )}
       </div>
-      <Toggle enabled={workflow.enabled} onToggle={onToggle} />
+
+      {unconfigured ? (
+        <button
+          onClick={onEdit}
+          className="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors flex-shrink-0"
+        >
+          Set up
+        </button>
+      ) : (
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+          <button
+            onClick={onEdit}
+            className="p-1.5 hover:text-neutral-700 text-neutral-400 rounded transition-colors"
+          >
+            <Pencil className="h-3.5 w-3.5" />
+          </button>
+          {!workflow.is_default && (
+            <button
+              onClick={onDelete}
+              className="p-1.5 hover:text-red-500 text-neutral-400 rounded transition-colors"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
+      )}
+
+      <Toggle enabled={workflow.enabled} onToggle={onToggle} disabled={unconfigured} />
     </div>
   );
 }

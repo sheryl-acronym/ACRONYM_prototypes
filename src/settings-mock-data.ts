@@ -221,9 +221,9 @@ export const initialOrgWorkflows: org_workflow_instance[] = [
     id: 'wf-002',
     name: 'Weekly pipeline digest',
     trigger_type: 'weekly',
-    trigger_label: 'Monday, 9:00 AM',
-    destination_channel: '#leadership',
-    enabled: true,
+    trigger_label: 'Monday',
+    destination_channel: '',
+    enabled: false,
     is_default: true,
   },
 ];
