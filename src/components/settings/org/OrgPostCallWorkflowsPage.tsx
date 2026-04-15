@@ -16,25 +16,16 @@ import {
   type crm_sync_field,
 } from '@/settings-mock-data';
 
-const TEAM_CALL_TYPE_MAP = [
-  { sub_role: 'Sales', call_type: 'New Business' },
-  { sub_role: 'Sales Development', call_type: 'New Business' },
-  { sub_role: 'Account Management', call_type: 'Expansion' },
-  { sub_role: 'Customer Success', call_type: 'Customer Success' },
-  { sub_role: 'Partnerships', call_type: 'Partnership' },
-  { sub_role: 'Support', call_type: 'Support' },
-];
-
 const CALL_TYPE_RULES = [
-  { call_type: 'Sales', processed: true, note: 'Full extraction — qualification, next steps, close confidence' },
-  { call_type: 'Demo', processed: true, note: 'Full extraction — qualification, next steps, close confidence' },
-  { call_type: 'Onboarding', processed: true, note: 'Full extraction — account health, next steps' },
-  { call_type: 'Customer Success', processed: true, note: 'Full extraction — account health, next steps' },
-  { call_type: 'Support', processed: true, note: 'Full extraction — next steps' },
-  { call_type: 'Partnership', processed: true, note: 'Full extraction — next steps' },
-  { call_type: 'Internal', processed: false, note: 'Skipped — no external attendees' },
-  { call_type: 'Recruiting', processed: false, note: 'Skipped — not a revenue call' },
-  { call_type: 'Other', processed: false, note: 'Skipped by default — contact ACRONYM to enable' },
+  { call_type: 'Sales', processed: true, note: 'Full extraction — qualification, next steps, close confidence', sub_roles: ['Sales'] },
+  { call_type: 'Demo', processed: true, note: 'Full extraction — qualification, next steps, close confidence', sub_roles: ['Sales'] },
+  { call_type: 'Onboarding', processed: true, note: 'Full extraction — account health, next steps', sub_roles: ['Engineering', 'Customer Success'] },
+  { call_type: 'Customer Success', processed: true, note: 'Full extraction — account health, next steps', sub_roles: ['Customer Success'] },
+  { call_type: 'Partnership', processed: true, note: 'Full extraction — next steps', sub_roles: ['Partnerships'] },
+  { call_type: 'Support', processed: true, note: 'Full extraction — next steps', sub_roles: ['Support'] },
+  { call_type: 'Internal', processed: false, note: 'Skipped — no external attendees', sub_roles: [] },
+  { call_type: 'Recruiting', processed: false, note: 'Skipped — not a revenue call', sub_roles: [] },
+  { call_type: 'Other', processed: false, note: 'Skipped by default — contact ACRONYM to enable', sub_roles: [] },
 ];
 
 // Reusable inline toggle
@@ -119,12 +110,22 @@ export default function OrgPostCallWorkflowsPage() {
           ACRONYM automatically processes the following call types. Contact your ACRONYM administrator to adjust settings.
         </p>
         <div className="rounded-lg border border-neutral-200 bg-white overflow-hidden">
+          <div className="grid grid-cols-[1fr_auto_auto] gap-4 px-5 py-2 bg-neutral-50 border-b border-neutral-100">
+            <span className="text-xs font-medium text-neutral-400">Call classification</span>
+            <span className="text-xs font-medium text-neutral-400">Sub-role</span>
+            <span className="text-xs font-medium text-neutral-400">Status</span>
+          </div>
           <div className="divide-y divide-neutral-100">
             {CALL_TYPE_RULES.map((rule) => (
-              <div key={rule.call_type} className="flex items-start gap-4 px-5 py-3.5">
-                <div className="flex-1 min-w-0">
+              <div key={rule.call_type} className="grid grid-cols-[1fr_auto_auto] gap-4 px-5 py-3 items-center">
+                <div className="min-w-0">
                   <p className="text-sm font-medium text-neutral-800">{rule.call_type}</p>
                   <p className="text-xs text-neutral-400 mt-0.5">{rule.note}</p>
+                </div>
+                <div className="flex flex-wrap gap-1 justify-end">
+                  {rule.sub_roles.length > 0 ? rule.sub_roles.map((r) => (
+                    <Badge key={r} variant="secondary" className="text-xs font-normal">{r}</Badge>
+                  )) : <span className="text-xs text-neutral-300">—</span>}
                 </div>
                 <Badge
                   variant={rule.processed ? 'default' : 'secondary'}
@@ -134,38 +135,6 @@ export default function OrgPostCallWorkflowsPage() {
                 </Badge>
               </div>
             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Team-to-Call-Type Mapping */}
-      <div className="space-y-3 mb-8">
-        <div className="flex items-center gap-2">
-          <h2 className="text-sm font-semibold text-neutral-700">Team-to-Call-Type Mapping</h2>
-          <Badge variant="outline" className="text-neutral-400 border-neutral-200 font-normal text-xs gap-1">
-            <Lock className="h-3 w-3" />
-            Read-only
-          </Badge>
-        </div>
-        <p className="text-xs text-neutral-400">
-          Shows which sub-roles are mapped to which call types. Based on sub-role designation in ACRONYM — not configured per individual user.
-        </p>
-        <div className="rounded-lg border border-neutral-200 bg-white overflow-hidden">
-          <div className="grid grid-cols-2 px-4 py-2 bg-neutral-50 border-b border-neutral-100">
-            <span className="text-xs font-medium text-neutral-400">Sub-role</span>
-            <span className="text-xs font-medium text-neutral-400">Call type</span>
-          </div>
-          <div className="divide-y divide-neutral-100">
-            {TEAM_CALL_TYPE_MAP.map((row) => (
-              <div key={row.sub_role} className="grid grid-cols-2 px-4 py-2.5 items-center">
-                <span className="text-sm text-neutral-700">{row.sub_role}</span>
-                <span className="text-sm text-neutral-500">{row.call_type}</span>
-              </div>
-            ))}
-          </div>
-          <div className="border-t border-neutral-100 px-4 py-2.5 bg-neutral-50 flex items-center gap-1.5">
-            <Lock className="h-3 w-3 text-neutral-300 flex-shrink-0" />
-            <p className="text-xs text-neutral-400">Managed by ACRONYM. Contact your administrator to adjust mappings.</p>
           </div>
         </div>
       </div>
