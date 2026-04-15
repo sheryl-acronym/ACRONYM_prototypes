@@ -16,6 +16,15 @@ import {
   type crm_sync_field,
 } from '@/settings-mock-data';
 
+const TEAM_CALL_TYPE_MAP = [
+  { sub_role: 'Sales', call_type: 'New Business' },
+  { sub_role: 'Sales Development', call_type: 'New Business' },
+  { sub_role: 'Account Management', call_type: 'Expansion' },
+  { sub_role: 'Customer Success', call_type: 'Customer Success' },
+  { sub_role: 'Partnerships', call_type: 'Partnership' },
+  { sub_role: 'Support', call_type: 'Support' },
+];
+
 const CALL_TYPE_RULES = [
   { call_type: 'Sales', processed: true, note: 'Full extraction — qualification, next steps, close confidence' },
   { call_type: 'Demo', processed: true, note: 'Full extraction — qualification, next steps, close confidence' },
@@ -125,6 +134,38 @@ export default function OrgPostCallWorkflowsPage() {
                 </Badge>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Team-to-Call-Type Mapping */}
+      <div className="space-y-3 mb-8">
+        <div className="flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-neutral-700">Team-to-Call-Type Mapping</h2>
+          <Badge variant="outline" className="text-neutral-400 border-neutral-200 font-normal text-xs gap-1">
+            <Lock className="h-3 w-3" />
+            Read-only
+          </Badge>
+        </div>
+        <p className="text-xs text-neutral-400">
+          Shows which sub-roles are mapped to which call types. Based on sub-role designation in ACRONYM — not configured per individual user.
+        </p>
+        <div className="rounded-lg border border-neutral-200 bg-white overflow-hidden">
+          <div className="grid grid-cols-2 px-4 py-2 bg-neutral-50 border-b border-neutral-100">
+            <span className="text-xs font-medium text-neutral-400">Sub-role</span>
+            <span className="text-xs font-medium text-neutral-400">Call type</span>
+          </div>
+          <div className="divide-y divide-neutral-100">
+            {TEAM_CALL_TYPE_MAP.map((row) => (
+              <div key={row.sub_role} className="grid grid-cols-2 px-4 py-2.5 items-center">
+                <span className="text-sm text-neutral-700">{row.sub_role}</span>
+                <span className="text-sm text-neutral-500">{row.call_type}</span>
+              </div>
+            ))}
+          </div>
+          <div className="border-t border-neutral-100 px-4 py-2.5 bg-neutral-50 flex items-center gap-1.5">
+            <Lock className="h-3 w-3 text-neutral-300 flex-shrink-0" />
+            <p className="text-xs text-neutral-400">Managed by ACRONYM. Contact your administrator to adjust mappings.</p>
           </div>
         </div>
       </div>
