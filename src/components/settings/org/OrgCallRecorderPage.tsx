@@ -177,7 +177,7 @@ export default function OrgCallRecorderPage() {
         on_add={addIgnoreEntry}
         on_delete={deleteIgnoreEntry}
         label="Org Ignore List"
-        description="Calls involving these email addresses or domains will never be processed by ACRONYM. Applies org-wide regardless of which recorder is connected."
+        description="Calls involving these email addresses or domains will never be processed by ACRONYM."
       />
 
 

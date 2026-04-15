@@ -91,7 +91,7 @@ export default function IgnoreListTable({
           <div>
             <h3 className="text-sm font-semibold text-neutral-700">{label}</h3>
             {description && (
-              <p className="text-xs text-neutral-400 mt-0.5">{description}</p>
+              <p className="text-sm text-neutral-400 mt-0.5">{description}</p>
             )}
           </div>
           <DropdownMenu>
@@ -161,7 +161,7 @@ export default function IgnoreListTable({
           variant="outline"
           size="sm"
           onClick={() => setModalOpen(true)}
-          className="mt-2 gap-1.5 h-8 text-xs"
+          className="mt-2 gap-1.5 h-8 text-xs w-full"
         >
           <Plus className="h-3.5 w-3.5" />
           Add entry
