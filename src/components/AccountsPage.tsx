@@ -1,5 +1,6 @@
 import React from 'react';
 import { Account, AccountHealth } from '@/accounts-demo-data';
+import { AccountDetailSidePanel } from '@/components/AccountDetailSidePanel';
 import { HealthPill } from '@/components/HealthPill';
 import { ContactPill } from '@/components/ContactPill';
 import { DatePill } from '@/components/DatePill';
@@ -217,8 +218,13 @@ function RenewalCell({ renewalDate }: { renewalDate: string | null }) {
 
 export const AccountsPage: React.FC<AccountsPageProps> = ({
   accounts,
+  selectedAccountId,
   onAccountSelect,
+  onCloseSidePanel,
 }) => {
+  const selectedAccount = selectedAccountId
+    ? accounts.find((a) => a.id === selectedAccountId) ?? null
+    : null;
   const [search, setSearch] = React.useState('');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -338,6 +344,7 @@ export const AccountsPage: React.FC<AccountsPageProps> = ({
   }, [search, healthFilters, ownerFilters, renewalWindow]);
 
   return (
+    <>
     <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
       <div className="flex-1 min-w-0 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
         {/* Topbar */}
@@ -669,6 +676,15 @@ export const AccountsPage: React.FC<AccountsPageProps> = ({
         </div>
       </div>
     </div>
+
+    {/* Account detail side panel */}
+    {selectedAccount && (
+      <AccountDetailSidePanel
+        account={selectedAccount}
+        onClose={onCloseSidePanel || (() => {})}
+      />
+    )}
+    </>
   );
 };
 

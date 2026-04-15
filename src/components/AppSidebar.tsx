@@ -41,6 +41,7 @@ import {
   Palette,
 } from 'lucide-react';
 
+
 export default function AppSidebar() {
   const location = useLocation();
 
@@ -234,31 +235,31 @@ export default function AppSidebar() {
       <SidebarFooter className="px-3 pb-4">
         <SidebarMenu className="gap-0.5">
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              isActive={location.pathname === '/settings'}
-              tooltip="Settings"
-              className="h-9"
-            >
-              <Link to="/settings">
-                <Settings className="h-4 w-4" />
-                <span>Settings</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton className="h-auto py-2.5">
                   <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gray-200 text-xs font-semibold flex-shrink-0">
-                    CN
+                    SS
                   </span>
-                  <span className="flex-1 truncate text-sm">sales@reformer1.ai</span>
+                  <span className="flex-1 truncate text-sm">sheryl@goacronym.com</span>
                   <ChevronsUpDown className="ml-auto h-4 w-4 text-muted-foreground" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent side="top" align="start" className="w-52">
-                <DropdownMenuLabel className="text-xs text-muted-foreground font-normal">sales@reformer1.ai</DropdownMenuLabel>
+              <DropdownMenuContent side="top" align="start" className="w-56">
+                <DropdownMenuLabel className="text-xs text-muted-foreground font-normal">sheryl@goacronym.com</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/settings/my/integrations/slack" className="flex items-center gap-2 cursor-pointer">
+                    <Settings className="h-4 w-4" />
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/settings/org/integrations/crm" className="flex items-center gap-2 cursor-pointer">
+                    <Building2 className="h-4 w-4" />
+                    Organization settings
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuLabel className="text-xs text-muted-foreground/60 uppercase tracking-wider font-normal pb-0">Development</DropdownMenuLabel>
                 <DropdownMenuItem asChild>

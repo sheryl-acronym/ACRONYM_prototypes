@@ -31,6 +31,12 @@ export interface Account {
   last_meeting: string | null;
   next_meeting: string | null;
 
+  // CS health summary
+  health_summary?: {
+    value_realization: string;
+    renewal_outlook: string;
+  };
+
   // Flexible catch-all
   metadata: Record<string, unknown>;
 }
@@ -55,6 +61,10 @@ export const accountsData: Account[] = [
     contract_value: 240000,
     last_meeting: '2026-02-18',
     next_meeting: '2026-03-19',
+    health_summary: {
+      value_realization: "Checkout abandonment down ~11% since go-live, on track toward the 15% target. Loyalty program integration scoped and scheduled for Q2 2026. Payment uptime has held at 99.95% over the past 6 months.",
+      renewal_outlook: "Likely renew — champion is actively promoting the platform internally and has already flagged renewal as a priority for her team's budget cycle.",
+    },
     metadata: {
       onboarding_date: '2025-04-01',
       industry: 'Sustainable footwear',
@@ -84,6 +94,10 @@ export const accountsData: Account[] = [
     contract_value: 180000,
     last_meeting: '2026-02-05',
     next_meeting: '2026-03-12',
+    health_summary: {
+      value_realization: "Age-verified payment flows live across 22 of 30 target states. Mobile conversion rate up ~12% since implementation, short of the 20% goal. Multi-state tax remittance automation is partially deployed but blocked on a compliance review.",
+      renewal_outlook: "Monitor — renewal is in active negotiation but budget conversations have stalled with the incoming VP Finance who hasn't been fully briefed on the platform's impact. A stakeholder alignment meeting is needed before May.",
+    },
     metadata: {
       onboarding_date: '2024-10-15',
       industry: 'On-demand alcohol delivery',
@@ -109,6 +123,10 @@ export const accountsData: Account[] = [
     contract_value: 360000,
     last_meeting: '2026-02-25',
     next_meeting: null,
+    health_summary: {
+      value_realization: "DTC and wholesale checkout fully unified. International payments live in 5 of 8 target markets with 3 remaining in compliance review. B2B wholesale portal scoped; engineering kickoff planned for Q2.",
+      renewal_outlook: "Likely renew and expand — the team has opened a conversation about the warehouse payments module, and the champion has signaled willingness to commit to a multi-year term at renewal.",
+    },
     metadata: {
       onboarding_date: '2025-02-01',
       industry: 'Ethical apparel',
@@ -138,6 +156,10 @@ export const accountsData: Account[] = [
     contract_value: 120000,
     last_meeting: '2026-01-14',
     next_meeting: '2026-03-11',
+    health_summary: {
+      value_realization: "Returns processing time reduced by ~18% against a 40% target — implementation is behind plan. Subscription billing for the membership tier has not launched. Carbon offset receipt integration is deprioritized pending a product decision.",
+      renewal_outlook: "At risk — the executive sponsor who championed the original deal has left. The new CTO has not engaged with the platform or the CSM team. Renewal is in 6 weeks and executive alignment needs to be established urgently.",
+    },
     metadata: {
       onboarding_date: '2024-07-01',
       industry: 'Sustainable footwear',
@@ -163,6 +185,10 @@ export const accountsData: Account[] = [
     contract_value: 480000,
     last_meeting: '2026-02-28',
     next_meeting: '2026-03-28',
+    health_summary: {
+      value_realization: "Mobile checkout success rate at 98.7%, exceeding the 98% target. Influencer and affiliate payouts fully automated, saving the team ~15 hours/month. International expansion live in 3 of 5 EU markets with 2 remaining pending local banking partnerships.",
+      renewal_outlook: "Strong renewal with expansion likely — Glossier is tracking ahead on all KPIs and the champion has flagged the EU payments module as a priority add-on at renewal. NPS score from last QBR was 9/10.",
+    },
     metadata: {
       onboarding_date: '2025-05-01',
       industry: 'DTC beauty',
@@ -188,6 +214,10 @@ export const accountsData: Account[] = [
     contract_value: 96000,
     last_meeting: '2026-02-01',
     next_meeting: null,
+    health_summary: {
+      value_realization: "Real-time donation tracking is live and tied to transactions across all channels. Payment reconciliation across 4 channels is operational. Quarterly impact reporting — a core success criterion — has not been delivered due to a product delay on our side.",
+      renewal_outlook: "Monitor — the team has expressed frustration over the delayed impact reporting feature. Renewal is in June, and trust needs to be rebuilt with a firm delivery commitment before end of Q1. Risk escalates if the feature misses Q2.",
+    },
     metadata: {
       onboarding_date: '2024-12-01',
       industry: 'Apparel / social impact',
@@ -217,6 +247,10 @@ export const accountsData: Account[] = [
     contract_value: 300000,
     last_meeting: '2026-02-22',
     next_meeting: '2026-03-22',
+    health_summary: {
+      value_realization: "In-store and online payment data fully unified in a single dashboard. HSA/FSA card acceptance is in demo stage with strong internal interest. Try-at-home billing automation is scoped but not yet in development.",
+      renewal_outlook: "Likely renew with expansion — Warby Parker is engaged and the CFO office champion is actively pushing the HSA/FSA module internally. Expansion deal could close alongside renewal in Q1 2027.",
+    },
     metadata: {
       onboarding_date: '2025-03-15',
       industry: 'Eyewear retail',

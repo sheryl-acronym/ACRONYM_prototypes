@@ -8,6 +8,7 @@ import DealDetailPageV2 from '@/components/DealDetailPageV2';
 import PastMeetingsPage from '@/components/PastMeetingsPage';
 import UpcomingMeetingsPage from '@/components/UpcomingMeetingsPage';
 import AccountsPage from '@/components/AccountsPage';
+import AccountDetailPage from '@/components/AccountDetailPage';
 import CompaniesPage from '@/components/CompaniesPage';
 import CompanyDetailPage from '@/components/CompanyDetailPage';
 import ContactsPage from '@/components/ContactsPage';
@@ -23,7 +24,7 @@ import ObjectionDetailPage from '@/components/ObjectionDetailPage';
 import SignalsPage from '@/components/SignalsPage';
 import PlaybookPositioningPage from '@/components/PlaybookPositioningPage';
 import ComponentsPage from '@/components/ComponentsPage';
-import SettingsPage from '@/components/SettingsPage';
+import SettingsRoot from '@/components/settings/SettingsRoot';
 import AppSidebar from '@/components/AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { provenDemoData, provenDemoDataCall2 } from '@/proven-demo-data';
@@ -216,6 +217,27 @@ function DealDetailRoute() {
   ) : null;
 }
 
+function AccountDetailRoute() {
+  const { accountId } = useParams<{ accountId: string }>();
+  const account = accountsData.find((a) => a.id === accountId);
+
+  if (!account) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-muted-foreground">
+        Account not found.
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-1 h-screen relative bg-sidebar overflow-hidden">
+      <div className="flex-1 min-w-0 bg-white flex flex-col m-3 rounded-lg shadow-md overflow-hidden">
+        <AccountDetailPage account={account} />
+      </div>
+    </div>
+  );
+}
+
 function AccountsRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedAccountId = searchParams.get('accountId') || undefined;
@@ -374,6 +396,7 @@ function App() {
             <Route path="/deals/:dealId" element={<DealDetailRoute />} />
             <Route path="/deals/:view" element={<DealsPageRoute />} />
             <Route path="/accounts" element={<AccountsRoute />} />
+            <Route path="/accounts/:accountId" element={<AccountDetailRoute />} />
             <Route path="/meetings" element={<UpcomingMeetingsPage meetings={upcomingMeetingsData} briefData={meetingBriefData} />} />
             <Route path="/meetings/past" element={<PastMeetingsPage meetings={pastMeetingsData} summaryData={meetingSummaryData} />} />
             <Route path="/meetings/past/:meetingId" element={<PostCallSummaryRoute />} />
@@ -394,8 +417,25 @@ function App() {
             <Route path="/signals" element={<SignalsPage signals={signalsData} />} />
             <Route path="/signals/:signalId" element={<SignalsPage signals={signalsData} />} />
             <Route path="/playbook/positioning" element={<PlaybookPositioningPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/settings/:section" element={<SettingsPage />} />
+            <Route path="/settings" element={<Navigate to="/settings/org/integrations/crm" replace />} />
+            <Route path="/settings/org" element={<Navigate to="/settings/org/integrations/crm" replace />} />
+            <Route path="/settings/org/integrations" element={<Navigate to="/settings/org/integrations/crm" replace />} />
+            <Route path="/settings/org/organization" element={<SettingsRoot />} />
+            <Route path="/settings/org/integrations/crm" element={<SettingsRoot />} />
+            <Route path="/settings/org/integrations/slack" element={<SettingsRoot />} />
+            <Route path="/settings/org/integrations/call-recorder" element={<SettingsRoot />} />
+            <Route path="/settings/org/custom-signals" element={<SettingsRoot />} />
+            <Route path="/settings/org/post-call-workflows" element={<SettingsRoot />} />
+            <Route path="/settings/org/notifications" element={<SettingsRoot />} />
+            <Route path="/settings/org/data-hygiene" element={<SettingsRoot />} />
+            <Route path="/settings/my" element={<Navigate to="/settings/my/integrations/slack" replace />} />
+            <Route path="/settings/my/integrations" element={<Navigate to="/settings/my/integrations/slack" replace />} />
+            <Route path="/settings/my/integrations/slack" element={<SettingsRoot />} />
+            <Route path="/settings/my/integrations/google-calendar" element={<SettingsRoot />} />
+            <Route path="/settings/my/integrations/gmail" element={<SettingsRoot />} />
+            <Route path="/settings/my/integrations/google-drive" element={<SettingsRoot />} />
+            <Route path="/settings/my/integrations/acronym-recorder" element={<SettingsRoot />} />
+            <Route path="/settings/my/notifications" element={<SettingsRoot />} />
             <Route path="/components" element={<ComponentsPage />} />
           </Routes>
         </SidebarInset>
