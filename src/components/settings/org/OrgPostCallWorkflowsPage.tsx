@@ -107,7 +107,7 @@ export default function OrgPostCallWorkflowsPage() {
           </Badge>
         </div>
         <p className="text-sm text-neutral-500">
-          ACRONYM automatically processes the following call types. Contact your ACRONYM administrator to adjust settings.
+          ACRONYM automatically processes the following call types. Roles are mapped to provide more context for accurate call classification. Contact your ACRONYM administrator to adjust settings.
         </p>
         <div className="rounded-lg border border-neutral-200 bg-white overflow-hidden">
           <div className="grid grid-cols-[1fr_200px_90px] px-5 py-2 bg-neutral-50 border-b border-neutral-100">
