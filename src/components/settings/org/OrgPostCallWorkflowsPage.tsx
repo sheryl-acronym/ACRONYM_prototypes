@@ -92,7 +92,7 @@ export default function OrgPostCallWorkflowsPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold mb-2">Post-Call Workflows</h1>
+      <h1 className="text-xl font-semibold mb-2">Post-Meeting Workflow</h1>
       <p className="text-sm text-neutral-500 mb-8">
         Define which calls ACRONYM processes, what gets extracted, and where it goes. All extraction is automatic once configured.
       </p>

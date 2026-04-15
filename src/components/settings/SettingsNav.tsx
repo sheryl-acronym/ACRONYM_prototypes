@@ -70,7 +70,7 @@ const ORG_NAV: NavSection[] = [
       label: 'Workflows',
       prefix: '/settings/org/workflows',
       items: [
-        { label: 'Post-Call Workflows', path: '/settings/org/post-call-workflows' },
+        { label: 'Post-Meeting Workflow', path: '/settings/org/post-call-workflows' },
         { label: 'Slack Notifications', path: '/settings/org/notifications' },
         { label: 'Data Hygiene', path: '/settings/org/data-hygiene', coming_soon: true },
       ],
