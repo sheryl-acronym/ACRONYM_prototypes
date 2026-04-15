@@ -249,13 +249,13 @@ export default function AppSidebar() {
                 <DropdownMenuLabel className="text-xs text-muted-foreground font-normal">sheryl@goacronym.com</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to="/settings/my/integrations/slack" className="flex items-center gap-2 cursor-pointer">
+                  <Link to="/settings/my/account" className="flex items-center gap-2 cursor-pointer">
                     <Settings className="h-4 w-4" />
                     Settings
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/settings/org/integrations/crm" className="flex items-center gap-2 cursor-pointer">
+                  <Link to="/settings/org/organization" className="flex items-center gap-2 cursor-pointer">
                     <Building2 className="h-4 w-4" />
                     Organization settings
                   </Link>
