@@ -17,7 +17,13 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, Plus } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Trash2, Plus, MoreHorizontal, Sparkles } from 'lucide-react';
 import { type ignore_list_entry } from '@/settings-mock-data';
 
 interface IgnoreListTableProps {
@@ -88,15 +94,19 @@ export default function IgnoreListTable({
               <p className="text-xs text-neutral-400 mt-0.5">{description}</p>
             )}
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setModalOpen(true)}
-            className="gap-1.5 h-8 text-xs"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            Add entry
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <MoreHorizontal className="h-4 w-4 text-neutral-400" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-52">
+              <DropdownMenuItem className="gap-2 text-sm cursor-pointer">
+                <Sparkles className="h-3.5 w-3.5 text-neutral-400" />
+                Clean up existing data
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {entries.length === 0 ? (
@@ -146,6 +156,16 @@ export default function IgnoreListTable({
             ))}
           </div>
         )}
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setModalOpen(true)}
+          className="mt-2 gap-1.5 h-8 text-xs"
+        >
+          <Plus className="h-3.5 w-3.5" />
+          Add entry
+        </Button>
       </div>
 
       <Dialog open={modal_open} onOpenChange={handleClose}>
